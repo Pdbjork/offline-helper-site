@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Offline Helper — Private AI setup for families</title>
+  <meta name="description" content="Offline Helper sets up a friendly local-first AI assistant for families, caregivers, and novice Mac users — safely, privately, and in plain English.">
+  <meta property="og:title" content="Offline Helper — Private AI setup for families">
+  <meta property="og:description" content="A careful done-for-you setup service for families who want AI help without becoming technical.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#13231d">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #13231d;
+      --muted: #5f6f68;
+      --soft: #f6f2e9;
+      --paper: #fffdf8;
+      --line: #ded6c8;
+      --accent: #2f7d5c;
+      --accent-dark: #1f5f45;
+      --warm: #f0c36c;
+      --sage: #dce9de;
+      --danger: #9a453a;
+      --shadow: 0 24px 80px rgba(19, 35, 29, .14);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --max: 1120px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(240, 195, 108, .34), transparent 34rem),
+        linear-gradient(180deg, #fffaf0 0%, #f7f3ea 48%, #ffffff 100%);
+      color: var(--ink);
+      line-height: 1.55;
+    }
+
+    a { color: inherit; }
+    .skip-link {
+      position: absolute;
+      left: 1rem;
+      top: -4rem;
+      background: var(--ink);
+      color: white;
+      padding: .75rem 1rem;
+      z-index: 20;
+    }
+    .skip-link:focus { top: 1rem; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      background: rgba(255, 253, 248, .82);
+      border-bottom: 1px solid rgba(222, 214, 200, .72);
+    }
+    .nav {
+      width: min(var(--max), calc(100% - 2rem));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 72px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: .7rem;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      text-decoration: none;
+    }
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      background: var(--ink);
+      color: var(--warm);
+      font-weight: 900;
+      box-shadow: 0 10px 24px rgba(19, 35, 29, .18);
+    }
+    nav ul {
+      display: flex;
+      gap: 1.1rem;
+      align-items: center;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+    nav a { text-decoration: none; }
+    nav a:hover, nav a:focus-visible { color: var(--ink); }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      min-height: 46px;
+      padding: .8rem 1.05rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-weight: 750;
+      text-decoration: none;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .button:hover { transform: translateY(-1px); }
+    .button.primary { background: var(--accent); color: white; box-shadow: 0 14px 30px rgba(47, 125, 92, .23); }
+    .button.primary:hover { background: var(--accent-dark); }
+    .button.secondary { border-color: var(--line); background: rgba(255, 255, 255, .72); color: var(--ink); }
+
+    main { overflow: hidden; }
+    section { padding: 5.5rem 0; }
+    .wrap { width: min(var(--max), calc(100% - 2rem)); margin: 0 auto; }
+
+    .hero {
+      padding: 7.2rem 0 5.4rem;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr);
+      align-items: center;
+      gap: clamp(2.2rem, 6vw, 5.5rem);
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      color: var(--accent-dark);
+      background: rgba(220, 233, 222, .8);
+      border: 1px solid rgba(47, 125, 92, .18);
+      border-radius: 999px;
+      padding: .45rem .72rem;
+      font-size: .87rem;
+      font-weight: 780;
+    }
+    h1, h2, h3 { line-height: 1.04; letter-spacing: -.055em; margin: 0; }
+    h1 {
+      margin-top: 1.25rem;
+      font-size: clamp(3.25rem, 8vw, 6.6rem);
+      max-width: 10ch;
+    }
+    .hero p.lede {
+      font-size: clamp(1.18rem, 2.1vw, 1.45rem);
+      color: #405149;
+      max-width: 39rem;
+      margin: 1.35rem 0 0;
+    }
+    .proof-line {
+      max-width: 40rem;
+      margin: 1.15rem 0 0;
+      padding: 1rem 1.1rem;
+      border-left: 4px solid var(--warm);
+      border-radius: 0 18px 18px 0;
+      background: rgba(255, 253, 248, .72);
+      color: #405149;
+      font-weight: 620;
+      box-shadow: 0 12px 34px rgba(19, 35, 29, .07);
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: .9rem; margin-top: 2rem; }
+    .trust-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .75rem;
+      margin-top: 2rem;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+    .trust-row span {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .45rem .7rem;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .62);
+      border-radius: 999px;
+    }
+
+    .hero-card {
+      position: relative;
+      background: var(--paper);
+      border: 1px solid rgba(222, 214, 200, .82);
+      border-radius: var(--radius-lg);
+      padding: clamp(1.2rem, 3vw, 2rem);
+      box-shadow: var(--shadow);
+    }
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -26px -22px auto auto;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: rgba(240, 195, 108, .32);
+      z-index: -1;
+    }
+    .mini-window {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: #fff;
+      overflow: hidden;
+    }
+    .window-bar {
+      display: flex;
+      align-items: center;
+      gap: .42rem;
+      padding: .85rem 1rem;
+      border-bottom: 1px solid var(--line);
+      background: #fbf7ed;
+    }
+    .dot { width: 10px; height: 10px; border-radius: 999px; background: #d8c6a0; }
+    .assistant-feed { padding: 1.2rem; display: grid; gap: .9rem; }
+    .bubble {
+      padding: .9rem 1rem;
+      border-radius: 18px;
+      font-size: .98rem;
+    }
+    .bubble.user { background: var(--sage); margin-left: 2.5rem; }
+    .bubble.ai { background: #f7f3ea; margin-right: 1.6rem; }
+    .status-card {
+      margin-top: 1rem;
+      display: grid;
+      gap: .65rem;
+      padding: 1rem;
+      border-radius: 20px;
+      background: #13231d;
+      color: white;
+    }
+    .status-card strong { color: var(--warm); }
+    .status-line { display: flex; justify-content: space-between; gap: 1rem; font-size: .94rem; color: rgba(255,255,255,.82); }
+
+    .section-head { max-width: 720px; margin-bottom: 2.2rem; }
+    .section-head h2 { font-size: clamp(2.1rem, 4.7vw, 4rem); }
+    .section-head p { color: var(--muted); font-size: 1.1rem; margin: 1rem 0 0; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      background: rgba(255, 253, 248, .86);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+    }
+    .card h3 { font-size: 1.45rem; letter-spacing: -.035em; margin-bottom: .55rem; }
+    .card p, .card li { color: var(--muted); }
+    .card ul { padding-left: 1.1rem; margin: .8rem 0 0; }
+
+    .steps {
+      display: grid;
+      gap: .85rem;
+      counter-reset: step;
+    }
+    .step {
+      counter-increment: step;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
+      align-items: start;
+      padding: 1.1rem;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+    }
+    .step::before {
+      content: counter(step);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--ink);
+      color: white;
+      font-weight: 800;
+    }
+    .step h3 { font-size: 1.2rem; margin-bottom: .25rem; }
+    .step p { margin: 0; color: var(--muted); }
+
+    .split {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    .note {
+      padding: 1.25rem;
+      border-radius: var(--radius-md);
+      background: #13231d;
+      color: white;
+    }
+    .note p { color: rgba(255,255,255,.78); }
+
+    .pricing {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    .price-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 1.6rem;
+      box-shadow: 0 12px 40px rgba(19, 35, 29, .08);
+      display: flex;
+      flex-direction: column;
+    }
+    .price-card.featured { border: 2px solid var(--accent); transform: translateY(-.35rem); }
+    .price-tag {
+      display: inline-flex;
+      width: fit-content;
+      padding: .35rem .65rem;
+      border-radius: 999px;
+      background: rgba(220, 233, 222, .9);
+      color: var(--accent-dark);
+      font-weight: 800;
+      font-size: .82rem;
+      margin-bottom: .8rem;
+    }
+    .price { font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 900; letter-spacing: -.07em; margin: .6rem 0; }
+    .price small { font-size: 1rem; color: var(--muted); letter-spacing: 0; font-weight: 650; }
+    .price-card ul { margin: 1.2rem 0 0; padding-left: 1.1rem; color: var(--muted); }
+    .price-card .button { margin-top: auto; align-self: flex-start; }
+    .payment-note {
+      margin-top: 1rem;
+      padding: 1rem;
+      border: 1px solid rgba(47, 125, 92, .22);
+      border-radius: var(--radius-md);
+      background: rgba(220, 233, 222, .48);
+      color: #405149;
+      font-weight: 650;
+    }
+
+    .cta {
+      text-align: center;
+      background: var(--ink);
+      color: white;
+      border-radius: 36px;
+      padding: clamp(2rem, 6vw, 4rem);
+      box-shadow: var(--shadow);
+    }
+    .cta h2 { font-size: clamp(2.2rem, 5vw, 4.4rem); }
+    .cta p { max-width: 640px; margin: 1rem auto 0; color: rgba(255,255,255,.76); font-size: 1.12rem; }
+    .cta .button.primary { background: var(--warm); color: var(--ink); box-shadow: none; margin-top: 1.5rem; }
+
+    footer {
+      padding: 2.5rem 0;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+    .footer-grid { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .footer-grid a { color: var(--ink); }
+
+    @media (max-width: 860px) {
+      nav ul { display: none; }
+      .hero { padding-top: 4.4rem; }
+      .hero-grid, .split, .pricing { grid-template-columns: 1fr; }
+      .cards { grid-template-columns: 1fr; }
+      h1 { max-width: 12ch; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header>
+    <div class="nav" aria-label="Main navigation">
+      <a class="brand" href="#top" aria-label="Offline Helper home">
+        <span class="brand-mark">OH</span>
+        <span>Offline Helper</span>
+      </a>
+      <nav aria-label="Page sections">
+        <ul>
+          <li><a href="#for-families">Who it helps</a></li>
+          <li><a href="#setup">Setup</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#research">Research</a></li>
+          <li><a href="#safety">Safety</a></li>
+        </ul>
+      </nav>
+      <a class="button primary" href="fit-check/index.html">Reserve a setup</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="eyebrow">Private AI Helper Setup</span>
+          <h1>Private AI help, set up for real people.</h1>
+          <p class="lede">Offline Helper is a done-for-you, local-first setup service for families and older adults who want a useful AI assistant on their own computer — with patient teaching and plain-English privacy.</p>
+          <p class="proof-line">Proof of concept: a 68-year-old mother who always wanted to write her memoir started immediately with her AI writing assistant — then called to say thank you for the motivation, focus, and beautifully edited chapters.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="fit-check/index.html">Reserve a setup</a>
+            <a class="button secondary" href="#setup">See what is included</a>
+          </div>
+          <div class="trust-row" aria-label="Key promises">
+            <span>Plain-English guidance</span>
+            <span>Local AI model option</span>
+            <span>No token sharing in docs</span>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Example assistant conversation">
+          <div class="mini-window">
+            <div class="window-bar" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+            <div class="assistant-feed">
+              <div class="bubble user">Can you help Mom write a kind reply to this email?</div>
+              <div class="bubble ai">Yes. Paste only the parts you are comfortable sharing, and I’ll help make it warm, clear, and safe.</div>
+              <div class="bubble user">Is this fully offline?</div>
+              <div class="bubble ai">The AI brain can run on your computer. If we connect phone chat, those messages may pass through that chat company. I’ll explain the boundary before setup.</div>
+            </div>
+          </div>
+          <div class="status-card" aria-label="Setup status example">
+            <strong>Setup checklist</strong>
+            <div class="status-line"><span>Local AI runtime</span><span>Ready</span></div>
+            <div class="status-line"><span>Assistant profile</span><span>Ready</span></div>
+            <div class="status-line"><span>Privacy handoff</span><span>Included</span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="for-families">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Built for families who want AI without becoming tech support.</h2>
+          <p>The first customer is often an adult child, caregiver, teacher, or community helper who wants safe AI support for someone who does not want a complicated setup.</p>
+        </div>
+        <div class="cards">
+          <article class="card">
+            <h3>For older adults</h3>
+            <p>A gentle helper for drafting messages, organizing thoughts, explaining confusing text, staying on task, and making creative projects like memoir writing feel possible.</p>
+          </article>
+          <article class="card">
+            <h3>For adult children</h3>
+            <p>A safer path than handing a parent a random chatbot account and hoping they understand privacy settings, scams, and limitations.</p>
+          </article>
+          <article class="card">
+            <h3>For community helpers</h3>
+            <p>A practical way to bring local-first AI support into classrooms, churches, nonprofits, coaching, and small organizations.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="setup">
+      <div class="wrap split">
+        <div class="section-head">
+          <h2>What we set up.</h2>
+          <p>Phase 0 is intentionally human-led. We learn what breaks, keep the safety steps careful, and only automate what proves repeatable.</p>
+        </div>
+        <div class="steps">
+          <article class="step"><div><h3>Readiness check</h3><p>We confirm the Mac, internet connection, permissions, and customer goals before changing anything.</p></div></article>
+          <article class="step"><div><h3>Local AI brain</h3><p>We install or verify Ollama and a practical local model so the assistant can run on the customer’s computer.</p></div></article>
+          <article class="step"><div><h3>Friendly assistant profile</h3><p>We configure a simple assistant personality with plain-English safety guidance and realistic boundaries.</p></div></article>
+          <article class="step"><div><h3>Optional phone chat</h3><p>If requested, we connect a familiar chat app and explain clearly which parts are local and which are not.</p></div></article>
+          <article class="step"><div><h3>Handoff and support</h3><p>The customer sends a test message, receives a handoff guide, and learns how to turn remote support off.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="safety">
+      <div class="wrap split">
+        <div class="note">
+          <h2>Honest privacy beats hype.</h2>
+          <p>Offline Helper should never claim “100% offline” when phone messaging, cloud backup, email, or other internet services are used. The promise is local-first, careful setup, and plain-English boundaries.</p>
+        </div>
+        <div class="cards" style="grid-template-columns: 1fr;">
+          <article class="card">
+            <h3>Safety boundaries</h3>
+            <ul>
+              <li>No medical, legal, financial, crisis, or emergency decision-making.</li>
+              <li>No public exposure of the local AI model.</li>
+              <li>No passwords, bot tokens, or recovery keys pasted into documents or chat logs.</li>
+              <li>Remote support requires explicit consent and can be turned off.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Market-research-backed pilot pricing.</h2>
+          <p>Public competitor research showed families already pay for trusted senior tech help. Offline Helper keeps the pilot simple: a free fit check first, then payment only if the setup is a good match.</p>
+        </div>
+        <div class="pricing">
+          <article class="price-card">
+            <span class="price-tag">Step 1</span>
+            <h3>Free fit check</h3>
+            <div class="price">Free <small>10–15 min</small></div>
+            <p>A short call to confirm goals, device readiness, privacy concerns, and whether a local-first AI setup is realistic.</p>
+            <ul>
+              <li>Who the helper is for</li>
+              <li>Mac/device readiness</li>
+              <li>Top use case: memoir, letters, learning, planning, or everyday questions</li>
+              <li>Plain-English local versus cloud explanation</li>
+            </ul>
+            <p class="payment-note"><strong>No payment before fit check.</strong> If it is not a good fit, we say so kindly.</p>
+            <a class="button primary" href="fit-check/index.html">Book a free fit check</a>
+          </article>
+          <article class="price-card featured">
+            <span class="price-tag">Pilot offer</span>
+            <h3>Starter Setup</h3>
+            <div class="price">$149 <small>pilot</small></div>
+            <p>Best for one person who wants a working, local-first AI helper and a calm walkthrough.</p>
+            <ul>
+              <li>Device readiness check</li>
+              <li>Local AI setup or verification where practical</li>
+              <li>One useful first workflow</li>
+              <li>Plain-English privacy walkthrough</li>
+              <li>7-day “one question” follow-up</li>
+            </ul>
+            <p class="payment-note"><strong>Payment opens after fit check.</strong> Checkout, Jim tap-to-pay, or mobile invoice is offered only for confirmed-fit customers.</p>
+            <a class="button primary" href="fit-check/index.html">Start with a fit check</a>
+          </article>
+          <article class="price-card">
+            <span class="price-tag">For loved ones</span>
+            <h3>Family Setup</h3>
+            <div class="price">$249 <small>pilot</small></div>
+            <p>Best when an adult child, spouse, or caregiver wants the setup to feel safe, dignified, and easy to support.</p>
+            <ul>
+              <li>Everything in Starter Setup</li>
+              <li>Caregiver/loved-one onboarding</li>
+              <li>Consent and support-boundary walkthrough</li>
+              <li>Simple support handoff sheet</li>
+              <li>30-minute follow-up session</li>
+            </ul>
+            <p class="payment-note"><strong>Payment only after fit check.</strong> No one is routed to checkout until the goals, device, and consent path are clear.</p>
+            <a class="button primary" href="fit-check/index.html">Set up for a loved one</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="research">
+      <div class="wrap split">
+        <div class="section-head">
+          <h2>Research loop before we overbuild.</h2>
+          <p>Every Facebook reply, fit check, paid setup, abandoned checkout, and support question becomes a redacted UX/UI signal. We improve copy, pricing, accessibility, and automation only after patterns repeat.</p>
+          <div class="hero-actions">
+            <a class="button secondary" href="https://github.com/Pdbjork/Offline-Helper/blob/main/templates/facebook-interest-tracker.md">Facebook tracker</a>
+            <a class="button secondary" href="ux-research-data-system.md">Research system</a>
+            <a class="button secondary" href="sellable-mvp-launch-kit.md">Sellable MVP kit</a>
+          </div>
+        </div>
+        <div class="steps">
+          <article class="step"><div><h3>Capture consented signals</h3><p>Use a short consent note and survey. Do not collect passwords, tokens, or private documents.</p></div></article>
+          <article class="step"><div><h3>Validate privacy</h3><p>The research script checks for missing consent and obvious secret-like text before reports are generated.</p></div></article>
+          <article class="step"><div><h3>Pick one UX change</h3><p>Weekly reports identify top friction, price reaction, accessibility needs, and the next experiment.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="mvp-kit">
+      <div class="wrap split">
+        <div class="section-head">
+          <h2>The MVP is sellable as a service today.</h2>
+          <p>The first product is a human-led setup package, not a fake self-serve checkout. A free fit check protects the customer, then a confirmed-fit buyer can pay by Stripe Checkout, Jim tap-to-pay, or Jim mobile invoice.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="sellable-mvp-launch-kit.md">Open the launch kit</a>
+            <a class="button secondary" href="profit-launch-plan.md">Profit plan</a>
+            <a class="button secondary" href="https://github.com/Pdbjork/Offline-Helper/blob/main/templates/fit-check-script.md">Fit-check script</a>
+          </div>
+        </div>
+        <div class="steps">
+          <article class="step"><div><h3>1. Fit check first</h3><p>Confirm goals, Mac readiness, consent, and local-versus-cloud understanding before asking for payment.</p></div></article>
+          <article class="step"><div><h3>2. Take confirmed-fit payment</h3><p>Create a Stripe Checkout payment URL for remote customers or use Jim tap-to-pay/mobile invoice for in-person and phone-assisted buyers.</p></div></article>
+          <article class="step"><div><h3>3. Fulfill and learn</h3><p>Send the confirmation, add the fulfillment queue row, run the service checklist, deliver the handoff, and log one redacted research signal.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="cta">
+          <h2>Want to try a careful pilot setup?</h2>
+          <p>We are looking for a small number of friendly pilot families and community helpers. The best fit is someone with a Mac who wants AI help but does not want to become technical. Join the research list if you are interested but not ready to pay yet.</p>
+          <div class="hero-actions" style="justify-content: center;">
+            <a class="button primary" href="fit-check/index.html">Reserve a setup</a>
+            <a class="button secondary" href="mailto:pdbjork@gmail.com?subject=Join%20Offline%20Helper%20research%20list&body=Hi%20Pete%2C%0A%0AI%27d%20like%20to%20join%20the%20Offline%20Helper%20research%20list.%0A%0AThe%20person%20this%20could%20help%3A%0AWhat%20feels%20confusing%20or%20risky%3A%0AMay%20you%20follow%20up%3F%20yes%2Fno%3A%0A">Join the research list</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-grid">
+      <span>© 2026 Offline Helper. Local-first AI setup, explained simply.</span>
+      <span><a href="https://github.com/Pdbjork/Offline-Helper/blob/main/README.md">Project README</a> · <a href="mailto:pdbjork@gmail.com">Contact</a></span>
+    </div>
+  </footer>
+</body>
+</html>

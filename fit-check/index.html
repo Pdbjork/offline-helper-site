@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Free Fit Check — Offline Helper</title>
+  <meta name="description" content="Request a free Offline Helper fit check before payment. Local-first AI setup for families, older adults, writers, and Mac users — explained in plain English.">
+  <meta property="og:title" content="Free Fit Check — Offline Helper">
+  <meta property="og:description" content="Start with a free fit check. Payment opens only after the setup is confirmed safe, useful, and realistic.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#13231d">
+  <style>
+    :root {
+      --ink: #13231d;
+      --muted: #5f6f68;
+      --paper: #fffdf8;
+      --soft: #f7f3ea;
+      --line: #ded6c8;
+      --accent: #2f7d5c;
+      --accent-dark: #1f5f45;
+      --warm: #f0c36c;
+      --sage: #dce9de;
+      --danger: #9a453a;
+      --shadow: 0 24px 80px rgba(19, 35, 29, .14);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: radial-gradient(circle at top left, rgba(240, 195, 108, .34), transparent 32rem), linear-gradient(180deg, #fffaf0 0%, #f7f3ea 54%, #fff 100%);
+      line-height: 1.58;
+    }
+    a { color: inherit; }
+    .skip-link { position: absolute; left: 1rem; top: -4rem; background: var(--ink); color: white; padding: .75rem 1rem; z-index: 20; }
+    .skip-link:focus { top: 1rem; }
+    header { border-bottom: 1px solid rgba(222, 214, 200, .72); background: rgba(255, 253, 248, .88); backdrop-filter: blur(16px); position: sticky; top: 0; z-index: 10; }
+    .nav, .wrap { width: min(1040px, calc(100% - 2rem)); margin: 0 auto; }
+    .nav { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .brand { display: inline-flex; align-items: center; gap: .7rem; font-weight: 800; letter-spacing: -.03em; text-decoration: none; }
+    .brand-mark { width: 38px; height: 38px; border-radius: 13px; display: grid; place-items: center; background: var(--ink); color: var(--warm); font-weight: 900; box-shadow: 0 10px 24px rgba(19, 35, 29, .18); }
+    .button { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 48px; padding: .85rem 1.08rem; border-radius: 999px; border: 1px solid transparent; font-weight: 760; text-decoration: none; }
+    .button.primary { background: var(--accent); color: white; box-shadow: 0 14px 30px rgba(47, 125, 92, .23); }
+    .button.primary:hover { background: var(--accent-dark); }
+    .button.secondary { border-color: var(--line); background: rgba(255, 255, 255, .72); color: var(--ink); }
+    main { padding: 5.2rem 0; }
+    .hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(300px, .95fr); gap: clamp(2rem, 6vw, 4.5rem); align-items: start; }
+    .eyebrow { display: inline-flex; align-items: center; gap: .5rem; color: var(--accent-dark); background: rgba(220, 233, 222, .86); border: 1px solid rgba(47, 125, 92, .18); border-radius: 999px; padding: .45rem .72rem; font-size: .88rem; font-weight: 780; }
+    h1, h2, h3 { line-height: 1.05; letter-spacing: -.045em; margin: 0; }
+    h1 { margin-top: 1rem; font-size: clamp(2.65rem, 7vw, 5.6rem); max-width: 11ch; }
+    .lede { color: #405149; font-size: clamp(1.12rem, 2vw, 1.35rem); max-width: 42rem; margin: 1.25rem 0 0; }
+    .actions { display: flex; flex-wrap: wrap; gap: .9rem; margin-top: 2rem; }
+    .card { background: rgba(255, 253, 248, .9); border: 1px solid var(--line); border-radius: 24px; padding: clamp(1.15rem, 3vw, 1.8rem); box-shadow: var(--shadow); }
+    .card h2 { font-size: clamp(1.8rem, 4vw, 2.7rem); }
+    .checklist, .questions, .packages { display: grid; gap: .9rem; padding: 0; margin: 1.25rem 0 0; list-style: none; }
+    .checklist li, .questions li, .package { background: white; border: 1px solid var(--line); border-radius: 18px; padding: 1rem; }
+    .checklist li::before { content: "✓"; color: var(--accent-dark); font-weight: 900; margin-right: .55rem; }
+    .questions strong, .package strong { color: var(--ink); }
+    .muted { color: var(--muted); }
+    .warning { margin-top: 1.25rem; padding: 1rem; border-radius: 18px; border: 1px solid rgba(154, 69, 58, .24); background: rgba(154, 69, 58, .07); color: #633028; }
+    .section { margin-top: 2rem; }
+    .chat-card { display: grid; gap: 1rem; }
+    .chat-window { display: grid; gap: .75rem; max-height: 520px; overflow: auto; padding: 1rem; border-radius: 20px; background: #fdf8ee; border: 1px solid var(--line); }
+    .bubble { max-width: 88%; padding: .85rem 1rem; border-radius: 18px; border: 1px solid var(--line); background: white; }
+    .bubble.pete { border-top-left-radius: 6px; background: #ffffff; }
+    .bubble.customer { justify-self: end; border-top-right-radius: 6px; background: var(--sage); }
+    .intake-form { display: grid; gap: .9rem; }
+    .field { display: grid; gap: .35rem; }
+    .field label { font-weight: 760; }
+    .field span { color: var(--muted); font-size: .92rem; }
+    input, select, textarea { width: 100%; border: 1px solid var(--line); border-radius: 16px; padding: .9rem 1rem; color: var(--ink); background: white; font: inherit; }
+    textarea { min-height: 92px; resize: vertical; }
+    input[type="checkbox"] { width: auto; margin-right: .5rem; }
+    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .9rem; }
+    .status { padding: 1rem; border-radius: 18px; border: 1px solid var(--line); background: white; }
+    .status.success { border-color: rgba(47, 125, 92, .28); background: rgba(220, 233, 222, .68); }
+    .status.error { border-color: rgba(154, 69, 58, .3); background: rgba(154, 69, 58, .08); color: #633028; }
+    footer { border-top: 1px solid var(--line); padding: 2rem 0; color: var(--muted); }
+    .footer-grid { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; }
+    @media (max-width: 780px) {
+      .hero, .form-grid { grid-template-columns: 1fr; }
+      .nav { align-items: flex-start; flex-direction: column; padding: 1rem 0; }
+      main { padding: 3.5rem 0; }
+      .bubble { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header>
+    <div class="nav">
+      <a class="brand" href="../index.html" aria-label="Offline Helper home"><span class="brand-mark">OH</span><span>Offline Helper</span></a>
+      <a class="button secondary" href="../index.html">Back to main page</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap hero">
+      <section>
+        <span class="eyebrow">Free fit check first · no payment yet</span>
+        <h1>See if Offline Helper is right for you.</h1>
+        <p class="lede">A short fit check protects the customer before payment. We confirm the goal, device readiness, privacy expectations, and whether a local-first AI helper can be set up safely and usefully.</p>
+        <div class="actions">
+          <a class="button primary" href="#website-chat">Chat with Pete here</a>
+          <a class="button secondary" href="mailto:pdbjork@gmail.com?subject=Offline%20Helper%20free%20fit%20check&body=Hi%20Pete%2C%0A%0AI%27d%20like%20a%20free%20Offline%20Helper%20fit%20check.%0A%0AWho%20this%20is%20for%3A%0AMac%20model%2Fyear%20if%20known%3A%0ATop%201-3%20things%20we%27d%20want%20help%20with%3A%0ABiggest%20privacy%20or%20safety%20worry%3A%0AIs%20a%20family%20member%20or%20helper%20involved%3F%0AMay%20Pete%20follow%20up%3F%20yes%2Fno%3A%0A">Email instead</a>
+          <a class="button secondary" href="#questions">Preview the questions</a>
+        </div>
+        <p class="warning"><strong>Please do not send:</strong> passwords, recovery keys, bot tokens, private documents, medical/legal/financial details, or crisis information. The fit check only needs ordinary setup context.</p>
+      </section>
+
+      <aside class="card" aria-labelledby="what-happens">
+        <h2 id="what-happens">What happens next</h2>
+        <ul class="checklist">
+          <li>Start with the website chat below so Pete receives the right data points.</li>
+          <li>We explain what can run locally and what still uses online services.</li>
+          <li>If it is a fit, payment opens by Stripe Checkout, Stripe Payment Link, or Jim mobile invoice/tap-to-pay.</li>
+          <li>If it is not a fit, Pete says so kindly before taking payment.</li>
+        </ul>
+      </aside>
+    </div>
+
+
+    <div class="wrap section" id="website-chat">
+      <section class="card chat-card" aria-labelledby="website-chat-title">
+        <span class="eyebrow">Website chat intake · structured for follow-up</span>
+        <h2 id="website-chat-title">Chat with Pete for a free fit check</h2>
+        <p class="muted">This is a guided website chat, not Telegram. It collects the minimum customer data Pete needs to decide whether Offline Helper is likely safe, useful, and realistic before any payment.</p>
+        <div class="chat-window" aria-live="polite">
+          <div class="bubble pete"><strong>Pete:</strong> Hi, I’m Pete from Offline Helper. I’ll ask for ordinary setup context only. Please do not send passwords, recovery keys, bot tokens, private documents, medical/legal/financial details, or crisis information.</div>
+          <div class="bubble pete"><strong>Pete:</strong> When you submit this, I’ll save a structured fit-check lead for personal review. Payment only opens after fit is confirmed.</div>
+        </div>
+        <form class="intake-form" id="fit-check-form">
+          <div class="form-grid">
+            <div class="field">
+              <label for="customer_name">Your name</label>
+              <input id="customer_name" name="customer_name" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="contact_method">Best follow-up method</label>
+              <select id="contact_method" name="contact_method" required>
+                <option value="">Choose one</option>
+                <option>Email</option>
+                <option>Phone</option>
+                <option>Telegram</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="contact_value">Follow-up address or handle</label>
+            <span>Use only what Pete needs to reach you. Do not enter passwords or account details.</span>
+            <input id="contact_value" name="contact_value" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label for="who_for">Who is this setup for?</label>
+            <span>Yourself, parent/loved one, spouse, caregiver situation, community group, or not sure.</span>
+            <textarea id="who_for" name="who_for" required></textarea>
+          </div>
+          <div class="field">
+            <label for="first_goal">What should the helper help with first?</label>
+            <span>Examples: memoir/writing, letters/messages, learning/explaining, planning, everyday questions.</span>
+            <textarea id="first_goal" name="first_goal" required></textarea>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label for="device">Computer/device available</label>
+              <span>Mac model/year if known; “not sure” is okay.</span>
+              <input id="device" name="device" required>
+            </div>
+            <div class="field">
+              <label for="timeline">Ideal timing</label>
+              <select id="timeline" name="timeline">
+                <option>Whenever Pete thinks it is ready</option>
+                <option>This week</option>
+                <option>Next 2 weeks</option>
+                <option>This month</option>
+                <option>Just exploring</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="helper_involved">Who else needs to be involved?</label>
+            <span>Adult child, caregiver, spouse, helper, organization contact, or nobody else.</span>
+            <textarea id="helper_involved" name="helper_involved"></textarea>
+          </div>
+          <div class="field">
+            <label for="privacy_concern">Biggest concern or blocker</label>
+            <span>Privacy, cost, setup complexity, remote support, AI quality, accessibility, trust, or something else.</span>
+            <textarea id="privacy_concern" name="privacy_concern" required></textarea>
+          </div>
+          <label class="field">
+            <span><input type="checkbox" name="consent_follow_up" value="yes" required> Pete may personally follow up about this free fit check. I understand this is not medical, legal, financial, or crisis support.</span>
+          </label>
+          <button class="button primary" type="submit">Send fit-check request to Pete</button>
+          <div id="fit-check-status" class="status" hidden></div>
+        </form>
+      </section>
+    </div>
+
+    <div class="wrap section">
+      <section class="card" id="questions">
+        <h2>Fit-check questions</h2>
+        <p class="muted">These are the only details needed to start. Keep private documents and secrets out of email/chat.</p>
+        <ol class="questions">
+          <li><strong>Who is this for?</strong> Yourself, a parent/loved one, a community member, or a group?</li>
+          <li><strong>What should the helper do first?</strong> Memoir writing, letters, learning, planning, everyday questions, or something else?</li>
+          <li><strong>What Mac/device is available?</strong> Model/year if known is helpful, but not required for the first note.</li>
+          <li><strong>What feels risky or confusing?</strong> Privacy, setup fear, cost, remote support, or AI quality?</li>
+          <li><strong>Who needs to be involved?</strong> Adult child, caregiver, spouse, support person, or organization contact?</li>
+        </ol>
+      </section>
+    </div>
+
+    <div class="wrap section">
+      <section class="card">
+        <h2>Pilot packages after fit check</h2>
+        <div class="packages">
+          <div class="package"><strong>Starter Setup — $149 pilot</strong><br><span class="muted">Best for one person, one useful first workflow, privacy walkthrough, handoff guide, and 7-day setup-fix window.</span></div>
+          <div class="package"><strong>Family Setup — $249 pilot</strong><br><span class="muted">Best when an adult child, spouse, caregiver, or helper needs orientation, consent clarity, and a family handoff sheet.</span></div>
+          <div class="package"><strong>Family Support — $29/month optional</strong><br><span class="muted">Offered only after value is proven. Includes monthly health check, update check, backup/archive verification when configured, and one short support question.</span></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap footer-grid">
+      <span>© 2026 Offline Helper. Local-first AI setup, explained simply.</span>
+      <span><a href="../privacy-safety.md">Privacy & safety</a> · <a href="mailto:pdbjork@gmail.com">Contact</a></span>
+    </div>
+  </footer>
+  <script>
+    const form = document.getElementById('fit-check-form');
+    const statusBox = document.getElementById('fit-check-status');
+    const requiredSecretWords = ['password', 'passcode', 'recovery key', 'seed phrase', 'bot token', 'api key', 'secret key', 'private key', 'credit card', 'ssn', 'social security'];
+
+    function setStatus(kind, message) {
+      statusBox.hidden = false;
+      statusBox.className = 'status ' + kind;
+      statusBox.textContent = message;
+    }
+
+    function buildMailto(data) {
+      const body = [
+        'Hi Pete,',
+        '',
+        'I would like a free Offline Helper fit check.',
+        '',
+        'Name: ' + data.customer_name,
+        'Best follow-up method: ' + data.contact_method,
+        'Follow-up address/handle: ' + data.contact_value,
+        'Who this is for: ' + data.who_for,
+        'First goal: ' + data.first_goal,
+        'Device: ' + data.device,
+        'Helper involved: ' + (data.helper_involved || 'Not specified'),
+        'Biggest concern/blocker: ' + data.privacy_concern,
+        'Timing: ' + (data.timeline || 'Not specified'),
+        'Consent to follow up: yes',
+        '',
+        'I did not include passwords, recovery keys, bot tokens, private documents, medical/legal/financial details, or crisis information.'
+      ].join('\n');
+      return 'mailto:pdbjork@gmail.com?subject=' + encodeURIComponent('Offline Helper website fit check') + '&body=' + encodeURIComponent(body);
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
+      const joined = Object.values(data).join(' ').toLowerCase();
+      if (requiredSecretWords.some(word => joined.includes(word))) {
+        setStatus('error', 'Pete caught a privacy-risk word. Please remove passwords, keys, tokens, payment-card details, or private records and describe only the setup goal.');
+        return;
+      }
+      try {
+        const response = await fetch('/api/fit-check-leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        if (!response.ok) throw new Error('API not available');
+        const result = await response.json();
+        if (!result.ok) throw new Error(result.error || 'Could not save');
+        setStatus('success', result.message + ' Lead ID: ' + result.lead_id + '. Recommended next review path: ' + result.package_recommendation + '.');
+        form.reset();
+      } catch (error) {
+        const link = buildMailto(data);
+        setStatus('error', 'The website lead database is not available from this preview. Opening your email app with a structured fit-check request instead.');
+        window.location.href = link;
+      }
+    });
+  </script>
+
+</body>
+</html>
