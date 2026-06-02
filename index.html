@@ -12,17 +12,19 @@
   <style>
     :root {
       color-scheme: light;
-      --ink: #13231d;
-      --muted: #5f6f68;
-      --soft: #f6f2e9;
-      --paper: #fffdf8;
-      --line: #ded6c8;
-      --accent: #2f7d5c;
-      --accent-dark: #1f5f45;
-      --warm: #f0c36c;
-      --sage: #dce9de;
+      --ink: #191713;
+      --muted: #554c42;
+      --soft: #f5efe2;
+      --paper: #fffaf0;
+      --line: #ded0bc;
+      --accent: #bb4e2f;
+      --accent-dark: #843521;
+      --warm: #f5b63f;
+      --sage: #dfe7dc;
+      --screen: #10221f;
+      --blue: #2d75bd;
       --danger: #9a453a;
-      --shadow: 0 24px 80px rgba(19, 35, 29, .14);
+      --shadow: 0 24px 80px rgba(42, 31, 20, .18);
       --radius-lg: 28px;
       --radius-md: 18px;
       --max: 1120px;
@@ -34,10 +36,12 @@
     body {
       margin: 0;
       background:
-        radial-gradient(circle at top left, rgba(240, 195, 108, .34), transparent 34rem),
-        linear-gradient(180deg, #fffaf0 0%, #f7f3ea 48%, #ffffff 100%);
+        radial-gradient(circle at 14% 8%, rgba(245, 182, 63, .34), transparent 30rem),
+        radial-gradient(circle at 84% 18%, rgba(45, 117, 189, .14), transparent 28rem),
+        linear-gradient(180deg, #fbf2df 0%, #f7efe2 48%, #fffaf0 100%);
       color: var(--ink);
       line-height: 1.55;
+      padding-bottom: env(safe-area-inset-bottom);
     }
 
     a { color: inherit; }
@@ -57,7 +61,7 @@
       top: 0;
       z-index: 10;
       backdrop-filter: blur(18px);
-      background: rgba(255, 253, 248, .82);
+      background: rgba(255, 250, 240, .88);
       border-bottom: 1px solid rgba(222, 214, 200, .72);
     }
     .nav {
@@ -115,7 +119,7 @@
       transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
     }
     .button:hover { transform: translateY(-1px); }
-    .button.primary { background: var(--accent); color: white; box-shadow: 0 14px 30px rgba(47, 125, 92, .23); }
+    .button.primary { background: var(--accent); color: white; box-shadow: 0 14px 30px rgba(187, 78, 47, .23); }
     .button.primary:hover { background: var(--accent-dark); }
     .button.secondary { border-color: var(--line); background: rgba(255, 255, 255, .72); color: var(--ink); }
 
@@ -137,8 +141,8 @@
       align-items: center;
       gap: .5rem;
       color: var(--accent-dark);
-      background: rgba(220, 233, 222, .8);
-      border: 1px solid rgba(47, 125, 92, .18);
+      background: rgba(245, 182, 63, .18);
+      border: 1px solid rgba(187, 78, 47, .22);
       border-radius: 999px;
       padding: .45rem .72rem;
       font-size: .87rem;
@@ -162,7 +166,7 @@
       padding: 1rem 1.1rem;
       border-left: 4px solid var(--warm);
       border-radius: 0 18px 18px 0;
-      background: rgba(255, 253, 248, .72);
+      background: rgba(255, 250, 240, .78);
       color: #405149;
       font-weight: 620;
       box-shadow: 0 12px 34px rgba(19, 35, 29, .07);
@@ -188,11 +192,12 @@
 
     .hero-card {
       position: relative;
-      background: var(--paper);
-      border: 1px solid rgba(222, 214, 200, .82);
-      border-radius: var(--radius-lg);
-      padding: clamp(1.2rem, 3vw, 2rem);
+      background: linear-gradient(145deg, #1c1a17 0%, #090908 100%);
+      border: 1px solid rgba(25, 23, 19, .34);
+      border-radius: 34px;
+      padding: clamp(1rem, 2.5vw, 1.45rem);
       box-shadow: var(--shadow);
+      color: white;
     }
     .hero-card::before {
       content: "";
@@ -201,43 +206,117 @@
       width: 150px;
       height: 150px;
       border-radius: 50%;
-      background: rgba(240, 195, 108, .32);
+      background: rgba(245, 182, 63, .32);
       z-index: -1;
     }
-    .mini-window {
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      background: #fff;
+    .demo-kiosk {
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 26px;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.08) 0 1px, transparent 1px 100%),
+        linear-gradient(180deg, #191714 0%, #0b0b0a 100%);
       overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 24px 70px rgba(0,0,0,.24);
     }
-    .window-bar {
+    .kiosk-sign {
       display: flex;
       align-items: center;
-      gap: .42rem;
-      padding: .85rem 1rem;
-      border-bottom: 1px solid var(--line);
-      background: #fbf7ed;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.05rem 1.1rem .85rem;
+      color: var(--warm);
+      font-weight: 900;
+      letter-spacing: -.035em;
+      text-transform: uppercase;
+      font-size: clamp(1.35rem, 3vw, 2.25rem);
     }
-    .dot { width: 10px; height: 10px; border-radius: 999px; background: #d8c6a0; }
-    .assistant-feed { padding: 1.2rem; display: grid; gap: .9rem; }
-    .bubble {
-      padding: .9rem 1rem;
-      border-radius: 18px;
-      font-size: .98rem;
+    .kiosk-sign small { color: #ffd978; font-size: .42em; letter-spacing: .08em; white-space: nowrap; }
+    .demo-screen-row { display: grid; grid-template-columns: .55fr 1fr .55fr; gap: .7rem; padding: 0 1.05rem 1rem; }
+    .software-stack { display: grid; gap: .34rem; }
+    .software-stack span {
+      min-height: 26px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--swatch), rgba(255,255,255,.08));
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.15);
     }
-    .bubble.user { background: var(--sage); margin-left: 2.5rem; }
-    .bubble.ai { background: #f7f3ea; margin-right: 1.6rem; }
+    .crt {
+      min-height: 146px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      border: 10px solid #3c3b37;
+      background:
+        linear-gradient(rgba(255,255,255,.04) 50%, transparent 50%) 0 0 / 100% 8px,
+        radial-gradient(circle at center, rgba(66, 179, 255, .28), transparent 48%),
+        var(--screen);
+      box-shadow: inset 0 0 26px rgba(84, 206, 255, .26), 0 12px 28px rgba(0,0,0,.34);
+      color: #bdf6ff;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      text-align: center;
+      padding: 1rem;
+    }
+    .crt strong { display: block; color: #f8c64f; font-size: 1.05rem; margin-bottom: .4rem; }
+    .kiosk-label {
+      color: #f7b940;
+      text-align: center;
+      font-weight: 900;
+      letter-spacing: -.02em;
+      text-transform: uppercase;
+      border-top: 1px solid rgba(255,255,255,.1);
+      border-bottom: 1px solid rgba(255,255,255,.1);
+      padding: .7rem 1rem;
+      background: rgba(255,255,255,.04);
+    }
+    .use-case-shelf { display: grid; grid-template-columns: repeat(4, 1fr); gap: .55rem; padding: .95rem 1rem; }
+    .use-case {
+      min-height: 76px;
+      display: flex;
+      align-items: end;
+      padding: .55rem;
+      border-radius: 10px;
+      color: white;
+      font-size: .78rem;
+      font-weight: 800;
+      line-height: 1.1;
+      background: linear-gradient(145deg, var(--case), #211b17 85%);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+    .kiosk-base { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; padding: 1rem; background: rgba(255,255,255,.06); }
+    .kiosk-panel {
+      min-height: 88px;
+      border-radius: 12px;
+      background: #f0dfc8;
+      color: #2b261f;
+      padding: .8rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-weight: 850;
+      box-shadow: inset 0 -18px 0 rgba(187, 78, 47, .2);
+    }
+    .kiosk-panel em { color: var(--accent); font-style: normal; font-size: 1.45rem; letter-spacing: -.06em; }
     .status-card {
       margin-top: 1rem;
       display: grid;
-      gap: .65rem;
-      padding: 1rem;
+      gap: .75rem;
+      padding: 1.1rem 1.2rem;
       border-radius: 20px;
-      background: #13231d;
+      background: var(--screen);
       color: white;
     }
     .status-card strong { color: var(--warm); }
-    .status-line { display: flex; justify-content: space-between; gap: 1rem; font-size: .94rem; color: rgba(255,255,255,.82); }
+    .status-line { display: flex; justify-content: space-between; align-items: center; gap: 1rem; font-size: .94rem; color: rgba(255,255,255,.82); }
+    .status-line span:last-child {
+      flex: 0 0 auto;
+      min-width: 5.8rem;
+      text-align: center;
+      padding: .22rem .55rem;
+      border-radius: 999px;
+      background: rgba(245, 182, 63, .16);
+      color: #ffd978;
+      font-weight: 800;
+    }
 
     .section-head { max-width: 720px; margin-bottom: 2.2rem; }
     .section-head h2 { font-size: clamp(2.1rem, 4.7vw, 4rem); }
@@ -297,7 +376,7 @@
     .note {
       padding: 1.25rem;
       border-radius: var(--radius-md);
-      background: #13231d;
+      background: var(--screen);
       color: white;
     }
     .note p { color: rgba(255,255,255,.78); }
@@ -335,7 +414,7 @@
     .payment-note {
       margin-top: 1rem;
       padding: 1rem;
-      border: 1px solid rgba(47, 125, 92, .22);
+      border: 1px solid rgba(187, 78, 47, .22);
       border-radius: var(--radius-md);
       background: rgba(220, 233, 222, .48);
       color: #405149;
@@ -353,6 +432,17 @@
     .cta h2 { font-size: clamp(2.2rem, 5vw, 4.4rem); }
     .cta p { max-width: 640px; margin: 1rem auto 0; color: rgba(255,255,255,.76); font-size: 1.12rem; }
     .cta .button.primary { background: var(--warm); color: var(--ink); box-shadow: none; margin-top: 1.5rem; }
+    .community-card {
+      margin-top: 1.5rem;
+      padding: clamp(1.25rem, 3vw, 2rem);
+      border: 1px solid rgba(45, 117, 189, .22);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(255,255,255,.72), rgba(223,231,220,.72));
+      box-shadow: 0 18px 48px rgba(42, 31, 20, .1);
+    }
+    .community-card h3 { margin: 0 0 .55rem; font-size: clamp(1.35rem, 2.4vw, 1.9rem); }
+    .community-card p { color: var(--muted); margin: .65rem 0 0; max-width: 62rem; }
+    .community-card .hero-actions { margin-top: 1.1rem; }
 
     footer {
       padding: 2.5rem 0;
@@ -367,6 +457,8 @@
       .hero { padding-top: 4.4rem; }
       .hero-grid, .split, .pricing { grid-template-columns: 1fr; }
       .cards { grid-template-columns: 1fr; }
+      .demo-screen-row { grid-template-columns: .35fr 1fr .35fr; }
+      .use-case-shelf { grid-template-columns: repeat(2, 1fr); }
       h1 { max-width: 12ch; }
     }
   </style>
@@ -411,21 +503,31 @@
           </div>
         </div>
 
-        <aside class="hero-card" aria-label="Example assistant conversation">
-          <div class="mini-window">
-            <div class="window-bar" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-            <div class="assistant-feed">
-              <div class="bubble user">Can you help Mom write a kind reply to this email?</div>
-              <div class="bubble ai">Yes. Paste only the parts you are comfortable sharing, and I’ll help make it warm, clear, and safe.</div>
-              <div class="bubble user">Is this fully offline?</div>
-              <div class="bubble ai">The AI brain can run on your computer. If we connect phone chat, those messages may pass through that chat company. I’ll explain the boundary before setup.</div>
+        <aside class="hero-card" aria-label="Retro computer demonstration center inspired service preview">
+          <div class="demo-kiosk">
+            <div class="kiosk-sign"><span>Offline Helper</span><small>Home AI demo center</small></div>
+            <div class="demo-screen-row" aria-hidden="true">
+              <div class="software-stack"><span style="--swatch:#bb4e2f"></span><span style="--swatch:#2d75bd"></span><span style="--swatch:#f5b63f"></span><span style="--swatch:#5f8a4d"></span></div>
+              <div class="crt"><div><strong>LOCAL AI READY</strong><span>memoir · letters · learning · planning</span></div></div>
+              <div class="software-stack"><span style="--swatch:#f5b63f"></span><span style="--swatch:#8d4ea6"></span><span style="--swatch:#2d75bd"></span><span style="--swatch:#bb4e2f"></span></div>
+            </div>
+            <div class="kiosk-label">Computer demonstration center for real family tasks</div>
+            <div class="use-case-shelf">
+              <div class="use-case" style="--case:#bb4e2f">Memoir writing</div>
+              <div class="use-case" style="--case:#2d75bd">Kind replies</div>
+              <div class="use-case" style="--case:#5f8a4d">Plain-English help</div>
+              <div class="use-case" style="--case:#8d4ea6">Family support</div>
+            </div>
+            <div class="kiosk-base">
+              <div class="kiosk-panel"><span>The AI brain can run on your computer.</span><em>local-first</em></div>
+              <div class="kiosk-panel"><span>We explain every cloud boundary before setup.</span><em>patient</em></div>
             </div>
           </div>
-          <div class="status-card" aria-label="Setup status example">
-            <strong>Setup checklist</strong>
-            <div class="status-line"><span>Local AI runtime</span><span>Ready</span></div>
-            <div class="status-line"><span>Assistant profile</span><span>Ready</span></div>
-            <div class="status-line"><span>Privacy handoff</span><span>Included</span></div>
+          <div class="status-card" aria-label="Fit-check promise">
+            <strong>Fit-check promise</strong>
+            <div class="status-line"><span>No payment pressure</span><span>First</span></div>
+            <div class="status-line"><span>Privacy boundaries</span><span>Explained</span></div>
+            <div class="status-line"><span>Family support</span><span>Optional</span></div>
           </div>
         </aside>
       </div>
@@ -551,9 +653,9 @@
           <h2>Research loop before we overbuild.</h2>
           <p>Every Facebook reply, fit check, paid setup, abandoned checkout, and support question becomes a redacted UX/UI signal. We improve copy, pricing, accessibility, and automation only after patterns repeat.</p>
           <div class="hero-actions">
-            <a class="button secondary" href="https://github.com/Pdbjork/Offline-Helper/blob/main/templates/facebook-interest-tracker.md">Facebook tracker</a>
-            <a class="button secondary" href="ux-research-data-system.md">Research system</a>
-            <a class="button secondary" href="sellable-mvp-launch-kit.md">Sellable MVP kit</a>
+            <a class="button primary" href="fit-check/index.html">Share a fit-check link</a>
+            <a class="button secondary" href="https://www.skool.com/offline-helper/about">Join the community</a>
+            <a class="button secondary" href="mailto:pdbjork@gmail.com?subject=Offline%20Helper%20research%20list&body=Hi%20Pete%2C%0A%0AI%27d%20like%20to%20join%20the%20Offline%20Helper%20research%20list.%0A%0AMay%20you%20follow%20up%3F%20yes%2Fno%3A%0A">Join the research list</a>
           </div>
         </div>
         <div class="steps">
@@ -564,15 +666,31 @@
       </div>
     </section>
 
+    <section id="community">
+      <div class="wrap">
+        <div class="community-card">
+          <span class="eyebrow">Free community</span>
+          <h3>Join the Offline Helper community before you book.</h3>
+          <p>Want examples, safe setup notes, and plain-English local-first AI guidance first? The free Skool community is a soft place to learn, ask general questions, and see whether Offline Helper feels right before a fit check.</p>
+          <p><strong>Privacy note:</strong> community posts should stay general. Please do not share passwords, private documents, recovery keys, medical/legal/financial details, or crisis information there.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="https://www.skool.com/offline-helper/about">Join the free Skool group</a>
+            <a class="button secondary" href="fit-check/index.html">Book a private fit check</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="mvp-kit">
       <div class="wrap split">
         <div class="section-head">
           <h2>The MVP is sellable as a service today.</h2>
           <p>The first product is a human-led setup package, not a fake self-serve checkout. A free fit check protects the customer, then a confirmed-fit buyer can pay by Stripe Checkout, Jim tap-to-pay, or Jim mobile invoice.</p>
+          <p class="muted">The Sellable MVP kit is now kept as an internal operator checklist; public visitors get safer fit-check and community paths instead of raw Markdown resources.</p>
           <div class="hero-actions">
-            <a class="button primary" href="sellable-mvp-launch-kit.md">Open the launch kit</a>
-            <a class="button secondary" href="profit-launch-plan.md">Profit plan</a>
-            <a class="button secondary" href="https://github.com/Pdbjork/Offline-Helper/blob/main/templates/fit-check-script.md">Fit-check script</a>
+            <a class="button primary" href="fit-check/index.html">Start the fit check</a>
+            <a class="button secondary" href="https://www.skool.com/offline-helper/about">Join the free community</a>
+            <a class="button secondary" href="mailto:pdbjork@gmail.com?subject=Offline%20Helper%20pilot%20question">Ask Pete a question</a>
           </div>
         </div>
         <div class="steps">
@@ -590,6 +708,7 @@
           <p>We are looking for a small number of friendly pilot families and community helpers. The best fit is someone with a Mac who wants AI help but does not want to become technical. Join the research list if you are interested but not ready to pay yet.</p>
           <div class="hero-actions" style="justify-content: center;">
             <a class="button primary" href="fit-check/index.html">Reserve a setup</a>
+            <a class="button secondary" href="https://www.skool.com/offline-helper/about">Join the free community</a>
             <a class="button secondary" href="mailto:pdbjork@gmail.com?subject=Join%20Offline%20Helper%20research%20list&body=Hi%20Pete%2C%0A%0AI%27d%20like%20to%20join%20the%20Offline%20Helper%20research%20list.%0A%0AThe%20person%20this%20could%20help%3A%0AWhat%20feels%20confusing%20or%20risky%3A%0AMay%20you%20follow%20up%3F%20yes%2Fno%3A%0A">Join the research list</a>
           </div>
         </div>
@@ -600,8 +719,9 @@
   <footer>
     <div class="wrap footer-grid">
       <span>© 2026 Offline Helper. Local-first AI setup, explained simply.</span>
-      <span><a href="https://github.com/Pdbjork/Offline-Helper/blob/main/README.md">Project README</a> · <a href="mailto:pdbjork@gmail.com">Contact</a></span>
+      <span><a href="fit-check/index.html">Free fit check</a> · <a href="https://www.skool.com/offline-helper/about">Community</a> · <a href="mailto:pdbjork@gmail.com">Contact</a></span>
     </div>
   </footer>
 </body>
 </html>
+

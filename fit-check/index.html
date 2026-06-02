@@ -43,7 +43,7 @@
     .button.primary { background: var(--accent); color: white; box-shadow: 0 14px 30px rgba(47, 125, 92, .23); }
     .button.primary:hover { background: var(--accent-dark); }
     .button.secondary { border-color: var(--line); background: rgba(255, 255, 255, .72); color: var(--ink); }
-    main { padding: 5.2rem 0; }
+    main { padding: 5.2rem 0 7rem; }
     .hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(300px, .95fr); gap: clamp(2rem, 6vw, 4.5rem); align-items: start; }
     .eyebrow { display: inline-flex; align-items: center; gap: .5rem; color: var(--accent-dark); background: rgba(220, 233, 222, .86); border: 1px solid rgba(47, 125, 92, .18); border-radius: 999px; padding: .45rem .72rem; font-size: .88rem; font-weight: 780; }
     h1, h2, h3 { line-height: 1.05; letter-spacing: -.045em; margin: 0; }
@@ -127,7 +127,7 @@
         <p class="muted">This is a guided website chat, not Telegram. It collects the minimum customer data Pete needs to decide whether Offline Helper is likely safe, useful, and realistic before any payment.</p>
         <div class="chat-window" aria-live="polite">
           <div class="bubble pete"><strong>Pete:</strong> Hi, I’m Pete from Offline Helper. I’ll ask for ordinary setup context only. Please do not send passwords, recovery keys, bot tokens, private documents, medical/legal/financial details, or crisis information.</div>
-          <div class="bubble pete"><strong>Pete:</strong> When you submit this, I’ll save a structured fit-check lead for personal review. Payment only opens after fit is confirmed.</div>
+          <div class="bubble pete"><strong>Pete:</strong> When you submit this, I’ll try the private lead database first. If it is not available from this static preview, your email app opens with the same structured fit-check request. Payment only opens after fit is confirmed.</div>
         </div>
         <form class="intake-form" id="fit-check-form">
           <div class="form-grid">
@@ -226,7 +226,7 @@
   <footer>
     <div class="wrap footer-grid">
       <span>© 2026 Offline Helper. Local-first AI setup, explained simply.</span>
-      <span><a href="../privacy-safety.md">Privacy & safety</a> · <a href="mailto:pdbjork@gmail.com">Contact</a></span>
+      <span><a href="../index.html#community">Community</a> · <a href="mailto:pdbjork@gmail.com">Contact</a></span>
     </div>
   </footer>
   <script>
@@ -283,7 +283,7 @@
         form.reset();
       } catch (error) {
         const link = buildMailto(data);
-        setStatus('error', 'The website lead database is not available from this preview. Opening your email app with a structured fit-check request instead.');
+        setStatus('error', 'The private website lead database is not available from this static preview, so your email app is opening with a structured fit-check request instead. Please review it before sending and keep secrets/private records out.');
         window.location.href = link;
       }
     });
