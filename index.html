@@ -8,6 +8,10 @@
   <meta property="og:title" content="Offline Helper — Private AI setup for families">
   <meta property="og:description" content="A careful done-for-you setup service for families who want AI help without becoming technical.">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="https://offlinehelpers.com/assets/brand/offline-helpers-logo.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://offlinehelpers.com/assets/brand/offline-helpers-logo.jpg">
+  <link rel="icon" type="image/png" href="assets/brand/offline-helpers-mark.png">
   <meta name="theme-color" content="#13231d">
   <style>
     :root {
@@ -87,11 +91,12 @@
       border-radius: 13px;
       display: grid;
       place-items: center;
-      background: var(--ink);
-      color: var(--warm);
-      font-weight: 900;
+      background: #f8fafc;
+      border: 1px solid rgba(16, 25, 44, .12);
       box-shadow: 0 10px 24px rgba(19, 35, 29, .18);
+      overflow: hidden;
     }
+    .brand-mark img { width: 100%; height: 100%; object-fit: cover; display: block; }
     nav ul {
       display: flex;
       gap: 1.1rem;
@@ -199,6 +204,15 @@
       box-shadow: var(--shadow);
       color: white;
     }
+    .brand-lockup {
+      margin: 0 0 1rem;
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.16);
+      background: #f8fafc;
+      box-shadow: 0 18px 42px rgba(0,0,0,.18);
+    }
+    .brand-lockup img { display: block; width: 100%; height: auto; }
     .hero-card::before {
       content: "";
       position: absolute;
@@ -468,7 +482,7 @@
   <header>
     <div class="nav" aria-label="Main navigation">
       <a class="brand" href="#top" aria-label="Offline Helper home">
-        <span class="brand-mark">OH</span>
+        <span class="brand-mark"><img src="assets/brand/offline-helpers-mark.png" alt="" width="38" height="38"></span>
         <span>Offline Helper</span>
       </a>
       <nav aria-label="Page sections">
@@ -504,6 +518,9 @@
         </div>
 
         <aside class="hero-card" aria-label="Retro computer demonstration center inspired service preview">
+          <figure class="brand-lockup">
+            <img src="assets/brand/offline-helpers-logo.jpg" alt="Offline Helpers logo — friendly local AI setup and support" width="1280" height="800">
+          </figure>
           <div class="demo-kiosk">
             <div class="kiosk-sign"><span>Offline Helper</span><small>Home AI demo center</small></div>
             <div class="demo-screen-row" aria-hidden="true">

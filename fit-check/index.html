@@ -8,6 +8,10 @@
   <meta property="og:title" content="Free Fit Check — Offline Helper">
   <meta property="og:description" content="Start with a free fit check. Payment opens only after the setup is confirmed safe, useful, and realistic.">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="https://offlinehelpers.com/assets/brand/offline-helpers-logo.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://offlinehelpers.com/assets/brand/offline-helpers-logo.jpg">
+  <link rel="icon" type="image/png" href="../assets/brand/offline-helpers-mark.png">
   <meta name="theme-color" content="#13231d">
   <style>
     :root {
@@ -38,7 +42,8 @@
     .nav, .wrap { width: min(1040px, calc(100% - 2rem)); margin: 0 auto; }
     .nav { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
     .brand { display: inline-flex; align-items: center; gap: .7rem; font-weight: 800; letter-spacing: -.03em; text-decoration: none; }
-    .brand-mark { width: 38px; height: 38px; border-radius: 13px; display: grid; place-items: center; background: var(--ink); color: var(--warm); font-weight: 900; box-shadow: 0 10px 24px rgba(19, 35, 29, .18); }
+    .brand-mark { width: 38px; height: 38px; border-radius: 13px; display: grid; place-items: center; background: #f8fafc; border: 1px solid rgba(16, 25, 44, .12); box-shadow: 0 10px 24px rgba(19, 35, 29, .18); overflow: hidden; }
+    .brand-mark img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .button { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 48px; padding: .85rem 1.08rem; border-radius: 999px; border: 1px solid transparent; font-weight: 760; text-decoration: none; }
     .button.primary { background: var(--accent); color: white; box-shadow: 0 14px 30px rgba(47, 125, 92, .23); }
     .button.primary:hover { background: var(--accent-dark); }
@@ -89,7 +94,7 @@
   <a class="skip-link" href="#main">Skip to main content</a>
   <header>
     <div class="nav">
-      <a class="brand" href="../index.html" aria-label="Offline Helper home"><span class="brand-mark">OH</span><span>Offline Helper</span></a>
+      <a class="brand" href="../index.html" aria-label="Offline Helper home"><span class="brand-mark"><img src="../assets/brand/offline-helpers-mark.png" alt="" width="38" height="38"></span><span>Offline Helper</span></a>
       <a class="button secondary" href="../index.html">Back to main page</a>
     </div>
   </header>
