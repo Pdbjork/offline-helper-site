@@ -1,0 +1,20 @@
+name = "offline-helper-payments"
+main = "src/index.js"
+compatibility_date = "2024-09-23"
+
+# Create a KV namespace once with:
+#   npx wrangler kv namespace create OFFLINE_HELPER_QUEUE
+# then paste the id below.
+[[kv_namespaces]]
+binding = "QUEUE"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+
+[vars]
+# STRIPE_LIVE_APPROVED = "0" while STRIPE_SECRET_KEY is a test key.
+# Flip to "1" only after you have rotated to a live key, connected a
+# bank account in the Stripe Dashboard, and reviewed the catalog.
+STRIPE_LIVE_APPROVED = "0"
+
+# Secrets (set with `npx wrangler secret put`):
+#   STRIPE_SECRET_KEY       restricted test or live key
+#   STRIPE_WEBHOOK_SECRET   signing secret from the Stripe webhook endpoint

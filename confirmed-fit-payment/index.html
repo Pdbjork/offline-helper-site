@@ -106,12 +106,30 @@
 
     <div class="wrap section">
       <section class="card">
-        <h2>Packages after fit check</h2>
-        <div class="packages">
-          <div class="package"><strong>Starter Setup — $149 pilot</strong><br><span class="muted">One person, one useful first workflow, privacy walkthrough, handoff guide, and 7-day setup-fix window.</span></div>
-          <div class="package"><strong>Family Setup — $249 pilot</strong><br><span class="muted">Loved-one/caregiver orientation, family handoff sheet, consent clarity, and a 30-minute follow-up.</span></div>
-          <div class="package"><strong>Family Support — $29/month optional</strong><br><span class="muted">Offered only after value is proven; not required for initial setup.</span></div>
+        <h2>Pay after fit check (Stripe Checkout)</h2>
+        <p class="muted">These buttons create a Stripe-hosted Checkout Session for the package you selected. Payment is taken only after the fit check has been confirmed.</p>
+        <div class="routes">
+          <form class="route" method="POST" action="https://offline-helper-payments.CHANGE-ME.workers.dev/api/checkout">
+            <input type="hidden" name="package" value="starter_setup">
+            <strong>Starter Setup — $149 pilot</strong>
+            <p class="muted">One person, one useful first workflow, privacy walkthrough, handoff guide, and 7-day setup-fix window.</p>
+            <button class="button primary" type="submit">Pay $149 — Starter Setup</button>
+          </form>
+          <form class="route" method="POST" action="https://offline-helper-payments.CHANGE-ME.workers.dev/api/checkout">
+            <input type="hidden" name="package" value="family_setup">
+            <strong>Family Setup — $249 pilot</strong>
+            <p class="muted">Loved-one/caregiver orientation, family handoff sheet, consent clarity, and a 30-minute follow-up.</p>
+            <button class="button primary" type="submit">Pay $249 — Family Setup</button>
+          </form>
+          <form class="route" method="POST" action="https://offline-helper-payments.CHANGE-ME.workers.dev/api/checkout">
+            <input type="hidden" name="package" value="family_support">
+            <strong>Family Support — $29/month</strong>
+            <p class="muted">Monthly health check, update check, archive verification, and one short support question. Cancel anytime in the Customer Portal.</p>
+            <button class="button primary" type="submit">Subscribe $29/month</button>
+          </form>
         </div>
+        <p class="warning"><strong>Safety rule:</strong> do not paste passwords, recovery keys, bot tokens, or private documents into Stripe Checkout or any other form on this site. We never ask for them.</p>
+        <p class="muted">Worker URL placeholder: <code>offline-helper-payments.CHANGE-ME.workers.dev</code> — replaced after the Worker is deployed.</p>
       </section>
     </div>
   </main>
