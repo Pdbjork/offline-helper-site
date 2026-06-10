@@ -1,10 +1,22 @@
 // Offline Helper payments Worker
 // Creates Stripe Checkout Sessions, handles webhooks, and stores a
 // redacted fulfillment queue in Cloudflare KV.
-//
+// Also serves the AI fit-check chat (gpt-4o-mini) that qualifies
+// buyers before they reach the checkout.
+
+import {
+  SYSTEM_PROMPT as FIT_CHECK_SYSTEM_PROMPT,
+  MAX_TURNS as FIT_CHECK_MAX_TURNS,
+  scoreDevice as scoreFitCheck,
+  callOpenAI as callOpenAIChat,
+  isReadyToScore as fitcheckIsReady,
+  stripReadyToScore as fitcheckStripReady,
+  initialAssistantMessage as fitcheckGreeting,
+} from "./fit-check.js";
 // Secrets (set with `wrangler secret put`):
 //   STRIPE_SECRET_KEY       restricted Stripe key (Checkout Sessions: write + read)
 //   STRIPE_WEBHOOK_SECRET   signing secret from the Stripe webhook endpoint
+//   OPENAI_API_KEY          OpenAI API key for the fit-check chat (gpt-4o-mini)
 //
 // KV namespace (create with `wrangler kv namespace create OFFLINE_HELPER_QUEUE`):
 //   bound as QUEUE in wrangler.toml
@@ -235,6 +247,117 @@ async function handleQueue(env) {
   return jsonResponse({ items });
 }
 
+// --- AI fit-check chat --------------------------------------------------
+//
+// POST /api/fit-check/chat    body: { messages: [{role, content}, ...] }
+//                              returns: { reply, ready, turn_count }
+//
+// POST /api/fit-check/complete body: { fit_check_id, transcript, answers }
+//                              returns: { ok, score, eligible, tier, reason, checkout_url }
+//
+// GET  /api/fit-check/summary?id=fc_...
+//                              returns: { fit_check_id, score, eligible, tier, reason, answers, created }
+
+async function handleFitCheckChat(request, env) {
+  if (!env.OPENAI_API_KEY) {
+    return jsonResponse({ error: "OPENAI_API_KEY not configured" }, 500);
+  }
+  let body;
+  try { body = await request.json(); }
+  catch { return jsonResponse({ error: "invalid JSON body" }, 400); }
+
+  const incoming = Array.isArray(body.messages) ? body.messages : [];
+  // Hard cap: server-side enforcement, not just UI. Refuse if too long.
+  if (incoming.length > FIT_CHECK_MAX_TURNS * 2) {
+    return jsonResponse({
+      error: `Conversation is at the ${FIT_CHECK_MAX_TURNS}-turn limit. Please book the free fit check at offlinehelpers.com/fit-check/ to continue.`,
+      at_limit: true,
+    }, 400);
+  }
+
+  // Build the messages array with our system prompt at the head.
+  const messages = [
+    { role: "system", content: FIT_CHECK_SYSTEM_PROMPT },
+    ...incoming,
+  ];
+
+  let data;
+  try {
+    data = await callOpenAIChat(messages, env.OPENAI_API_KEY);
+  } catch (err) {
+    return jsonResponse({ error: `OpenAI error: ${err.message}` }, 502);
+  }
+
+  const reply = data?.choices?.[0]?.message?.content || "";
+  const ready = fitcheckIsReady(reply);
+  const cleanReply = ready ? fitcheckStripReady(reply) : reply;
+
+  return jsonResponse({
+    reply: cleanReply,
+    ready,
+    turn_count: incoming.filter(m => m.role === "user").length + 1,
+  });
+}
+
+async function handleFitCheckComplete(request, env) {
+  if (!env.QUEUE) return jsonResponse({ error: "KV not bound" }, 500);
+  let body;
+  try { body = await request.json(); }
+  catch { return jsonResponse({ error: "invalid JSON body" }, 400); }
+
+  const fit_check_id = body.fit_check_id || `fc_${crypto.randomUUID().slice(0, 8)}`;
+  const answers = body.answers || {};
+  const transcript = Array.isArray(body.transcript) ? body.transcript : [];
+
+  const result = scoreFitCheck(answers);
+
+  const record = {
+    fit_check_id,
+    type: "fit_check",
+    created_at: new Date().toISOString(),
+    answers,
+    score: result.score,
+    eligible: result.eligible,
+    tier: result.tier || null,
+    reason: result.reason,
+    transcript_length: transcript.length,
+  };
+  await env.QUEUE.put(`fitcheck:${fit_check_id}`, JSON.stringify(record));
+
+  // Build a checkout URL with metadata that the Stripe webhook will
+  // round-trip into the fulfillment record.
+  const checkoutUrl = result.eligible && result.tier
+    ? `https://offlinehelpers.com/confirmed-fit-payment/?tier=${encodeURIComponent(result.tier)}&fit_check_id=${encodeURIComponent(fit_check_id)}`
+    : null;
+
+  return jsonResponse({
+    ok: true,
+    fit_check_id,
+    score: result.score,
+    eligible: result.eligible,
+    tier: result.tier || null,
+    reason: result.reason,
+    checkout_url: checkoutUrl,
+  });
+}
+
+async function handleFitCheckSummary(request, env) {
+  if (!env.QUEUE) return jsonResponse({ error: "KV not bound" }, 500);
+  const url = new URL(request.url);
+  const id = url.searchParams.get("id");
+  if (!id) return jsonResponse({ error: "missing id" }, 400);
+  if (!/^fc_[a-zA-Z0-9_-]{1,32}$/.test(id)) return jsonResponse({ error: "invalid id format" }, 400);
+
+  const value = await env.QUEUE.get(`fitcheck:${id}`);
+  if (!value) return jsonResponse({ error: "not found" }, 404);
+  try { return jsonResponse(JSON.parse(value)); }
+  catch { return jsonResponse({ error: "corrupt record" }, 500); }
+}
+
+export function fitCheckGreetingPublic() {
+  return fitcheckGreeting();
+}
+
 export default {
   async fetch(request, env) {
     if (request.method === "OPTIONS") {
@@ -250,6 +373,18 @@ export default {
       }
       if (url.pathname === "/api/queue" && request.method === "GET") {
         return await handleQueue(env);
+      }
+      if (url.pathname === "/api/fit-check/chat" && request.method === "POST") {
+        return await handleFitCheckChat(request, env);
+      }
+      if (url.pathname === "/api/fit-check/complete" && request.method === "POST") {
+        return await handleFitCheckComplete(request, env);
+      }
+      if (url.pathname === "/api/fit-check/summary" && request.method === "GET") {
+        return await handleFitCheckSummary(request, env);
+      }
+      if (url.pathname === "/api/fit-check/greeting" && request.method === "GET") {
+        return jsonResponse({ greeting: fitCheckGreetingPublic() });
       }
       if (url.pathname === "/api/health") {
         return jsonResponse({

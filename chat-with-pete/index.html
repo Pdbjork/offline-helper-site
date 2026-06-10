@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chat with Pete — Offline Helper</title>
+  <meta name="description" content="A 2-minute fit check: find out if your Mac or PC can run a private local AI, and which package fits. Real conversation, real recommendation, no sales pressure.">
+  <meta property="og:title" content="Chat with Pete — Offline Helper">
+  <meta property="og:description" content="A 2-minute fit check: find out if your Mac or PC can run a private local AI.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" href="../assets/brand/offline-helpers-mark.png">
+  <meta name="theme-color" content="#13231d">
+  <link rel="canonical" href="https://offlinehelpers.com/chat-with-pete/">
+
+  <!--
+    AI fit-check chat. Pre-frame: this is "Pete's fit-check assistant"
+    - transparent it's AI, framed as a tool Pete uses. After the chat
+    the buyer gets a real recommendation and a checkout link with
+    fit_check_id metadata.
+  -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Chat with Pete - Offline Helper fit check",
+    "url": "https://offlinehelpers.com/chat-with-pete/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Any (web)",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "provider": { "@id": "https://offlinehelpers.com/#organization" }
+  }
+  </script>
+
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #191713;
+      --muted: #554c42;
+      --paper: #fffaf0;
+      --line: #ded0bc;
+      --accent: #bb4e2f;
+      --warm: #f5b63f;
+      --max: 760px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 14% 8%, rgba(245, 182, 63, .28), transparent 30rem),
+        linear-gradient(180deg, #fbf2df 0%, #fffaf0 100%);
+      color: var(--ink);
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+    a { color: var(--accent); }
+    .skip-link { position: absolute; left: 1rem; top: -4rem; background: var(--ink); color: white; padding: .75rem 1rem; z-index: 20; }
+    .skip-link:focus { top: 1rem; }
+    header { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(18px); background: rgba(255, 250, 240, .88); border-bottom: 1px solid rgba(222, 214, 200, .72); }
+    .nav { width: min(var(--max), calc(100% - 2rem)); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 72px; }
+    .brand { font-weight: 700; font-size: 1.05rem; letter-spacing: -.01em; text-decoration: none; color: var(--ink); }
+    .brand-mark { display: inline-block; width: 28px; height: 28px; margin-right: .55rem; vertical-align: -.55rem; border-radius: 8px; }
+    nav ul { display: flex; gap: 1.4rem; list-style: none; padding: 0; margin: 0; }
+    nav a { text-decoration: none; color: var(--ink); font-weight: 500; }
+    nav a:hover { color: var(--accent); }
+
+    main { width: min(var(--max), calc(100% - 2rem)); margin: 0 auto; padding: 1.5rem 0 2rem; }
+
+    .intro { text-align: center; margin: 0 auto 1.5rem; max-width: 50ch; }
+    .intro h1 { font-size: clamp(1.7rem, 3vw, 2.2rem); letter-spacing: -.02em; line-height: 1.2; margin: 0 0 .4rem; }
+    .intro p { color: var(--muted); margin: 0 0 .25rem; }
+    .badge { display: inline-block; background: rgba(245, 182, 63, .2); color: var(--ink); padding: .2rem .55rem; border-radius: 999px; font-size: .8rem; font-weight: 500; margin-bottom: .5rem; }
+
+    .chat {
+      background: rgba(255, 250, 240, .78);
+      border: 1px solid rgba(222, 214, 200, .85);
+      border-radius: 22px;
+      padding: 1rem;
+      box-shadow: 0 24px 80px rgba(42, 31, 20, .08);
+      min-height: 380px;
+      display: flex;
+      flex-direction: column;
+    }
+    .transcript {
+      flex: 1;
+      overflow-y: auto;
+      padding: .5rem .25rem;
+      display: flex;
+      flex-direction: column;
+      gap: .85rem;
+      min-height: 300px;
+      max-height: 55vh;
+    }
+    .msg { max-width: 80%; padding: .75rem 1rem; border-radius: 18px; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; }
+    .msg.pete { background: var(--ink); color: var(--paper); align-self: flex-start; border-bottom-left-radius: 6px; }
+    .msg.you { background: var(--warm); color: var(--ink); align-self: flex-end; border-bottom-right-radius: 6px; }
+    .msg .role { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; opacity: .65; margin-bottom: .25rem; display: block; }
+    .msg.typing .dots { display: inline-block; }
+    .msg.typing .dots span { animation: blink 1.2s infinite; opacity: .3; }
+    .msg.typing .dots span:nth-child(2) { animation-delay: .2s; }
+    .msg.typing .dots span:nth-child(3) { animation-delay: .4s; }
+    @keyframes blink { 0%, 60%, 100% { opacity: .3; } 30% { opacity: 1; } }
+
+    .composer { display: flex; gap: .5rem; margin-top: .75rem; padding-top: .75rem; border-top: 1px solid var(--line); }
+    .composer input {
+      flex: 1;
+      padding: .75rem 1rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font: inherit;
+      background: white;
+      color: var(--ink);
+    }
+    .composer input:focus { outline: 2px solid var(--warm); outline-offset: 2px; }
+    .composer input:disabled { background: rgba(245, 182, 63, .12); }
+    .composer button {
+      padding: .75rem 1.1rem;
+      border: 0;
+      border-radius: 999px;
+      background: var(--ink);
+      color: var(--paper);
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      min-width: 88px;
+    }
+    .composer button:hover:not(:disabled) { background: #2a2520; }
+    .composer button:disabled { opacity: .5; cursor: not-allowed; }
+
+    .meta-row { display: flex; justify-content: space-between; align-items: center; margin-top: .75rem; font-size: .85rem; color: var(--muted); }
+    .turn-pill { background: rgba(245, 182, 63, .18); padding: .15rem .6rem; border-radius: 999px; }
+
+    .result {
+      background: var(--paper);
+      border: 2px solid var(--warm);
+      border-radius: 22px;
+      padding: 1.4rem 1.4rem 1.5rem;
+      margin-top: 1rem;
+    }
+    .result h2 { margin: 0 0 .4rem; font-size: 1.3rem; letter-spacing: -.01em; }
+    .result .reason { color: var(--muted); margin: 0 0 1rem; }
+    .result .actions { display: flex; gap: .6rem; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; padding: .75rem 1.1rem; border-radius: 999px; font-weight: 600; text-decoration: none; min-height: 44px; }
+    .btn-primary { background: var(--warm); color: var(--ink); }
+    .btn-primary:hover { background: #ffc857; }
+    .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+    .btn-ghost:hover { background: rgba(245, 182, 63, .1); }
+
+    .limit-banner {
+      background: rgba(154, 69, 58, .08);
+      border-left: 3px solid #9a453a;
+      padding: .9rem 1rem;
+      border-radius: 0 12px 12px 0;
+      margin: 0 0 1rem;
+      font-size: .95rem;
+    }
+
+    .error { color: #9a453a; background: rgba(154, 69, 58, .08); padding: .75rem 1rem; border-radius: 12px; margin-top: .75rem; font-size: .9rem; }
+
+    footer { padding: 2rem 0 1.5rem; color: var(--muted); font-size: .9rem; text-align: center; }
+    @media (max-width: 860px) { nav ul { display: none; } .msg { max-width: 90%; } }
+    @media (prefers-reduced-motion: reduce) { .msg.typing .dots span { animation: none; } }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header>
+    <div class="nav" aria-label="Main navigation">
+      <a class="brand" href="../index.html" aria-label="Offline Helper home">
+        <img class="brand-mark" src="../assets/brand/offline-helpers-mark.png" alt="" width="28" height="28">Offline Helper
+      </a>
+      <nav>
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../faq/">FAQ</a></li>
+          <li><a href="../fit-check/">Free fit check</a></li>
+          <li><a href="mailto:pdbjork@gmail.com">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="intro">
+      <span class="badge">Pete's fit-check assistant</span>
+      <h1>Can your computer run a private local AI?</h1>
+      <p>About 5 quick questions, 2 minutes. We'll check your machine and tell you which package fits - or honestly say it won't work and suggest an alternative.</p>
+    </div>
+
+    <div class="chat" id="chat" aria-live="polite" aria-label="Chat transcript">
+      <div class="transcript" id="transcript" role="log">
+        <!-- messages render here -->
+      </div>
+
+      <form class="composer" id="composer" autocomplete="off">
+        <input id="user-input" name="user-input" type="text" placeholder="Type your answer..." aria-label="Your message" disabled>
+        <button type="submit" id="send-btn" disabled>Send</button>
+      </form>
+
+      <div class="meta-row">
+        <span><span class="turn-pill" id="turn-pill">0 / 20 turns</span></span>
+        <span>Powered by gpt-4o-mini</span>
+      </div>
+
+      <div id="error-slot"></div>
+    </div>
+
+    <div id="result-slot"></div>
+
+    <footer>
+      <p>This is an AI assistant trained on Pete's notes. <a href="mailto:pdbjork@gmail.com">Email Pete</a> if you'd like a personal response.</p>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+      var WORKER = 'https://offline-helper-payments.offline-helper-payments.workers.dev';
+      var MAX_TURNS = 20;
+      var transcript = [];        // OpenAI-format messages (role + content)
+      var turnCount = 0;          // user message count
+      var chatDone = false;
+      var busy = false;
+
+      var elTrans = document.getElementById('transcript');
+      var elForm = document.getElementById('composer');
+      var elInput = document.getElementById('user-input');
+      var elSend = document.getElementById('send-btn');
+      var elTurnPill = document.getElementById('turn-pill');
+      var elError = document.getElementById('error-slot');
+      var elResult = document.getElementById('result-slot');
+
+      function escapeHTML(s) {
+        return String(s).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+
+      function renderMessage(role, content, opts) {
+        opts = opts || {};
+        var div = document.createElement('div');
+        div.className = 'msg ' + (role === 'user' ? 'you' : 'pete');
+        if (opts.typing) div.classList.add('typing');
+        var roleLabel = role === 'user' ? 'You' : 'Pete';
+        var body = opts.typing
+          ? '<span class="dots"><span>•</span><span>•</span><span>•</span></span>'
+          : escapeHTML(content);
+        div.innerHTML = '<span class="role">' + roleLabel + '</span>' + body;
+        elTrans.appendChild(div);
+        elTrans.scrollTop = elTrans.scrollHeight;
+        return div;
+      }
+
+      function showError(msg) {
+        elError.innerHTML = '<div class="error">' + escapeHTML(msg) + '</div>';
+      }
+      function clearError() { elError.innerHTML = ''; }
+
+      function showLimitBanner() {
+        var div = document.createElement('div');
+        div.className = 'limit-banner';
+        div.innerHTML = 'You\'ve hit the ' + MAX_TURNS + '-turn limit for the chat. <a href="../fit-check/">Book the free fit check</a> and Pete will respond personally.';
+        elResult.appendChild(div);
+        elTrans.parentElement.insertBefore(div, elTrans.nextSibling);
+      }
+
+      function renderResult(data) {
+        var html = '';
+        if (data.eligible) {
+          html += '<div class="result">';
+          html += '<h2>Looks like a good fit.</h2>';
+          html += '<p class="reason">' + escapeHTML(data.reason) + '</p>';
+          if (data.checkout_url) {
+            html += '<div class="actions">';
+            html += '<a class="btn btn-primary" href="' + escapeHTML(data.checkout_url) + '">Continue to checkout</a>';
+            html += '<a class="btn btn-ghost" href="mailto:pdbjork@gmail.com?subject=Fit check ' + escapeHTML(data.fit_check_id) + '">Email Pete first</a>';
+            html += '</div>';
+          }
+          html += '<p style="font-size:.8rem;color:var(--muted);margin:1rem 0 0;">Fit-check ID: <code>' + escapeHTML(data.fit_check_id) + '</code> &middot; saved for fulfillment</p>';
+          html += '</div>';
+        } else {
+          html += '<div class="result">';
+          html += '<h2>Honest answer: not a fit (yet).</h2>';
+          html += '<p class="reason">' + escapeHTML(data.reason) + '</p>';
+          html += '<div class="actions">';
+          html += '<a class="btn btn-ghost" href="../fit-check/">Book the free fit check</a>';
+          html += '<a class="btn btn-ghost" href="mailto:pdbjork@gmail.com?subject=Can\'t run local AI">Email Pete</a>';
+          html += '</div>';
+          html += '</div>';
+        }
+        elResult.innerHTML = html;
+      }
+
+      function disableComposer() {
+        elInput.disabled = true;
+        elSend.disabled = true;
+        elInput.placeholder = 'Chat complete - see result below.';
+      }
+
+      function setBusy(b) {
+        busy = b;
+        elInput.disabled = b || chatDone;
+        elSend.disabled = b || chatDone;
+        if (!b && !chatDone) elInput.focus();
+      }
+
+      function updateTurnPill() {
+        elTurnPill.textContent = turnCount + ' / ' + MAX_TURNS + ' turns';
+      }
+
+      async function callChatAPI(messages) {
+        var res = await fetch(WORKER + '/api/fit-check/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: messages }),
+        });
+        var data = await res.json().catch(function () { return {}; });
+        if (!res.ok) {
+          if (data && data.at_limit) {
+            return { at_limit: true, error: data.error };
+          }
+          throw new Error(data && data.error ? data.error : ('HTTP ' + res.status));
+        }
+        return data;
+      }
+
+      async function send() {
+        if (busy || chatDone) return;
+        var text = elInput.value.trim();
+        if (!text) return;
+        clearError();
+        elInput.value = '';
+        renderMessage('user', text);
+        transcript.push({ role: 'user', content: text });
+        turnCount += 1;
+        updateTurnPill();
+        setBusy(true);
+        var typingNode = renderMessage('assistant', '', { typing: true });
+
+        try {
+          var data = await callChatAPI(transcript);
+          typingNode.remove();
+          if (data.at_limit) {
+            chatDone = true;
+            disableComposer();
+            showLimitBanner();
+            return;
+          }
+          renderMessage('assistant', data.reply || '(no response)');
+          transcript.push({ role: 'assistant', content: data.reply || '' });
+          if (data.ready) {
+            chatDone = true;
+            disableComposer();
+            await complete();
+          }
+        } catch (err) {
+          typingNode.remove();
+          showError('Chat error: ' + err.message + ' - try refreshing the page.');
+        } finally {
+          setBusy(false);
+        }
+      }
+
+      async function complete() {
+        // Heuristic: extract the 6 fields from the transcript. For the v1 we
+        // trust the AI to have surfaced them, and let the Worker score
+        // whatever answers object we send. If we couldn't infer any, the
+        // Worker will score 0.
+        var answers = inferAnswers(transcript);
+        try {
+          var res = await fetch(WORKER + '/api/fit-check/complete', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              fit_check_id: 'fc_' + Math.random().toString(36).slice(2, 10),
+              transcript: transcript,
+              answers: answers,
+            }),
+          });
+          var data = await res.json();
+          if (!res.ok) {
+            showError('Could not save fit check: ' + (data && data.error || ('HTTP ' + res.status)));
+            return;
+          }
+          renderResult(data);
+        } catch (err) {
+          showError('Network error saving fit check: ' + err.message);
+        }
+      }
+
+      // Heuristic extraction. Cheap, no extra LLM call. The Worker is the
+      // source of truth for scoring.
+      function inferAnswers(msgs) {
+        var a = {};
+        var allText = msgs.map(function (m) { return m.content; }).join('\n').toLowerCase();
+        if (/\bmac\b|macbook|imac|osx|os x/.test(allText)) a.device_kind = 'mac';
+        else if (/\bwindows\b|win\s*10|win\s*11|pc\b|laptop\b/.test(allText)) a.device_kind = 'windows';
+        if (/apple silicon|\bm1\b|\bm2\b|\bm3\b|\bm4\b/.test(allText)) a.apple_silicon = true;
+        if (/intel/.test(allText) && a.device_kind === 'mac') a.apple_silicon = false;
+        var ramMatch = allText.match(/(\d{1,3})\s*gb/);
+        if (ramMatch) a.ram_gb = parseInt(ramMatch[1], 10);
+        if (/\b16\s*gb|32\s*gb|64\s*gb/.test(allText)) a.ram_gb = a.ram_gb || 16;
+        if (/\b8\s*gb/.test(allText)) a.ram_gb = a.ram_gb || 8;
+        if (/\b4\s*gb\b/.test(allText)) a.ram_gb = a.ram_gb || 4;
+        if (/beginner|not.{0,3}tech|non.?tech|no idea/.test(allText)) a.comfort_level = 'beginner';
+        else if (/confident|advanced|tech.{0,3}background|developer/.test(allText)) a.comfort_level = 'confident';
+        else if (/some|comfortable|a bit|familiar/.test(allText)) a.comfort_level = 'some';
+        return a;
+      }
+
+      // Boot
+      elForm.addEventListener('submit', function (e) { e.preventDefault(); send(); });
+      elInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+      });
+      updateTurnPill();
+      elInput.disabled = false;
+      elSend.disabled = false;
+      elInput.focus();
+    })();
+  </script>
+</body>
+</html>
