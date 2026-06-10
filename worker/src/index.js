@@ -200,7 +200,10 @@ async function handleCheckout(request, env) {
     contentType.includes("multipart/form-data") ||
     (request.headers.get("Accept") || "").includes("text/html");
   if (wantsHtml && session.url) {
-    return Response.redirect(session.url, 303);
+    // Build a 303 manually (not Response.redirect) so CORS headers are
+    // attached. The browser will follow the Location to Stripe; the
+    // ACAO header is needed for fetch() callers reading the redirect.
+    return new Response(null, { status: 303, headers: { ...corsHeaders, Location: session.url } });
   }
   return jsonResponse({ url: session.url, session_id: session.id });
 }

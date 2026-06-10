@@ -126,7 +126,7 @@
           <div class="package checkout-card">
             <p class="tier-title">Starter Setup — $149</p>
             <p class="muted small">One person, one useful first workflow, privacy walkthrough, handoff guide, and a 7-day setup-fix window.</p>
-            <form class="checkout-form" data-tier="starter_setup">
+            <form class="checkout-form" method="POST" action="https://offline-helper-payments.offline-helper-payments.workers.dev/api/checkout" data-tier="starter_setup">
               <input type="hidden" name="fit_check_id" id="fc-id-form-1">
               <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input" style="width:100%;padding:.65rem .9rem;border:1px solid var(--line);border-radius:12px;margin-bottom:.6rem;font:inherit;">
               <button type="submit" class="button primary" style="width:100%;">Pay $149 — Starter Setup</button>
@@ -135,7 +135,7 @@
           <div class="package checkout-card">
             <p class="tier-title">Family Setup — $249</p>
             <p class="muted small">Loved-one/caregiver orientation, family handoff sheet, consent clarity, and a 30-minute follow-up.</p>
-            <form class="checkout-form" data-tier="family_setup">
+            <form class="checkout-form" method="POST" action="https://offline-helper-payments.offline-helper-payments.workers.dev/api/checkout" data-tier="family_setup">
               <input type="hidden" name="fit_check_id" id="fc-id-form-2">
               <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input" style="width:100%;padding:.65rem .9rem;border:1px solid var(--line);border-radius:12px;margin-bottom:.6rem;font:inherit;">
               <button type="submit" class="button primary" style="width:100%;">Pay $249 — Family Setup</button>
@@ -144,7 +144,7 @@
           <div class="package checkout-card">
             <p class="tier-title">Family Support — $29/month</p>
             <p class="muted small">Monthly health check, update check, archive verification, and one short support question. Cancel anytime in the Customer Portal from the receipt.</p>
-            <form class="checkout-form" data-tier="family_support">
+            <form class="checkout-form" method="POST" action="https://offline-helper-payments.offline-helper-payments.workers.dev/api/checkout" data-tier="family_support">
               <input type="hidden" name="fit_check_id" id="fc-id-form-3">
               <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input" style="width:100%;padding:.65rem .9rem;border:1px solid var(--line);border-radius:12px;margin-bottom:.6rem;font:inherit;">
               <button type="submit" class="button primary" style="width:100%;">Subscribe $29/month</button>
@@ -192,83 +192,43 @@
         document.querySelectorAll('input[type="hidden"][name="fit_check_id"]').forEach(function (i) {
           i.value = fitCheckId;
         });
-        // Pre-pick the recommended package by hiding others and showing it
-        // Actually: keep all three visible so the buyer can override, but
-        // set the primary CTA tier and label
+        // Set the primary CTA label
         var cta = document.getElementById('primary-cta');
         cta.textContent = 'Open secure Stripe checkout for ' + (TIER_NAMES[tier] || tier);
         cta.dataset.tier = tier;
+        cta.dataset.fcId = fitCheckId;
         cta.addEventListener('click', function (e) {
           e.preventDefault();
-          startCheckout(tier, fitCheckId, null);
+          // Build a real form and submit it. The browser does a full
+          // navigation to the Worker 303 -> Stripe. No fetch, no CORS
+          // edge cases, no opaque-redirect pitfalls.
+          var f = document.createElement('form');
+          f.method = 'POST';
+          f.action = WORKER + '/api/checkout';
+          var pkg = document.createElement('input');
+          pkg.type = 'hidden'; pkg.name = 'package'; pkg.value = tier;
+          var fc = document.createElement('input');
+          fc.type = 'hidden'; fc.name = 'fit_check_id'; fc.value = fitCheckId;
+          f.appendChild(pkg); f.appendChild(fc);
+          document.body.appendChild(f);
+          f.submit();
         });
       } else {
         // No fit-check context: hide the primary CTA (use the per-package forms)
         document.getElementById('primary-cta').style.display = 'none';
       }
 
-      // Wire up each per-package form
+      // Disable submit buttons on click so the buyer can't double-click
+      // while the browser navigates. Real submission is the default form
+      // behavior - no JS fetch, no CORS, no opaque redirects.
       document.querySelectorAll('form.checkout-form').forEach(function (f) {
-        f.addEventListener('submit', function (e) {
-          e.preventDefault();
-          var t = f.dataset.tier;
-          var fc = f.querySelector('input[name="fit_check_id"]').value || '';
-          var email = f.querySelector('input[name="customer_email"]').value || '';
-          startCheckout(t, fc, email);
+        f.addEventListener('submit', function () {
+          f.querySelectorAll('button[type="submit"]').forEach(function (b) {
+            b.disabled = true;
+            b.textContent = 'Opening Stripe…';
+          });
         });
       });
-
-      function startCheckout(t, fcId, email) {
-        var err = document.getElementById('error-slot');
-        err.hidden = true;
-        err.textContent = '';
-
-        var body = new URLSearchParams();
-        body.set('package', t);
-        if (fcId) body.set('fit_check_id', fcId);
-        if (email) body.set('customer_email', email);
-
-        // Disable all submit buttons so the buyer can't double-click
-        document.querySelectorAll('form.checkout-form button[type="submit"]').forEach(function (b) {
-          b.disabled = true;
-          b.textContent = 'Opening Stripe…';
-        });
-        var cta = document.getElementById('primary-cta');
-        cta.classList.add('disabled');
-
-        fetch(WORKER + '/api/checkout', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'text/html' },
-          body: body.toString(),
-          redirect: 'manual', // we want to capture the 303 Location header instead of following
-        }).then(function (res) {
-          // The Worker returns 303 with a Location header for browser-style form posts.
-          // Some browsers/fetch will expose it as `res.url` or via `res.headers.get('Location')`.
-          var loc = res.headers.get('Location') || res.headers.get('location') || '';
-          if (res.status === 200 && res.headers.get('content-type') && res.headers.get('content-type').indexOf('application/json') !== -1) {
-            // Fallback: JSON body with url
-            return res.json().then(function (j) {
-              if (j && j.url) { window.location.href = j.url; return; }
-              throw new Error('No url in response: ' + JSON.stringify(j).slice(0, 200));
-            });
-          }
-          if (loc) { window.location.href = loc; return; }
-          // 303 + manual redirect mode: response.url is the new URL
-          if (res.url && res.url !== window.location.href) { window.location.href = res.url; return; }
-          throw new Error('No redirect Location header (status ' + res.status + ')');
-        }).catch(function (e) {
-          err.hidden = false;
-          err.textContent = 'Could not start checkout: ' + (e && e.message ? e.message : 'unknown error') +
-            '. Please email pdbjork@gmail.com and we will get you sorted.';
-          // Re-enable buttons
-          document.querySelectorAll('form.checkout-form button[type="submit"]').forEach(function (b, i) {
-            b.disabled = false;
-            var labels = ['Pay $149 — Starter Setup', 'Pay $249 — Family Setup', 'Subscribe $29/month'];
-            b.textContent = labels[i] || b.textContent;
-          });
-          cta.classList.remove('disabled');
-        });
-      }
     })();
   </script>
 </body>
