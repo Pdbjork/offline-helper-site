@@ -1,7 +1,8 @@
 name = "offline-helper-payments"
 main = "src/index.js"
 compatibility_date = "2026-06-01"
-account_id = "fdce143e2c4433ddae1c5efe3e3a1b45"
+# account_id is left unset so wrangler uses the only authenticated account.
+# If you ever have multiple accounts, set it explicitly here.
 
 # Create a KV namespace once with:
 #   npx wrangler kv namespace create OFFLINE_HELPER_QUEUE
