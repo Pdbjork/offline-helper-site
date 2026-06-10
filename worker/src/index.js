@@ -260,7 +260,10 @@ async function handleQueue(env) {
 
 async function handleFitCheckChat(request, env) {
   if (!env.OPENAI_API_KEY) {
-    return jsonResponse({ error: "OPENAI_API_KEY not configured" }, 500);
+    return jsonResponse({
+      error: "AI chat temporarily unavailable. Please use the static fit check form at https://offlinehelpers.com/chat-with-pete/ - it produces the same fit_check_id and routes through the same checkout.",
+      fallback_url: "https://offlinehelpers.com/chat-with-pete/",
+    }, 503);
   }
   let body;
   try { body = await request.json(); }

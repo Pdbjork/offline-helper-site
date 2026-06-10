@@ -3,26 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Chat with Pete — Offline Helper</title>
-  <meta name="description" content="A 2-minute fit check: find out if your Mac or PC can run a private local AI, and which package fits. Real conversation, real recommendation, no sales pressure.">
-  <meta property="og:title" content="Chat with Pete — Offline Helper">
+  <title>Free Fit Check — Offline Helper</title>
+  <meta name="description" content="A 2-minute fit check: find out if your Mac or PC can run a private local AI, and which package fits. Real recommendation, no sales pressure.">
+  <meta property="og:title" content="Free Fit Check — Offline Helper">
   <meta property="og:description" content="A 2-minute fit check: find out if your Mac or PC can run a private local AI.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/png" href="../assets/brand/offline-helpers-mark.png">
   <meta name="theme-color" content="#13231d">
+  <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://offlinehelpers.com/chat-with-pete/">
 
   <!--
-    AI fit-check chat. Pre-frame: this is "Pete's fit-check assistant"
-    - transparent it's AI, framed as a tool Pete uses. After the chat
-    the buyer gets a real recommendation and a checkout link with
-    fit_check_id metadata.
+    Static fit-check form. Pete's assistant used to be an AI chat
+    (gpt-4o-mini), but until an OpenAI account is funded the form
+    below does the same qualification locally and posts to the same
+    /api/fit-check/complete endpoint. Result: identical Stripe
+    metadata chain (fit_check_id round-trips through the webhook).
   -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "Chat with Pete - Offline Helper fit check",
+    "name": "Offline Helper fit check",
     "url": "https://offlinehelpers.com/chat-with-pete/",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Any (web)",
@@ -40,6 +42,9 @@
       --line: #ded0bc;
       --accent: #bb4e2f;
       --warm: #f5b63f;
+      --good: #2f7d5c;
+      --soft-good: rgba(47, 125, 92, .12);
+      --soft-warn: rgba(154, 69, 58, .1);
       --max: 760px;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
@@ -72,95 +77,83 @@
     .intro p { color: var(--muted); margin: 0 0 .25rem; }
     .badge { display: inline-block; background: rgba(245, 182, 63, .2); color: var(--ink); padding: .2rem .55rem; border-radius: 999px; font-size: .8rem; font-weight: 500; margin-bottom: .5rem; }
 
-    .chat {
-      background: rgba(255, 250, 240, .78);
+    .card {
+      background: rgba(255, 250, 240, .85);
       border: 1px solid rgba(222, 214, 200, .85);
       border-radius: 22px;
-      padding: 1rem;
+      padding: 1.4rem;
       box-shadow: 0 24px 80px rgba(42, 31, 20, .08);
-      min-height: 380px;
-      display: flex;
-      flex-direction: column;
     }
-    .transcript {
-      flex: 1;
-      overflow-y: auto;
-      padding: .5rem .25rem;
-      display: flex;
-      flex-direction: column;
-      gap: .85rem;
-      min-height: 300px;
-      max-height: 55vh;
-    }
-    .msg { max-width: 80%; padding: .75rem 1rem; border-radius: 18px; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; }
-    .msg.pete { background: var(--ink); color: var(--paper); align-self: flex-start; border-bottom-left-radius: 6px; }
-    .msg.you { background: var(--warm); color: var(--ink); align-self: flex-end; border-bottom-right-radius: 6px; }
-    .msg .role { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; opacity: .65; margin-bottom: .25rem; display: block; }
-    .msg.typing .dots { display: inline-block; }
-    .msg.typing .dots span { animation: blink 1.2s infinite; opacity: .3; }
-    .msg.typing .dots span:nth-child(2) { animation-delay: .2s; }
-    .msg.typing .dots span:nth-child(3) { animation-delay: .4s; }
-    @keyframes blink { 0%, 60%, 100% { opacity: .3; } 30% { opacity: 1; } }
+    .card h2 { margin: 0 0 .25rem; font-size: 1.25rem; letter-spacing: -.01em; }
+    .card .sub { color: var(--muted); margin: 0 0 1.1rem; font-size: .92rem; }
 
-    .composer { display: flex; gap: .5rem; margin-top: .75rem; padding-top: .75rem; border-top: 1px solid var(--line); }
-    .composer input {
-      flex: 1;
+    .field { display: block; margin-bottom: 1.1rem; }
+    .field > label { display: block; font-weight: 600; margin-bottom: .35rem; }
+    .field > .hint { color: var(--muted); font-size: .85rem; margin: 0 0 .4rem; }
+    .field input[type="text"],
+    .field input[type="email"],
+    .field input[type="number"],
+    .field select {
+      width: 100%;
       padding: .75rem 1rem;
       border: 1px solid var(--line);
-      border-radius: 999px;
+      border-radius: 14px;
       font: inherit;
       background: white;
       color: var(--ink);
     }
-    .composer input:focus { outline: 2px solid var(--warm); outline-offset: 2px; }
-    .composer input:disabled { background: rgba(245, 182, 63, .12); }
-    .composer button {
-      padding: .75rem 1.1rem;
-      border: 0;
-      border-radius: 999px;
-      background: var(--ink);
-      color: var(--paper);
-      font: inherit;
-      font-weight: 600;
-      cursor: pointer;
-      min-width: 88px;
-    }
-    .composer button:hover:not(:disabled) { background: #2a2520; }
-    .composer button:disabled { opacity: .5; cursor: not-allowed; }
+    .field input:focus,
+    .field select:focus { outline: 2px solid var(--warm); outline-offset: 2px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; }
+    @media (max-width: 540px) { .row { grid-template-columns: 1fr; } }
 
-    .meta-row { display: flex; justify-content: space-between; align-items: center; margin-top: .75rem; font-size: .85rem; color: var(--muted); }
-    .turn-pill { background: rgba(245, 182, 63, .18); padding: .15rem .6rem; border-radius: 999px; }
+    .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+    @media (max-width: 540px) { .checkbox-grid { grid-template-columns: 1fr; } }
+    .pill {
+      display: flex; align-items: center; gap: .55rem;
+      padding: .65rem .85rem; border: 1px solid var(--line);
+      border-radius: 14px; background: white; cursor: pointer;
+      font-size: .95rem;
+    }
+    .pill input { accent-color: var(--accent); }
+    .pill:has(input:checked) { border-color: var(--accent); background: rgba(245, 182, 63, .12); }
+
+    .submit { margin-top: .4rem; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: .85rem 1.4rem; border-radius: 999px;
+      font: inherit; font-weight: 600;
+      border: 0; cursor: pointer; min-height: 48px;
+      text-decoration: none;
+    }
+    .btn-primary { background: var(--ink); color: var(--paper); }
+    .btn-primary:hover:not(:disabled) { background: #2a2520; }
+    .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-warm { background: var(--warm); color: var(--ink); }
+    .btn-warm:hover { background: #ffc857; }
+    .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+    .btn-ghost:hover { background: rgba(245, 182, 63, .1); }
 
     .result {
       background: var(--paper);
       border: 2px solid var(--warm);
       border-radius: 22px;
-      padding: 1.4rem 1.4rem 1.5rem;
+      padding: 1.4rem;
       margin-top: 1rem;
     }
+    .result.good { border-color: var(--good); background: var(--soft-good); }
+    .result.warn { border-color: #9a453a; background: var(--soft-warn); }
     .result h2 { margin: 0 0 .4rem; font-size: 1.3rem; letter-spacing: -.01em; }
     .result .reason { color: var(--muted); margin: 0 0 1rem; }
     .result .actions { display: flex; gap: .6rem; flex-wrap: wrap; }
-    .btn { display: inline-flex; align-items: center; padding: .75rem 1.1rem; border-radius: 999px; font-weight: 600; text-decoration: none; min-height: 44px; }
-    .btn-primary { background: var(--warm); color: var(--ink); }
-    .btn-primary:hover { background: #ffc857; }
-    .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
-    .btn-ghost:hover { background: rgba(245, 182, 63, .1); }
 
-    .limit-banner {
-      background: rgba(154, 69, 58, .08);
-      border-left: 3px solid #9a453a;
-      padding: .9rem 1rem;
-      border-radius: 0 12px 12px 0;
-      margin: 0 0 1rem;
-      font-size: .95rem;
-    }
+    .error { color: #9a453a; background: var(--soft-warn); padding: .75rem 1rem; border-radius: 12px; margin-top: .75rem; font-size: .9rem; }
 
-    .error { color: #9a453a; background: rgba(154, 69, 58, .08); padding: .75rem 1rem; border-radius: 12px; margin-top: .75rem; font-size: .9rem; }
+    .legal { font-size: .85rem; color: var(--muted); margin-top: 1rem; }
 
     footer { padding: 2rem 0 1.5rem; color: var(--muted); font-size: .9rem; text-align: center; }
-    @media (max-width: 860px) { nav ul { display: none; } .msg { max-width: 90%; } }
-    @media (prefers-reduced-motion: reduce) { .msg.typing .dots span { animation: none; } }
+    @media (max-width: 860px) { nav ul { display: none; } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
   </style>
 </head>
 <body>
@@ -174,7 +167,6 @@
         <ul>
           <li><a href="../index.html">Home</a></li>
           <li><a href="../faq/">FAQ</a></li>
-          <li><a href="../fit-check/">Free fit check</a></li>
           <li><a href="mailto:pdbjork@gmail.com">Contact</a></li>
         </ul>
       </nav>
@@ -183,33 +175,85 @@
 
   <main id="main">
     <div class="intro">
-      <span class="badge">Pete's fit-check assistant</span>
+      <span class="badge">Free fit check · 2 minutes</span>
       <h1>Can your computer run a private local AI?</h1>
-      <p>About 5 quick questions, 2 minutes. We'll check your machine and tell you which package fits - or honestly say it won't work and suggest an alternative.</p>
+      <p>5 quick questions. We'll tell you straight whether a local AI will work for you, which package fits, and honestly say no if it won't.</p>
     </div>
 
-    <div class="chat" id="chat" aria-live="polite" aria-label="Chat transcript">
-      <div class="transcript" id="transcript" role="log">
-        <!-- messages render here -->
+    <form id="fit-form" class="card" autocomplete="on" novalidate>
+      <h2>About your computer</h2>
+      <p class="sub">All fields required. The check stays in your browser until you submit.</p>
+
+      <div class="field">
+        <label for="device_kind">What kind of computer is it?</label>
+        <div class="hint">Pick the closest match.</div>
+        <div class="checkbox-grid" role="radiogroup" aria-label="Device kind">
+          <label class="pill"><input type="radio" name="device_kind" value="mac" required> Mac (Apple)</label>
+          <label class="pill"><input type="radio" name="device_kind" value="windows"> Windows PC</label>
+        </div>
       </div>
 
-      <form class="composer" id="composer" autocomplete="off">
-        <input id="user-input" name="user-input" type="text" placeholder="Type your answer..." aria-label="Your message" disabled>
-        <button type="submit" id="send-btn" disabled>Send</button>
-      </form>
-
-      <div class="meta-row">
-        <span><span class="turn-pill" id="turn-pill">0 / 20 turns</span></span>
-        <span>Powered by gpt-4o-mini</span>
+      <div class="field" id="apple-silicon-field" hidden>
+        <label>Is it a recent Mac (M1, M2, M3, or M4)?</label>
+        <div class="hint">Click the Apple menu → About This Mac. The chip name shows on the second line.</div>
+        <div class="checkbox-grid" role="radiogroup" aria-label="Apple Silicon">
+          <label class="pill"><input type="radio" name="apple_silicon" value="yes"> Yes (M1 or newer)</label>
+          <label class="pill"><input type="radio" name="apple_silicon" value="no"> No, it's an older Intel Mac</label>
+          <label class="pill"><input type="radio" name="apple_silicon" value="unsure"> Not sure</label>
+        </div>
       </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="os_version">Operating system</label>
+          <div class="hint">e.g. "macOS Sonoma 14.5" or "Windows 11"</div>
+          <input type="text" id="os_version" name="os_version" required placeholder="macOS 14.5 or Windows 11">
+        </div>
+        <div class="field">
+          <label for="ram_gb">Memory (RAM) in GB</label>
+          <div class="hint">About This Mac → "Memory". Don't know? 8 is a safe guess.</div>
+          <input type="number" id="ram_gb" name="ram_gb" min="2" max="256" step="1" required placeholder="8">
+        </div>
+      </div>
+
+      <h2 style="margin-top: 1.6rem;">About you</h2>
+      <p class="sub">So we can recommend the right package and follow up personally.</p>
+
+      <div class="field">
+        <label for="primary_goal">What do you want the AI to help with?</label>
+        <div class="hint">One sentence is fine. e.g. "writing my memoir", "email and reminders", "research for my small business".</div>
+        <input type="text" id="primary_goal" name="primary_goal" required placeholder="What will you use it for?">
+      </div>
+
+      <div class="field">
+        <label for="comfort_level">How comfortable are you with your computer?</label>
+        <select id="comfort_level" name="comfort_level" required>
+          <option value="">Pick one…</option>
+          <option value="beginner">Beginner — I use it for email and the web, that's about it</option>
+          <option value="some">Some — I can install apps and find settings when I need to</option>
+          <option value="confident">Confident — I'm comfortable in Terminal / command line</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="customer_email">Your email (so Pete can follow up)</label>
+        <div class="hint">Optional. We only use it to send your recommendation and the personal follow-up.</div>
+        <input type="email" id="customer_email" name="customer_email" placeholder="you@example.com">
+      </div>
+
+      <div class="submit">
+        <button type="submit" id="submit-btn" class="btn btn-primary">Get my recommendation</button>
+      </div>
+
+      <p class="legal">By submitting, you agree to the <a href="../privacy/">Privacy Policy</a>. The fit check is run against the Offline Helper Worker, which writes a record under a fit-check ID (no name or email required) so Pete can review and follow up if you give your email.</p>
 
       <div id="error-slot"></div>
-    </div>
+    </form>
 
     <div id="result-slot"></div>
 
     <footer>
-      <p>This is an AI assistant trained on Pete's notes. <a href="mailto:pdbjork@gmail.com">Email Pete</a> if you'd like a personal response.</p>
+      <p>Questions? <a href="mailto:pdbjork@gmail.com">Email Pete</a> or <a href="../faq/">read the FAQ</a>.</p>
     </footer>
   </main>
 
@@ -217,207 +261,166 @@
     (function () {
       'use strict';
       var WORKER = 'https://offline-helper-payments.offline-helper-payments.workers.dev';
-      var MAX_TURNS = 20;
-      var transcript = [];        // OpenAI-format messages (role + content)
-      var turnCount = 0;          // user message count
-      var chatDone = false;
-      var busy = false;
 
-      var elTrans = document.getElementById('transcript');
-      var elForm = document.getElementById('composer');
-      var elInput = document.getElementById('user-input');
-      var elSend = document.getElementById('send-btn');
-      var elTurnPill = document.getElementById('turn-pill');
-      var elError = document.getElementById('error-slot');
-      var elResult = document.getElementById('result-slot');
+      var form = document.getElementById('fit-form');
+      var deviceRadios = form.querySelectorAll('input[name="device_kind"]');
+      var appleField = document.getElementById('apple-silicon-field');
+      var submitBtn = document.getElementById('submit-btn');
+      var errorSlot = document.getElementById('error-slot');
+      var resultSlot = document.getElementById('result-slot');
+
+      function showError(msg) {
+        errorSlot.innerHTML = '<div class="error">' + escapeHTML(msg) + '</div>';
+      }
+      function clearError() { errorSlot.innerHTML = ''; }
 
       function escapeHTML(s) {
-        return String(s).replace(/[&<>"']/g, function (c) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
           return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
         });
       }
 
-      function renderMessage(role, content, opts) {
-        opts = opts || {};
-        var div = document.createElement('div');
-        div.className = 'msg ' + (role === 'user' ? 'you' : 'pete');
-        if (opts.typing) div.classList.add('typing');
-        var roleLabel = role === 'user' ? 'You' : 'Pete';
-        var body = opts.typing
-          ? '<span class="dots"><span>•</span><span>•</span><span>•</span></span>'
-          : escapeHTML(content);
-        div.innerHTML = '<span class="role">' + roleLabel + '</span>' + body;
-        elTrans.appendChild(div);
-        elTrans.scrollTop = elTrans.scrollHeight;
-        return div;
-      }
-
-      function showError(msg) {
-        elError.innerHTML = '<div class="error">' + escapeHTML(msg) + '</div>';
-      }
-      function clearError() { elError.innerHTML = ''; }
-
-      function showLimitBanner() {
-        var div = document.createElement('div');
-        div.className = 'limit-banner';
-        div.innerHTML = 'You\'ve hit the ' + MAX_TURNS + '-turn limit for the chat. <a href="../fit-check/">Book the free fit check</a> and Pete will respond personally.';
-        elResult.appendChild(div);
-        elTrans.parentElement.insertBefore(div, elTrans.nextSibling);
-      }
-
-      function renderResult(data) {
-        var html = '';
-        if (data.eligible) {
-          html += '<div class="result">';
-          html += '<h2>Looks like a good fit.</h2>';
-          html += '<p class="reason">' + escapeHTML(data.reason) + '</p>';
-          if (data.checkout_url) {
-            html += '<div class="actions">';
-            html += '<a class="btn btn-primary" href="' + escapeHTML(data.checkout_url) + '">Continue to checkout</a>';
-            html += '<a class="btn btn-ghost" href="mailto:pdbjork@gmail.com?subject=Fit check ' + escapeHTML(data.fit_check_id) + '">Email Pete first</a>';
-            html += '</div>';
+      // Show Apple Silicon question only when "mac" is selected
+      deviceRadios.forEach(function (r) {
+        r.addEventListener('change', function () {
+          if (form.querySelector('input[name="device_kind"]:checked').value === 'mac') {
+            appleField.hidden = false;
+          } else {
+            appleField.hidden = true;
+            appleField.querySelectorAll('input[name="apple_silicon"]').forEach(function (i) { i.checked = false; });
           }
-          html += '<p style="font-size:.8rem;color:var(--muted);margin:1rem 0 0;">Fit-check ID: <code>' + escapeHTML(data.fit_check_id) + '</code> &middot; saved for fulfillment</p>';
-          html += '</div>';
-        } else {
-          html += '<div class="result">';
-          html += '<h2>Honest answer: not a fit (yet).</h2>';
-          html += '<p class="reason">' + escapeHTML(data.reason) + '</p>';
-          html += '<div class="actions">';
-          html += '<a class="btn btn-ghost" href="../fit-check/">Book the free fit check</a>';
-          html += '<a class="btn btn-ghost" href="mailto:pdbjork@gmail.com?subject=Can\'t run local AI">Email Pete</a>';
-          html += '</div>';
-          html += '</div>';
-        }
-        elResult.innerHTML = html;
-      }
-
-      function disableComposer() {
-        elInput.disabled = true;
-        elSend.disabled = true;
-        elInput.placeholder = 'Chat complete - see result below.';
-      }
-
-      function setBusy(b) {
-        busy = b;
-        elInput.disabled = b || chatDone;
-        elSend.disabled = b || chatDone;
-        if (!b && !chatDone) elInput.focus();
-      }
-
-      function updateTurnPill() {
-        elTurnPill.textContent = turnCount + ' / ' + MAX_TURNS + ' turns';
-      }
-
-      async function callChatAPI(messages) {
-        var res = await fetch(WORKER + '/api/fit-check/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: messages }),
         });
-        var data = await res.json().catch(function () { return {}; });
-        if (!res.ok) {
-          if (data && data.at_limit) {
-            return { at_limit: true, error: data.error };
-          }
-          throw new Error(data && data.error ? data.error : ('HTTP ' + res.status));
+      });
+
+      // Client-side scoring (mirrors Worker scoreDevice logic, so we can
+      // show the result instantly even if the Worker call fails).
+      function scoreClient(answers) {
+        var ram = Number(answers.ram_gb) || 0;
+        var dev = answers.device_kind;
+        var silicon = answers.apple_silicon;
+
+        if (dev === 'mac' && silicon === 'yes') {
+          if (ram >= 16) return { score: 95, eligible: true, tier: 'starter_setup', reason: 'Apple Silicon Mac with 16+ GB memory - great fit for any of our packages.' };
+          if (ram >= 8)  return { score: 80, eligible: true, tier: 'starter_setup', reason: 'Apple Silicon Mac with 8 GB memory - runs a 7B model comfortably.' };
+          return { score: 50, eligible: false, reason: 'Apple Silicon Mac with less than 8 GB memory - will run, but you will want more headroom. Consider an upgrade first.' };
         }
-        return data;
+        if (dev === 'mac' && silicon === 'no') {
+          if (ram >= 16) return { score: 55, eligible: true, tier: 'starter_setup', reason: 'Intel Mac with 16+ GB memory - works, but slower than Apple Silicon.' };
+          return { score: 25, eligible: false, reason: 'Intel Mac - a local LLM will be slow. A managed cloud AI is the more honest recommendation.' };
+        }
+        if (dev === 'windows') {
+          if (ram >= 16) return { score: 85, eligible: true, tier: 'starter_setup', reason: 'Windows PC with 16+ GB memory - excellent fit.' };
+          if (ram >= 8)  return { score: 70, eligible: true, tier: 'starter_setup', reason: 'Windows PC with 8 GB memory - runs a 7B model fine, tighter on headroom.' };
+          return { score: 35, eligible: false, reason: 'Windows PC with less than 8 GB memory - too tight for a comfortable local AI.' };
+        }
+        return { score: 20, eligible: false, reason: 'Offline Helper currently supports Mac and Windows PCs.' };
       }
 
-      async function send() {
-        if (busy || chatDone) return;
-        var text = elInput.value.trim();
-        if (!text) return;
+      function renderResult(result, fitCheckId) {
+        var cls = result.eligible ? 'good' : 'warn';
+        var heading = result.eligible
+          ? 'Looks like a fit'
+          : 'Probably not a fit - and that is worth knowing up front';
+        var html = '<div class="result ' + cls + '">' +
+          '<h2>' + escapeHTML(heading) + '</h2>' +
+          '<p class="reason">' + escapeHTML(result.reason) + '</p>' +
+          '<div class="actions">';
+        if (result.eligible) {
+          html += '<a class="btn btn-warm" href="../confirmed-fit-payment/?tier=' + encodeURIComponent(result.tier) +
+            '&fit_check_id=' + encodeURIComponent(fitCheckId) + '">Continue to payment</a>';
+          html += '<a class="btn btn-ghost" href="mailto:pdbjork@gmail.com?subject=Free%20fit%20check%20follow-up%20(' + encodeURIComponent(fitCheckId) + ')">Email Pete directly</a>';
+        } else {
+          html += '<a class="btn btn-warm" href="mailto:pdbjork@gmail.com?subject=Not%20a%20fit%20-%20need%20advice%20(' + encodeURIComponent(fitCheckId) + ')">Talk to Pete about alternatives</a>';
+          html += '<a class="btn btn-ghost" href="../faq/">Read the FAQ</a>';
+        }
+        html += '</div>' +
+          '<p class="legal">Fit check ID: <code>' + escapeHTML(fitCheckId) + '</code> · Score: ' + result.score + '/100</p>' +
+          '</div>';
+        resultSlot.innerHTML = html;
+        resultSlot.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      function collectAnswers() {
+        var fd = new FormData(form);
+        var device_kind = (fd.get('device_kind') || '').toString();
+        var apple_silicon = (fd.get('apple_silicon') || '').toString();
+        return {
+          device_kind: device_kind,
+          apple_silicon: device_kind === 'mac' ? (apple_silicon === 'yes') : false,
+          os_version: (fd.get('os_version') || '').toString().trim().slice(0, 80),
+          ram_gb: Number(fd.get('ram_gb')) || 0,
+          primary_goal: (fd.get('primary_goal') || '').toString().trim().slice(0, 200),
+          comfort_level: (fd.get('comfort_level') || '').toString(),
+          customer_email: (fd.get('customer_email') || '').toString().trim().slice(0, 120),
+        };
+      }
+
+      function validate(answers) {
+        if (!answers.device_kind) return 'Pick Mac or Windows.';
+        if (answers.device_kind === 'mac' && !form.querySelector('input[name="apple_silicon"]:checked')) return 'Tell us whether it is an M1/M2/M3/M4 Mac.';
+        if (!answers.os_version) return 'Enter your operating system.';
+        if (!(answers.ram_gb >= 2)) return 'Enter your memory in GB (8 if you are not sure).';
+        if (!answers.primary_goal) return 'Tell us what you want to use it for.';
+        if (!answers.comfort_level) return 'Pick a comfort level.';
+        if (answers.customer_email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(answers.customer_email)) return 'That email does not look right - or leave it blank.';
+        return null;
+      }
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
         clearError();
-        elInput.value = '';
-        renderMessage('user', text);
-        transcript.push({ role: 'user', content: text });
-        turnCount += 1;
-        updateTurnPill();
-        setBusy(true);
-        var typingNode = renderMessage('assistant', '', { typing: true });
+        var answers = collectAnswers();
+        var err = validate(answers);
+        if (err) { showError(err); return; }
 
-        try {
-          var data = await callChatAPI(transcript);
-          typingNode.remove();
-          if (data.at_limit) {
-            chatDone = true;
-            disableComposer();
-            showLimitBanner();
-            return;
-          }
-          renderMessage('assistant', data.reply || '(no response)');
-          transcript.push({ role: 'assistant', content: data.reply || '' });
-          if (data.ready) {
-            chatDone = true;
-            disableComposer();
-            await complete();
-          }
-        } catch (err) {
-          typingNode.remove();
-          showError('Chat error: ' + err.message + ' - try refreshing the page.');
-        } finally {
-          setBusy(false);
-        }
-      }
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Checking…';
 
-      async function complete() {
-        // Heuristic: extract the 6 fields from the transcript. For the v1 we
-        // trust the AI to have surfaced them, and let the Worker score
-        // whatever answers object we send. If we couldn't infer any, the
-        // Worker will score 0.
-        var answers = inferAnswers(transcript);
+        // Local preview using the same scoring logic
+        var local = scoreClient(answers);
+
+        // Generate a client-side fit_check_id (used as correlation id even
+        // if the Worker call fails - the email follow-up will include it).
+        var clientId = 'fc_' + (crypto.randomUUID ? crypto.randomUUID().slice(0, 8) : Math.random().toString(36).slice(2, 10));
+
+        // Try to write the record to the Worker (best-effort).
         try {
           var res = await fetch(WORKER + '/api/fit-check/complete', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              fit_check_id: 'fc_' + Math.random().toString(36).slice(2, 10),
-              transcript: transcript,
-              answers: answers,
+              fit_check_id: clientId,
+              answers: {
+                device_kind: answers.device_kind,
+                os_version: answers.os_version,
+                ram_gb: answers.ram_gb,
+                apple_silicon: answers.apple_silicon,
+                primary_goal: answers.primary_goal,
+                comfort_level: answers.comfort_level,
+              },
+              transcript: [], // static form, no conversation
             }),
           });
-          var data = await res.json();
-          if (!res.ok) {
-            showError('Could not save fit check: ' + (data && data.error || ('HTTP ' + res.status)));
-            return;
+          if (res.ok) {
+            var data = await res.json();
+            if (data && data.fit_check_id) clientId = data.fit_check_id;
+            if (data && typeof data.score === 'number') {
+              renderResult({
+                score: data.score, eligible: data.eligible,
+                tier: data.tier, reason: data.reason,
+              }, clientId);
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'Get my recommendation';
+              return;
+            }
           }
-          renderResult(data);
-        } catch (err) {
-          showError('Network error saving fit check: ' + err.message);
-        }
-      }
+        } catch (_) { /* fall through to local result */ }
 
-      // Heuristic extraction. Cheap, no extra LLM call. The Worker is the
-      // source of truth for scoring.
-      function inferAnswers(msgs) {
-        var a = {};
-        var allText = msgs.map(function (m) { return m.content; }).join('\n').toLowerCase();
-        if (/\bmac\b|macbook|imac|osx|os x/.test(allText)) a.device_kind = 'mac';
-        else if (/\bwindows\b|win\s*10|win\s*11|pc\b|laptop\b/.test(allText)) a.device_kind = 'windows';
-        if (/apple silicon|\bm1\b|\bm2\b|\bm3\b|\bm4\b/.test(allText)) a.apple_silicon = true;
-        if (/intel/.test(allText) && a.device_kind === 'mac') a.apple_silicon = false;
-        var ramMatch = allText.match(/(\d{1,3})\s*gb/);
-        if (ramMatch) a.ram_gb = parseInt(ramMatch[1], 10);
-        if (/\b16\s*gb|32\s*gb|64\s*gb/.test(allText)) a.ram_gb = a.ram_gb || 16;
-        if (/\b8\s*gb/.test(allText)) a.ram_gb = a.ram_gb || 8;
-        if (/\b4\s*gb\b/.test(allText)) a.ram_gb = a.ram_gb || 4;
-        if (/beginner|not.{0,3}tech|non.?tech|no idea/.test(allText)) a.comfort_level = 'beginner';
-        else if (/confident|advanced|tech.{0,3}background|developer/.test(allText)) a.comfort_level = 'confident';
-        else if (/some|comfortable|a bit|familiar/.test(allText)) a.comfort_level = 'some';
-        return a;
-      }
-
-      // Boot
-      elForm.addEventListener('submit', function (e) { e.preventDefault(); send(); });
-      elInput.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+        // Worker didn't respond or returned a bad payload - show local result anyway
+        renderResult(local, clientId);
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Get my recommendation';
       });
-      updateTurnPill();
-      elInput.disabled = false;
-      elSend.disabled = false;
-      elInput.focus();
     })();
   </script>
 </body>

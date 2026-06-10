@@ -3,10 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Confirmed-Fit Payment Handoff — Offline Helper</title>
-  <meta name="description" content="Offline Helper confirmed-fit payment handoff: payment options after a free fit check confirms the setup is appropriate.">
-  <meta name="robots" content="noindex">
+  <title>Confirmed-Fit Payment — Offline Helper</title>
+  <meta name="description" content="Payment opens only after the free fit check confirms the setup is safe, useful, and realistic. Live Stripe checkout.">
+  <meta name="robots" index, follow">
   <meta name="theme-color" content="#13231d">
+  <meta property="og:title" content="Confirmed-Fit Payment — Offline Helper">
+  <meta property="og:description" content="Payment opens only after the free fit check confirms your setup.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://offlinehelpers.com/confirmed-fit-payment/">
+  <link rel="icon" type="image/png" href="../assets/brand/offline-helpers-mark.png">
   <style>
     :root {
       --ink: #13231d;
@@ -36,8 +41,10 @@
     .nav { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
     .brand { display: inline-flex; align-items: center; gap: .7rem; font-weight: 800; letter-spacing: -.03em; text-decoration: none; }
     .brand-mark { width: 38px; height: 38px; border-radius: 13px; display: grid; place-items: center; background: var(--ink); color: var(--warm); font-weight: 900; box-shadow: 0 10px 24px rgba(19, 35, 29, .18); }
-    .button { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 48px; padding: .85rem 1.08rem; border-radius: 999px; border: 1px solid transparent; font-weight: 760; text-decoration: none; }
+    .button { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 48px; padding: .85rem 1.08rem; border-radius: 999px; border: 1px solid transparent; font-weight: 760; text-decoration: none; cursor: pointer; font: inherit; }
     .button.primary { background: var(--accent); color: white; box-shadow: 0 14px 30px rgba(47, 125, 92, .23); }
+    .button.primary:hover { background: var(--accent-dark); }
+    .button.primary:disabled { opacity: .5; cursor: wait; }
     .button.secondary { border-color: var(--line); background: rgba(255, 255, 255, .72); color: var(--ink); }
     main { padding: 5.2rem 0; }
     .hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(300px, .95fr); gap: clamp(2rem, 6vw, 4.5rem); align-items: start; }
@@ -54,8 +61,20 @@
     .muted { color: var(--muted); }
     .warning { margin-top: 1.25rem; padding: 1rem; border-radius: 18px; border: 1px solid rgba(154, 69, 58, .24); background: rgba(154, 69, 58, .07); color: #633028; }
     .section { margin-top: 2rem; }
+    .small { font-size: .9rem; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .92em; background: rgba(19, 35, 29, .06); padding: .1rem .35rem; border-radius: 6px; }
+
+    .fit-summary { display: grid; gap: .4rem; margin-top: 1rem; padding: .85rem 1rem; background: rgba(47, 125, 92, .08); border: 1px solid rgba(47, 125, 92, .2); border-radius: 14px; }
+    .fit-summary .row { display: flex; justify-content: space-between; gap: 1rem; }
+    .fit-summary .row strong { font-weight: 600; }
+
+    .checkout-card { display: grid; gap: .75rem; }
+    .checkout-card .tier-title { font-size: 1.15rem; font-weight: 700; margin: 0; }
+    .checkout-card .tier-price { color: var(--accent-dark); font-weight: 760; font-size: 1.05rem; margin: 0; }
+
     footer { border-top: 1px solid var(--line); padding: 2rem 0; color: var(--muted); }
     .footer-grid { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; }
+
     @media (max-width: 780px) { .hero { grid-template-columns: 1fr; } .nav { align-items: flex-start; flex-direction: column; padding: 1rem 0; } main { padding: 3.5rem 0; } }
   </style>
 </head>
@@ -64,7 +83,7 @@
   <header>
     <div class="nav">
       <a class="brand" href="../index.html" aria-label="Offline Helper home"><span class="brand-mark">OH</span><span>Offline Helper</span></a>
-      <a class="button secondary" href="../fit-check/index.html">Back to fit check</a>
+      <a class="button secondary" href="../chat-with-pete/">Back to fit check</a>
     </div>
   </header>
 
@@ -74,18 +93,25 @@
         <span class="eyebrow">Confirmed fit only · no public checkout</span>
         <h1>Payment opens after the fit check.</h1>
         <p class="lede">This handoff page keeps Offline Helper honest: customers pay only after the free fit check confirms the setup is safe, useful, and realistic.</p>
-        <div class="actions">
-          <a class="button primary" href="mailto:pdbjork@gmail.com?subject=Offline%20Helper%20confirmed-fit%20payment&body=Hi%20Pete%2C%0A%0AMy%20Offline%20Helper%20fit%20check%20was%20confirmed.%0A%0APackage%3A%0APayment%20preference%20%28Stripe%20or%20Jim%29%3A%0APreferred%20setup%20window%3A%0A">Ask for my confirmed payment link</a>
-          <a class="button secondary" href="#routes">Review payment routes</a>
+
+        <div class="fit-summary" id="fit-summary" hidden>
+          <div class="row"><strong>Fit check ID</strong><code id="fc-id">…</code></div>
+          <div class="row"><strong>Recommended package</strong><span id="fc-tier">…</span></div>
         </div>
-        <p class="warning"><strong>Safety rule:</strong> this page is not a checkout. Do not send passwords, recovery keys, bot tokens, private documents, medical/legal/financial details, or crisis information by email, chat, checkout, screenshots, or research forms.</p>
+
+        <div class="actions">
+          <a class="button primary" id="primary-cta" href="#" data-tier="starter_setup">Open secure Stripe checkout</a>
+          <a class="button secondary" href="mailto:pdbjork@gmail.com?subject=Offline%20Helper%20confirmed-fit%20payment">Ask Pete first</a>
+        </div>
+
+        <p class="warning"><strong>Safety rule:</strong> do not send passwords, recovery keys, bot tokens, private documents, medical/legal/financial details, or crisis information by email, chat, checkout, screenshots, or research forms. We never ask for them.</p>
       </section>
 
       <aside class="card" aria-labelledby="steps">
         <h2 id="steps">Before payment</h2>
         <ul class="list">
           <li>Fit check is complete and marked confirmed-fit.</li>
-          <li>Package is selected: Starter Setup or Family Setup.</li>
+          <li>Package is selected from the recommendation.</li>
           <li>Local versus cloud boundaries were explained.</li>
           <li>Refund/cancel path is clear before scheduling.</li>
         </ul>
@@ -93,40 +119,42 @@
     </div>
 
     <div class="wrap section">
-      <section class="card" id="routes">
-        <h2>Confirmed payment routes</h2>
-        <div class="routes">
-          <div class="route"><strong>Remote customer:</strong> fresh Stripe Checkout Session after fit check, or Stripe Payment Link fallback if the serverless route is not live yet.</div>
-          <div class="route"><strong>In-person or phone-assisted customer:</strong> Jim tap-to-pay or Jim mobile invoice.</div>
-          <div class="route"><strong>Family member payer:</strong> send Stripe or Jim invoice to the payer only after customer and payer consent.</div>
-          <div class="route"><strong>Unsure customer:</strong> do not pressure payment; offer the research list or a safer next step.</div>
-        </div>
-      </section>
-    </div>
-
-    <div class="wrap section">
       <section class="card">
-        <h2>Pay after fit check (Stripe Checkout)</h2>
-        <p class="muted">These buttons open a Stripe-hosted Checkout Session for the package you selected. Payment is taken only after the fit check has been confirmed.</p>
-        <div class="routes">
-          <div class="route">
-            <strong>Starter Setup — $149 pilot</strong>
-            <p class="muted">One person, one useful first workflow, privacy walkthrough, handoff guide, and 7-day setup-fix window.</p>
-            <a class="button primary" href="https://buy.stripe.com/test_8x228k4Ys1tO4avbUudMI00" target="_blank" rel="noopener">Pay $149 — Starter Setup</a>
+        <h2>Pick your package</h2>
+        <p class="muted">Each card is the same live Stripe checkout, just a different package. The link sends a fresh Stripe Checkout Session with your fit-check ID attached, so we can follow up personally.</p>
+        <div class="packages">
+          <div class="package checkout-card">
+            <p class="tier-title">Starter Setup — $149</p>
+            <p class="muted small">One person, one useful first workflow, privacy walkthrough, handoff guide, and a 7-day setup-fix window.</p>
+            <form class="checkout-form" data-tier="starter_setup">
+              <input type="hidden" name="fit_check_id" id="fc-id-form-1">
+              <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input" style="width:100%;padding:.65rem .9rem;border:1px solid var(--line);border-radius:12px;margin-bottom:.6rem;font:inherit;">
+              <button type="submit" class="button primary" style="width:100%;">Pay $149 — Starter Setup</button>
+            </form>
           </div>
-          <div class="route">
-            <strong>Family Setup — $249 pilot</strong>
-            <p class="muted">Loved-one/caregiver orientation, family handoff sheet, consent clarity, and a 30-minute follow-up.</p>
-            <a class="button primary" href="https://buy.stripe.com/test_8x2fZa9eI2xSdL51fQdMI01" target="_blank" rel="noopener">Pay $249 — Family Setup</a>
+          <div class="package checkout-card">
+            <p class="tier-title">Family Setup — $249</p>
+            <p class="muted small">Loved-one/caregiver orientation, family handoff sheet, consent clarity, and a 30-minute follow-up.</p>
+            <form class="checkout-form" data-tier="family_setup">
+              <input type="hidden" name="fit_check_id" id="fc-id-form-2">
+              <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input" style="width:100%;padding:.65rem .9rem;border:1px solid var(--line);border-radius:12px;margin-bottom:.6rem;font:inherit;">
+              <button type="submit" class="button primary" style="width:100%;">Pay $249 — Family Setup</button>
+            </form>
           </div>
-          <div class="route">
-            <strong>Family Support — $29/month</strong>
-            <p class="muted">Monthly health check, update check, archive verification, and one short support question. Cancel anytime in the Customer Portal.</p>
-            <a class="button primary" href="https://buy.stripe.com/test_3cIbIUbmQb4o22n4s2dMI02" target="_blank" rel="noopener">Subscribe $29/month</a>
+          <div class="package checkout-card">
+            <p class="tier-title">Family Support — $29/month</p>
+            <p class="muted small">Monthly health check, update check, archive verification, and one short support question. Cancel anytime in the Customer Portal from the receipt.</p>
+            <form class="checkout-form" data-tier="family_support">
+              <input type="hidden" name="fit_check_id" id="fc-id-form-3">
+              <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input" style="width:100%;padding:.65rem .9rem;border:1px solid var(--line);border-radius:12px;margin-bottom:.6rem;font:inherit;">
+              <button type="submit" class="button primary" style="width:100%;">Subscribe $29/month</button>
+            </form>
           </div>
         </div>
+
+        <p id="error-slot" class="warning" hidden></p>
+
         <p class="warning"><strong>Safety rule:</strong> do not paste passwords, recovery keys, bot tokens, or private documents into Stripe Checkout or any other form on this site. We never ask for them.</p>
-        <p class="muted">Test mode only. Use card <code>4242 4242 4242 4242</code>, any future expiry, any CVC, any ZIP. When you're ready to go live, recreate the Payment Links in the Stripe Dashboard's Live mode and update these three URLs.</p>
       </section>
     </div>
   </main>
@@ -134,8 +162,114 @@
   <footer>
     <div class="wrap footer-grid">
       <span>© 2026 Offline Helper. Confirmed-fit payment only.</span>
-      <span><a href="../fit-check/index.html">Free fit check</a> · <a href="mailto:pdbjork@gmail.com">Contact</a></span>
+      <span><a href="../chat-with-pete/">Free fit check</a> · <a href="../refund-policy/">Refund policy</a> · <a href="mailto:pdbjork@gmail.com">Contact</a></span>
     </div>
   </footer>
+
+  <script>
+    (function () {
+      'use strict';
+      var WORKER = 'https://offline-helper-payments.offline-helper-payments.workers.dev';
+      var params = new URLSearchParams(window.location.search);
+      var tier = (params.get('tier') || 'starter_setup').replace(/[^a-z_]/g, '').slice(0, 32);
+      var fitCheckId = (params.get('fit_check_id') || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 40);
+
+      var TIER_NAMES = {
+        starter_setup: 'Starter Setup — $149',
+        family_setup:  'Family Setup — $249',
+        family_support: 'Family Support — $29/month',
+      };
+
+      // Pre-fill fit check id into the summary box and every form
+      var summary = document.getElementById('fit-summary');
+      var fcIdEl = document.getElementById('fc-id');
+      var fcTierEl = document.getElementById('fc-tier');
+      if (fitCheckId) {
+        summary.hidden = false;
+        fcIdEl.textContent = fitCheckId;
+        fcTierEl.textContent = TIER_NAMES[tier] || tier;
+        // Fill all hidden inputs
+        document.querySelectorAll('input[type="hidden"][name="fit_check_id"]').forEach(function (i) {
+          i.value = fitCheckId;
+        });
+        // Pre-pick the recommended package by hiding others and showing it
+        // Actually: keep all three visible so the buyer can override, but
+        // set the primary CTA tier and label
+        var cta = document.getElementById('primary-cta');
+        cta.textContent = 'Open secure Stripe checkout for ' + (TIER_NAMES[tier] || tier);
+        cta.dataset.tier = tier;
+        cta.addEventListener('click', function (e) {
+          e.preventDefault();
+          startCheckout(tier, fitCheckId, null);
+        });
+      } else {
+        // No fit-check context: hide the primary CTA (use the per-package forms)
+        document.getElementById('primary-cta').style.display = 'none';
+      }
+
+      // Wire up each per-package form
+      document.querySelectorAll('form.checkout-form').forEach(function (f) {
+        f.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var t = f.dataset.tier;
+          var fc = f.querySelector('input[name="fit_check_id"]').value || '';
+          var email = f.querySelector('input[name="customer_email"]').value || '';
+          startCheckout(t, fc, email);
+        });
+      });
+
+      function startCheckout(t, fcId, email) {
+        var err = document.getElementById('error-slot');
+        err.hidden = true;
+        err.textContent = '';
+
+        var body = new URLSearchParams();
+        body.set('package', t);
+        if (fcId) body.set('fit_check_id', fcId);
+        if (email) body.set('customer_email', email);
+
+        // Disable all submit buttons so the buyer can't double-click
+        document.querySelectorAll('form.checkout-form button[type="submit"]').forEach(function (b) {
+          b.disabled = true;
+          b.textContent = 'Opening Stripe…';
+        });
+        var cta = document.getElementById('primary-cta');
+        cta.classList.add('disabled');
+
+        fetch(WORKER + '/api/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'text/html' },
+          body: body.toString(),
+          redirect: 'manual', // we want to capture the 303 Location header instead of following
+        }).then(function (res) {
+          // The Worker returns 303 with a Location header for browser-style form posts.
+          // Some browsers/fetch will expose it as `res.url` or via `res.headers.get('Location')`.
+          var loc = res.headers.get('Location') || res.headers.get('location') || '';
+          if (res.status === 200 && res.headers.get('content-type') && res.headers.get('content-type').indexOf('application/json') !== -1) {
+            // Fallback: JSON body with url
+            return res.json().then(function (j) {
+              if (j && j.url) { window.location.href = j.url; return; }
+              throw new Error('No url in response: ' + JSON.stringify(j).slice(0, 200));
+            });
+          }
+          if (loc) { window.location.href = loc; return; }
+          // 303 + manual redirect mode: response.url is the new URL
+          if (res.url && res.url !== window.location.href) { window.location.href = res.url; return; }
+          throw new Error('No redirect Location header (status ' + res.status + ')');
+        }).catch(function (e) {
+          err.hidden = false;
+          err.textContent = 'Could not start checkout: ' + (e && e.message ? e.message : 'unknown error') +
+            '. Please email pdbjork@gmail.com and we will get you sorted.';
+          // Re-enable buttons
+          document.querySelectorAll('form.checkout-form button[type="submit"]').forEach(function (b, i) {
+            b.disabled = false;
+            var labels = ['Pay $149 — Starter Setup', 'Pay $249 — Family Setup', 'Subscribe $29/month'];
+            b.textContent = labels[i] || b.textContent;
+          });
+          cta.classList.remove('disabled');
+        });
+      }
+    })();
+  </script>
 </body>
 </html>
