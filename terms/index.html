@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Terms of Service — Offline Helper</title>
+  <meta name="description" content="The plain-English terms that govern your use of Offline Helper's setup and support services.">
+  <meta property="og:title" content="Terms of Service — Offline Helper">
+  <meta property="og:description" content="The plain-English terms that govern your use of Offline Helper's setup and support services.">
+  <meta property="og:type" content="article">
+  <link rel="icon" type="image/png" href="../assets/brand/offline-helpers-mark.png">
+  <meta name="theme-color" content="#13231d">
+  <link rel="canonical" href="https://offlinehelpers.com/terms/">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #191713;
+      --muted: #554c42;
+      --paper: #fffaf0;
+      --line: #ded0bc;
+      --accent: #bb4e2f;
+      --warm: #f5b63f;
+      --max: 780px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 14% 8%, rgba(245, 182, 63, .28), transparent 30rem),
+        linear-gradient(180deg, #fbf2df 0%, #fffaf0 100%);
+      color: var(--ink);
+      line-height: 1.65;
+    }
+    a { color: var(--accent); }
+    .skip-link { position: absolute; left: 1rem; top: -4rem; background: var(--ink); color: white; padding: .75rem 1rem; z-index: 20; }
+    .skip-link:focus { top: 1rem; }
+    header { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(18px); background: rgba(255, 250, 240, .88); border-bottom: 1px solid rgba(222, 214, 200, .72); }
+    .nav { width: min(var(--max), calc(100% - 2rem)); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 72px; }
+    .brand { font-weight: 700; font-size: 1.05rem; letter-spacing: -.01em; text-decoration: none; color: var(--ink); }
+    .brand-mark { display: inline-block; width: 28px; height: 28px; margin-right: .55rem; vertical-align: -.55rem; border-radius: 8px; }
+    nav ul { display: flex; gap: 1.4rem; list-style: none; padding: 0; margin: 0; }
+    nav a { text-decoration: none; color: var(--ink); font-weight: 500; }
+    nav a:hover { color: var(--accent); }
+    main { width: min(var(--max), calc(100% - 2rem)); margin: 0 auto; padding: 2.5rem 0 4rem; }
+    h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); letter-spacing: -.02em; line-height: 1.2; margin: 0 0 .5rem; }
+    h2 { font-size: 1.2rem; margin: 2rem 0 .5rem; letter-spacing: -.01em; }
+    .meta { color: var(--muted); font-size: .95rem; margin: 0 0 1.5rem; }
+    .lede { background: rgba(245, 182, 63, .12); border-left: 3px solid var(--warm); padding: 1rem 1.1rem; border-radius: 0 12px 12px 0; margin: 0 0 2rem; color: var(--ink); }
+    p { margin: 0 0 1rem; }
+    ul, ol { padding-left: 1.4rem; margin: 0 0 1rem; }
+    li { margin-bottom: .35rem; }
+    .toc { background: rgba(255, 250, 240, .6); border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.2rem; margin: 0 0 2rem; font-size: .95rem; }
+    .toc ol { margin: .4rem 0 0; columns: 2; column-gap: 1.5rem; }
+    .toc a { color: var(--ink); text-decoration: none; }
+    .toc a:hover { color: var(--accent); }
+    hr { border: 0; border-top: 1px solid var(--line); margin: 2rem 0; }
+    footer { padding: 2.5rem 0; color: var(--muted); font-size: .95rem; border-top: 1px solid var(--line); }
+    .footer-grid { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .footer-grid a { color: var(--ink); }
+    @media (max-width: 860px) { nav ul { display: none; } .toc ol { columns: 1; } }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header>
+    <div class="nav" aria-label="Main navigation">
+      <a class="brand" href="../index.html" aria-label="Offline Helper home">
+        <img class="brand-mark" src="../assets/brand/offline-helpers-mark.png" alt="" width="28" height="28">Offline Helper
+      </a>
+      <nav>
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../faq/">FAQ</a></li>
+          <li><a href="../fit-check/">Free fit check</a></li>
+          <li><a href="mailto:pdbjork@gmail.com">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <h1>Terms of Service</h1>
+    <p class="meta">Effective: June 10, 2026 · Offline Helpers, LLC</p>
+
+    <div class="lede">
+      <strong>The short version:</strong> We install private local AI on your computer, we don't take your data, you can cancel anytime, and if something goes sideways we'll make it right. The full version is below.
+    </div>
+
+    <nav class="toc" aria-label="Table of contents">
+      <strong>Contents</strong>
+      <ol>
+        <li><a href="#what-we-do">What we do</a></li>
+        <li><a href="#your-account">Your account and devices</a></li>
+        <li><a href="#payments">Payments and subscriptions</a></li>
+        <li><a href="#refunds">Refunds and cancellation</a></li>
+        <li><a href="#acceptable-use">Acceptable use</a></li>
+        <li><a href="#our-promise">Our promise to you</a></li>
+        <li><a href="#warranty">Warranty and liability</a></li>
+        <li><a href="#changes">Changes to these terms</a></li>
+        <li><a href="#contact">Contact and disputes</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="what-we-do">1. What we do</h2>
+    <p>Offline Helpers, LLC ("Offline Helper," "we," "us") provides remote setup and ongoing support services for private, locally-installed AI assistants on Mac and Windows computers. Our Starter Setup, Family Setup, and Family Support products are described on our <a href="../index.html">homepage</a> and <a href="../faq/">FAQ</a>.</p>
+    <p>When you pay for a service, you are buying a one-time or recurring remote session with a human technician. We do not sell software. The AI software we install (Ollama, LM Studio, and similar) is open-source and licensed by its respective authors, not by us.</p>
+
+    <h2 id="your-account">2. Your account and devices</h2>
+    <p>You confirm that you own or have permission to modify the computer(s) we work on. If the computer belongs to a family member, employer, or school, you have their authorization to let us make changes.</p>
+    <p>You agree to:</p>
+    <ul>
+      <li>Be available at the scheduled session time, or reschedule at least 24 hours in advance.</li>
+      <li>Provide a working internet connection and a computer that can run a modern web browser.</li>
+      <li>Have administrator access to the device, or arrange for whoever has admin access to be present.</li>
+    </ul>
+    <p>We will never ask for, and you should never share, your bank password, email password, social security number, or any login credentials unrelated to the install. If we ever need to authenticate as you on the device, we will tell you exactly what we're doing and why, in plain language.</p>
+
+    <h2 id="payments">3. Payments and subscriptions</h2>
+    <p>Payments are processed by Stripe. By paying, you agree to Stripe's <a href="https://stripe.com/legal" target="_blank" rel="noopener">terms of service</a> in addition to ours. We never see or store your card number.</p>
+    <p>One-time setups (Starter Setup, Family Setup) are charged once at checkout.</p>
+    <p>The Family Support subscription is charged monthly at $29 USD until canceled. You can cancel at any time from the link in any receipt email, or by emailing us. Cancellation takes effect at the end of the current billing period — we do not prorate and we do not refund partial months.</p>
+
+    <h2 id="refunds">4. Refunds and cancellation</h2>
+    <p>We offer a 30-day money-back guarantee on all one-time setup services. If you are not satisfied for any reason, email us within 30 days of the session and we will refund the full amount, no questions asked. See the full <a href="../refund-policy/">Refund Policy</a>.</p>
+    <p>For the Family Support subscription, you can cancel anytime to stop future charges. We do not refund partial months. If you cancel within 14 days of a charge and have not used the support service, email us and we will refund that month.</p>
+
+    <h2 id="acceptable-use">5. Acceptable use</h2>
+    <p>You agree not to use the installed AI for:</p>
+    <ul>
+      <li>Anything illegal under US federal law or the law of your state.</li>
+      <li>Generating content that targets, harasses, or harms a specific individual.</li>
+      <li>Producing child sexual abuse material (CSAM) — we will report this to NCMEC and cooperate fully with law enforcement.</li>
+      <li>Circumventing copyright, licensing, or terms-of-service on third-party services.</li>
+      <li>Spam, bulk messaging, or denial-of-service attacks.</li>
+    </ul>
+    <p>The AI runs on your own computer. We have no ability to monitor what you ask it. If you violate this section, we may terminate your support subscription, but we will not remotely disable the local install (we cannot — that is the point of local-first software).</p>
+
+    <h2 id="our-promise">6. Our promise to you</h2>
+    <p>We promise to:</p>
+    <ul>
+      <li>Treat you, your family, and your data with respect.</li>
+      <li>Explain what we are doing in plain language, not jargon.</li>
+      <li>Show up on time for scheduled sessions, or notify you in advance if we need to reschedule.</li>
+      <li>Keep your conversations, fit-check answers, and any data we touch private. We do not sell, share, or train on your data. See our <a href="../privacy/">Privacy Policy</a>.</li>
+    </ul>
+
+    <h2 id="warranty">7. Warranty and limitation of liability</h2>
+    <p>We provide our services with reasonable care and skill. We do not guarantee that the installed AI will produce accurate, complete, or useful output for any particular task. AI language models can and do make mistakes. Use your judgment, especially for medical, legal, financial, or safety-critical decisions.</p>
+    <p>To the maximum extent permitted by law, our total liability to you for any claim arising from our services is limited to the amount you paid us in the 12 months before the claim. We are not liable for indirect, incidental, or consequential damages, including lost profits, lost data, or emotional distress.</p>
+    <p>Some states do not allow limitations on certain warranties or damages; in those states, the limitations above apply only to the maximum extent permitted by your state's law.</p>
+
+    <h2 id="changes">8. Changes to these terms</h2>
+    <p>If we change these terms in a material way, we will email active subscribers at least 30 days before the change takes effect. The "Effective" date at the top of this page always shows the current version. Continued use of our services after the effective date constitutes acceptance.</p>
+
+    <h2 id="contact">9. Contact and disputes</h2>
+    <p>Offline Helpers, LLC is a US limited liability company. You can reach us at <a href="mailto:pdbjork@gmail.com">pdbjork@gmail.com</a> or by mail at the address we will provide on request.</p>
+    <p>We will try to resolve any dispute informally first — just email us. If we cannot, you agree that any formal dispute will be handled in the state and federal courts located in the state of our principal place of business, and you consent to personal jurisdiction in those courts.</p>
+    <p>Nothing in this section prevents you from filing a complaint with your state attorney general or the US Federal Trade Commission.</p>
+
+    <hr>
+    <p style="color: var(--muted); font-size: .9rem;">This is a plain-language summary of standard service terms. It is not legal advice. If you have specific legal questions, consult a lawyer licensed in your state.</p>
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <span>© 2026 Offline Helpers, LLC. Local-first AI setup, explained simply.</span>
+      <span><a href="../privacy/">Privacy</a> · <a href="../refund-policy/">Refunds</a> · <a href="mailto:pdbjork@gmail.com">Contact</a></span>
+    </div>
+  </footer>
+</body>
+</html>

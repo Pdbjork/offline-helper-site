@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy — Offline Helper</title>
+  <meta name="description" content="What data Offline Helper collects, what we do with it, and how to ask us to delete it. Plain English.">
+  <meta property="og:title" content="Privacy Policy — Offline Helper">
+  <meta property="og:description" content="What data Offline Helper collects, what we do with it, and how to ask us to delete it.">
+  <meta property="og:type" type="article">
+  <link rel="icon" type="image/png" href="../assets/brand/offline-helpers-mark.png">
+  <meta name="theme-color" content="#13231d">
+  <link rel="canonical" href="https://offlinehelpers.com/privacy/">
+
+  <!--
+    JSON-LD so search engines + AI models have a clean entity for the
+    privacy policy. Not legally required, but helps the "authoritative
+    citations" AI-visibility gap.
+  -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Privacy Policy — Offline Helper",
+    "url": "https://offlinehelpers.com/privacy/",
+    "isPartOf": { "@id": "https://offlinehelpers.com/#website" },
+    "dateModified": "2026-06-10",
+    "inLanguage": "en"
+  }
+  </script>
+
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #191713;
+      --muted: #554c42;
+      --paper: #fffaf0;
+      --line: #ded0bc;
+      --accent: #bb4e2f;
+      --warm: #f5b63f;
+      --max: 780px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 14% 8%, rgba(245, 182, 63, .28), transparent 30rem),
+        linear-gradient(180deg, #fbf2df 0%, #fffaf0 100%);
+      color: var(--ink);
+      line-height: 1.65;
+    }
+    a { color: var(--accent); }
+    .skip-link { position: absolute; left: 1rem; top: -4rem; background: var(--ink); color: white; padding: .75rem 1rem; z-index: 20; }
+    .skip-link:focus { top: 1rem; }
+    header { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(18px); background: rgba(255, 250, 240, .88); border-bottom: 1px solid rgba(222, 214, 200, .72); }
+    .nav { width: min(var(--max), calc(100% - 2rem)); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 72px; }
+    .brand { font-weight: 700; font-size: 1.05rem; letter-spacing: -.01em; text-decoration: none; color: var(--ink); }
+    .brand-mark { display: inline-block; width: 28px; height: 28px; margin-right: .55rem; vertical-align: -.55rem; border-radius: 8px; }
+    nav ul { display: flex; gap: 1.4rem; list-style: none; padding: 0; margin: 0; }
+    nav a { text-decoration: none; color: var(--ink); font-weight: 500; }
+    nav a:hover { color: var(--accent); }
+    main { width: min(var(--max), calc(100% - 2rem)); margin: 0 auto; padding: 2.5rem 0 4rem; }
+    h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); letter-spacing: -.02em; line-height: 1.2; margin: 0 0 .5rem; }
+    h2 { font-size: 1.2rem; margin: 2rem 0 .5rem; letter-spacing: -.01em; }
+    .meta { color: var(--muted); font-size: .95rem; margin: 0 0 1.5rem; }
+    .lede { background: rgba(45, 117, 189, .08); border-left: 3px solid #2d75bd; padding: 1rem 1.1rem; border-radius: 0 12px 12px 0; margin: 0 0 2rem; }
+    p { margin: 0 0 1rem; }
+    ul, ol { padding-left: 1.4rem; margin: 0 0 1rem; }
+    li { margin-bottom: .35rem; }
+    .toc { background: rgba(255, 250, 240, .6); border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.2rem; margin: 0 0 2rem; font-size: .95rem; }
+    .toc ol { margin: .4rem 0 0; columns: 2; column-gap: 1.5rem; }
+    .toc a { color: var(--ink); text-decoration: none; }
+    .toc a:hover { color: var(--accent); }
+    table { width: 100%; border-collapse: collapse; margin: 0 0 1.5rem; font-size: .95rem; }
+    th, td { text-align: left; padding: .6rem .75rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { background: rgba(255, 250, 240, .6); font-weight: 600; }
+    hr { border: 0; border-top: 1px solid var(--line); margin: 2rem 0; }
+    footer { padding: 2.5rem 0; color: var(--muted); font-size: .95rem; border-top: 1px solid var(--line); }
+    .footer-grid { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .footer-grid a { color: var(--ink); }
+    @media (max-width: 860px) { nav ul { display: none; } .toc ol { columns: 1; } }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header>
+    <div class="nav" aria-label="Main navigation">
+      <a class="brand" href="../index.html" aria-label="Offline Helper home">
+        <img class="brand-mark" src="../assets/brand/offline-helpers-mark.png" alt="" width="28" height="28">Offline Helper
+      </a>
+      <nav>
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../faq/">FAQ</a></li>
+          <li><a href="../fit-check/">Free fit check</a></li>
+          <li><a href="mailto:pdbjork@gmail.com">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <h1>Privacy Policy</h1>
+    <p class="meta">Effective: June 10, 2026 · Offline Helpers, LLC</p>
+
+    <div class="lede">
+      <strong>The short version:</strong> The AI runs on your own computer, not on our servers. We see your email, your payment confirmation, and the answers you give us in the fit check. We do not see your chats with the AI. We do not sell or share your data. You can ask us to delete everything we have on you at any time, and we will, within 30 days.
+    </div>
+
+    <nav class="toc" aria-label="Table of contents">
+      <strong>Contents</strong>
+      <ol>
+        <li><a href="#what-we-collect">What we collect</a></li>
+        <li><a href="#what-we-dont">What we never see</a></li>
+        <li><a href="#how-we-use">How we use it</a></li>
+        <li><a href="#who-we-share">Who we share it with</a></li>
+        <li><a href="#cookies">Cookies and analytics</a></li>
+        <li><a href="#your-rights">Your rights (US state laws)</a></li>
+        <li><a href="#data-retention">How long we keep it</a></li>
+        <li><a href="#security">How we protect it</a></li>
+        <li><a href="#children">Children</a></li>
+        <li><a href="#changes">Changes</a></li>
+        <li><a href="#contact">Contact and DPO</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="what-we-collect">1. What we collect</h2>
+    <p>When you interact with Offline Helper, we collect:</p>
+    <table>
+      <thead>
+        <tr><th>What</th><th>When</th><th>Why</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Email address</td><td>Fit check, support request, or purchase</td><td>To contact you about your session and to send receipts</td></tr>
+        <tr><td>Name (optional)</td><td>If you give it to us</td><td>So we can greet you properly</td></tr>
+        <tr><td>Fit-check answers</td><td>When you submit the fit-check form</td><td>To decide whether we are the right fit for you</td></tr>
+        <tr><td>Payment confirmation</td><td>At checkout</td><td>To fulfill the order. Card numbers go to Stripe, not to us</td></tr>
+        <tr><td>Device specs (model, OS version)</td><td>During the install session</td><td>To install the right AI software for your machine</td></tr>
+        <tr><td>Support emails</td><td>When you email us</td><td>To help you</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="what-we-dont">2. What we never see</h2>
+    <p>This is the part that matters most and is easiest to gloss over, so it gets its own section.</p>
+    <p>The AI assistant we install runs locally on your computer. We do not have remote access to it after the install session ends. Specifically:</p>
+    <ul>
+      <li>We do <strong>not</strong> see the questions you ask the AI.</li>
+      <li>We do <strong>not</strong> see the AI's answers to you.</li>
+      <li>We do <strong>not</strong> collect your chat history.</li>
+      <li>We do <strong>not</strong> collect any documents, files, or notes you create with the AI.</li>
+      <li>We do <strong>not</strong> install keyloggers, telemetry, analytics, or any "phone home" software in the AI.</li>
+    </ul>
+    <p>The entire point of the service is that the AI is private to you. If you ever feel we have crossed that line, contact us immediately and we will address it. If we ever discover a real breach, we will notify you within 72 hours.</p>
+
+    <h2 id="how-we-use">3. How we use what we collect</h2>
+    <p>We use the data listed in section 1 to:</p>
+    <ul>
+      <li>Deliver the service you paid for (schedule your session, run the install, follow up).</li>
+      <li>Send transactional emails: confirmations, receipts, and service announcements (e.g., "the install session moved by 30 minutes").</li>
+      <li>Improve our fit-check and onboarding questions over time, using aggregate (not individual) data.</li>
+      <li>Comply with US tax and business law (e.g., we keep payment records for 7 years, as required by the IRS).</li>
+    </ul>
+    <p>We do not use your data for advertising. We do not use your data to train any AI model. We do not sell or "rent" your data to anyone, ever.</p>
+
+    <h2 id="who-we-share">4. Who we share it with</h2>
+    <p>We share your data only with the vendors we use to run the business, and only the minimum they need to do their job:</p>
+    <table>
+      <thead>
+        <tr><th>Vendor</th><th>What they get</th><th>Why</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Stripe</td><td>Payment info at checkout, basic profile</td><td>To process your payment. See <a href="https://stripe.com/privacy" target="_blank" rel="noopener">Stripe's privacy policy</a>.</td></tr>
+        <tr><td>Cloudflare</td><td>Site traffic logs, KV queue data</td><td>To run the website and the payment fulfillment queue. Logs auto-delete after 30 days.</td></tr>
+        <tr><td>Google Workspace (Gmail)</td><td>Your email correspondence with us</td><td>To reply to you. Google's privacy policy applies to their handling.</td></tr>
+      </tbody>
+    </table>
+    <p>We will also share data if a US court orders us to, but we will challenge overly broad requests and notify you if legally permitted.</p>
+
+    <h2 id="cookies">5. Cookies and analytics</h2>
+    <p>The Offline Helper website uses only strictly necessary cookies and local storage (for things like "you have already seen the fit-check form"). We do not use Google Analytics, Meta Pixel, or any third-party advertising trackers.</p>
+    <p>If we add analytics in the future, we will update this policy and ask for consent where required.</p>
+
+    <h2 id="your-rights">6. Your rights under US state privacy laws</h2>
+    <p>Several US states give you specific rights over your personal data. If you live in California, Virginia, Colorado, Connecticut, Utah, Texas, Oregon, Montana, Delaware, Iowa, New Hampshire, New Jersey, Tennessee, Minnesota, Maryland, Indiana, Kentucky, Rhode Island, or another state with a comprehensive privacy law, you have the right to:</p>
+    <ul>
+      <li><strong>Know</strong> what personal data we have about you.</li>
+      <li><strong>Delete</strong> it, with the exceptions noted in section 7.</li>
+      <li><strong>Correct</strong> inaccurate data.</li>
+      <li><strong>Port</strong> your data in a machine-readable format.</li>
+      <li><strong>Opt out of sale or sharing</strong> — we don't sell or share, so this is automatic.</li>
+      <li><strong>Non-discrimination</strong> for exercising your rights.</li>
+    </ul>
+    <p>To exercise any of these rights, email <a href="mailto:pdbjork@gmail.com">pdbjork@gmail.com</a> from the address you have on file with us (so we can verify it's you). We will respond within 45 days. We will not charge you for a reasonable number of requests per year.</p>
+    <p>California "Shine the Light" (Civil Code § 1798.83): we do not share your data with third parties for their direct marketing purposes.</p>
+
+    <h2 id="data-retention">7. How long we keep it</h2>
+    <table>
+      <thead>
+        <tr><th>Category</th><th>How long</th><th>Why</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Payment records (receipts, Stripe transaction IDs)</td><td>7 years</td><td>US tax law (IRS)</td></tr>
+        <tr><td>Support emails</td><td>3 years after last contact</td><td>Reasonable lookback for any follow-up issues</td></tr>
+        <tr><td>Fit-check answers (if you did not buy)</td><td>12 months</td><td>Follow-up unless you ask us to delete sooner</td></tr>
+        <tr><td>Subscription status</td><td>For the life of the subscription + 2 years</td><td>Handle renewals, refunds, and disputes</td></tr>
+        <tr><td>Marketing list (if you opted in)</td><td>Until you unsubscribe</td><td>One-click unsubscribe in every email</td></tr>
+      </tbody>
+    </table>
+    <p>When the retention period ends, we delete the data within 30 days. If you ask us to delete your data sooner, we will — except for the records we're legally required to keep (e.g., tax records), which we will isolate from anything that can be used to contact you.</p>
+
+    <h2 id="security">8. How we protect it</h2>
+    <p>We use industry-standard safeguards: TLS for all data in transit, encrypted storage at rest, and access limited to the founder (Pete) plus a single, password-managed Cloudflare account. We do not store your card data — Stripe does, and they are PCI-DSS Level 1 certified.</p>
+    <p>No system is 100% secure. If we ever discover a breach affecting your data, we will notify you within 72 hours by email and post a notice on this page.</p>
+
+    <h2 id="children">9. Children's privacy</h2>
+    <p>Offline Helper is intended for adults. We do not knowingly collect data from anyone under 16. If we learn we have, we will delete it within 30 days. If you believe a child has submitted data through our fit check, email us.</p>
+
+    <h2 id="changes">10. Changes to this policy</h2>
+    <p>If we change this policy in a material way, we will update the "Effective" date at the top, post a notice on the homepage, and email active subscribers. Non-material changes (typos, clarifications) will be made silently.</p>
+
+    <h2 id="contact">11. Contact and data protection contact</h2>
+    <p>Offline Helpers, LLC is the data controller for any personal data described in this policy.</p>
+    <p>You can reach us at:</p>
+    <ul>
+      <li>Email: <a href="mailto:pdbjork@gmail.com">pdbjork@gmail.com</a></li>
+      <li>Subject line starting with "Privacy" so it gets routed quickly.</li>
+    </ul>
+    <p>For complaints, you also have the right to contact your state attorney general or the US Federal Trade Commission.</p>
+
+    <hr>
+    <p style="color: var(--muted); font-size: .9rem;">This is a plain-language privacy policy. It is not legal advice. If you have specific legal questions, consult a lawyer licensed in your state.</p>
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <span>© 2026 Offline Helpers, LLC. Local-first AI setup, explained simply.</span>
+      <span><a href="../terms/">Terms</a> · <a href="../refund-policy/">Refunds</a> · <a href="mailto:pdbjork@gmail.com">Contact</a></span>
+    </div>
+  </footer>
+</body>
+</html>
