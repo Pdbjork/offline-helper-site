@@ -288,7 +288,16 @@ async function handleFitCheckChat(request, env) {
   try {
     data = await callOpenAIChat(messages, env.OPENAI_API_KEY);
   } catch (err) {
-    return jsonResponse({ error: `OpenAI error: ${err.message}` }, 502);
+    // Translate OpenAI auth/quota failures into the same friendly fallback
+    // the static form uses, so the page can route buyers correctly.
+    const msg = err && err.message ? err.message : "";
+    if (/429|quota|401|api[_-]?key|insufficient/i.test(msg)) {
+      return jsonResponse({
+        error: "AI chat temporarily unavailable. Please use the static fit check form at https://offlinehelpers.com/chat-with-pete/ - it produces the same fit_check_id and routes through the same checkout.",
+        fallback_url: "https://offlinehelpers.com/chat-with-pete/",
+      }, 503);
+    }
+    return jsonResponse({ error: `OpenAI error: ${msg}` }, 502);
   }
 
   const reply = data?.choices?.[0]?.message?.content || "";
