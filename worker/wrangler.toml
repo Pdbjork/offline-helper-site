@@ -1,20 +1,19 @@
 name = "offline-helper-payments"
 main = "src/index.js"
 compatibility_date = "2026-06-01"
-# account_id is left unset so wrangler uses the only authenticated account.
-# If you ever have multiple accounts, set it explicitly here.
+account_id = "4ae314cd311448df9909f40323d9c704"
 
-# Create a KV namespace once with:
+# Cloudflare KV namespace for the fulfillment queue. Created with:
 #   npx wrangler kv namespace create OFFLINE_HELPER_QUEUE
-# then paste the id below.
+# The id below was generated for the pdbjork@gmail.com account.
 [[kv_namespaces]]
 binding = "QUEUE"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
+id = "3c7bbec4df2a4f918ea54648ea8a1570"
 
 [vars]
 # STRIPE_LIVE_APPROVED = "0" while STRIPE_SECRET_KEY is a test key.
-# Flip to "1" only after you have rotated to a live key, connected a
-# bank account in the Stripe Dashboard, and reviewed the catalog.
+# The Worker refuses to run if the key prefix doesn't match this flag.
+# Flip to "1" only AFTER the test-mode dry run passes (see README).
 STRIPE_LIVE_APPROVED = "0"
 
 # Secrets (set with `npx wrangler secret put`):
