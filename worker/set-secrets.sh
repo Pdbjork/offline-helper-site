@@ -50,4 +50,5 @@ unset WH
 echo "  ✓ STRIPE_WEBHOOK_SECRET set"
 
 echo ""
-echo "✓ All secrets pushed. Verify with: npx wrangler secret list"
+echo "✓ All Stripe secrets pushed. Now run set-openai-key.sh to add the OpenAI key."
+echo "  Verify with: npx wrangler secret list"
