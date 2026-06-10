@@ -1,0 +1,108 @@
+<!--
+  Drop this whole <script> block into /offline-helper-site/index.html
+  right BEFORE the closing </head> tag (after line 478, the </style>).
+  No visible HTML changes. Validates against:
+    - Google Rich Results Test  https://search.google.com/test/rich-results
+    - Schema Markup Validator   https://validator.schema.org/
+-->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["Organization", "LocalBusiness"],
+      "@id": "https://offlinehelpers.com/#organization",
+      "name": "Offline Helper",
+      "alternateName": "Offline Helpers, LLC",
+      "url": "https://offlinehelpers.com/",
+      "logo": "https://offlinehelpers.com/assets/brand/offline-helpers-logo.jpg",
+      "image": "https://offlinehelpers.com/assets/brand/offline-helpers-logo.jpg",
+      "description": "Done-for-you private, local-first AI assistant setup for families, caregivers, and older adults on Mac and Windows PC. Fit-check first, no pressure.",
+      "founder": {
+        "@type": "Person",
+        "name": "Pete Bjork",
+        "email": "mailto:pdbjork@gmail.com"
+      },
+      "contactPoint": [{
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "pdbjork@gmail.com",
+        "url": "https://offlinehelpers.com/fit-check/",
+        "availableLanguage": ["English"],
+        "areaServed": "US"
+      }],
+      "sameAs": [
+        "https://www.skool.com/offline-helper/about"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "US"
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://offlinehelpers.com/#service-starter",
+      "serviceType": "AI Privacy Setup",
+      "name": "Offline Helper Starter Setup",
+      "description": "A one-time, done-for-you install of a private local AI assistant on one Mac or Windows PC, tuned for a non-technical owner. Includes fit check, remote setup, hand-off call, and 30 days of email support.",
+      "provider": { "@id": "https://offlinehelpers.com/#organization" },
+      "areaServed": "US",
+      "offers": {
+        "@type": "Offer",
+        "url": "https://offlinehelpers.com/#pricing",
+        "price": "149.00",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "category": "One-time setup"
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://offlinehelpers.com/#service-family",
+      "serviceType": "AI Privacy Setup",
+      "name": "Offline Helper Family Setup",
+      "description": "A one-time, done-for-you install of a private local AI assistant for a family or household, set up so a non-technical relative (often an older adult) can use it confidently. Includes a caregiver admin view, privacy controls, and a one-hour family walkthrough.",
+      "provider": { "@id": "https://offlinehelpers.com/#organization" },
+      "areaServed": "US",
+      "offers": {
+        "@type": "Offer",
+        "url": "https://offlinehelpers.com/#pricing",
+        "price": "249.00",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "category": "One-time setup"
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://offlinehelpers.com/#service-family-support",
+      "serviceType": "AI Privacy Support",
+      "name": "Offline Helper Family Support",
+      "description": "Monthly support subscription for households that completed Family Setup. Includes software updates, model upgrades, gentle check-ins, and same-week help when something goes sideways. Cancel anytime from your email receipt.",
+      "provider": { "@id": "https://offlinehelpers.com/#organization" },
+      "areaServed": "US",
+      "offers": {
+        "@type": "Offer",
+        "url": "https://offlinehelpers.com/#pricing",
+        "price": "29.00",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "category": "Subscription",
+        "priceSpecification": {
+          "@type": "UnitPriceSpecification",
+          "price": "29.00",
+          "priceCurrency": "USD",
+          "unitText": "MONTH"
+        }
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://offlinehelpers.com/#website",
+      "url": "https://offlinehelpers.com/",
+      "name": "Offline Helper",
+      "publisher": { "@id": "https://offlinehelpers.com/#organization" }
+    }
+  ]
+}
+</script>

@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Frequently asked questions — Offline Helper</title>
+  <meta name="description" content="Honest answers to the questions families and older adults ask about private, local-first AI setup. No hype, no jargon, no pressure.">
+  <meta property="og:title" content="Frequently asked questions — Offline Helper">
+  <meta property="og:description" content="Honest answers about private, local-first AI setup for families and older adults.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://offlinehelpers.com/assets/brand/offline-helpers-logo.jpg">
+  <link rel="icon" type="image/png" href="../assets/brand/offline-helpers-mark.png">
+  <meta name="theme-color" content="#13231d">
+  <link rel="canonical" href="https://offlinehelpers.com/faq/">
+
+  <!--
+    FAQPage JSON-LD — this is the single most important block for AI
+    visibility. When someone asks ChatGPT / Perplexity / Gemini one of
+    these questions, this structured data is what lets the model cite
+    offlinehelpers.com as the source. Validates with Google Rich Results.
+  -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How can I set up a private AI assistant on my home computer?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You have three honest paths. (1) Do it yourself: install a local model runner like Ollama or LM Studio, download a small open-weights model, and configure a chat UI. (2) Use a managed privacy-first service like Proton Lumo or DuckDuckGo's subscription. (3) Hire a done-for-you setup specialist. Offline Helper is option (3) — we install, configure, and hand-hold you through a private local AI on your own Mac or Windows PC, with a free fit check first so you know it is the right answer before you pay."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I run an AI writing assistant locally on my Mac?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Modern Apple Silicon Macs (M1 and newer) run small but genuinely useful language models entirely offline. A typical 8B-parameter model uses about 5 GB of RAM and runs at a comfortable typing speed on an M2 or M3. Offline Helper's Starter Setup installs Ollama plus a writing-tuned model (usually Mistral 7B or Llama 3.1 8B) and a clean chat app, and walks you through your first 30 minutes of use."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are the best AI tools for beginners who want total data privacy?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "For beginners who want their data to never leave the device, the honest shortlist is: (1) Ollama + LM Studio for running open models locally, (2) Apple Intelligence on recent Macs and iPads for built-in Apple-controlled AI, (3) Proton Lumo or DuckDuckGo AI Chat for encrypted cloud-based chat where the provider cannot read your messages. The catch with option 3 is that 'encrypted to the provider' is not the same as 'data never leaves your device.' Offline Helper sets up option 1, which is the only one that is genuinely local."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I manage AI privacy settings for a non-technical family member?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The cleanest answer is: do not configure a complex cloud service for them. Install a local AI on their own computer so there is nothing to configure, no accounts to leak, and no telemetry to toggle off. Offline Helper's Family Setup is built exactly for this case — we set up the parent's or grandparent's Mac or PC so it has a single, friendly AI chat icon, and the family organizer retains a separate admin view to update it later."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can a professional help me configure AI software on a Windows PC for a non-technical user?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Offline Helper installs Ollama, a small but capable open-weights model, and a one-click chat launcher on Windows 10 and Windows 11 PCs. We then do a 30-minute video walkthrough with the actual end user (often an older relative) so they can practice opening the app and asking their first question with you on the call. The whole thing takes about 90 minutes, done remotely, and is included in the Starter Setup price."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the best way to help an older adult use AI for memoir writing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A local AI on the writer's own computer is the best fit, for three reasons. First, memoir drafts contain deeply private family material that should not be sent to a third-party server. Second, older adults do better with a single-purpose, simple interface than with a web app full of account settings. Third, a local model has no per-message cost, so the writer can experiment freely without watching a meter. Offline Helper's Family Setup has been used for exactly this — most recently by a 68-year-old first-time memoir writer who now drafts chapters in 45-minute sessions and uses the AI only as a quiet, non-judgmental first reader."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How can I get a custom AI assistant installed on my own device?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Start with Offline Helper's free fit check — a 15-minute conversation about your device, your goals, and your privacy comfort level. If we are a good fit, we schedule a 90-minute remote install session, configure a model that matches your machine, set up a single chat launcher, and stay on email for 30 days in case anything goes sideways. The whole service is $149 for one device or $249 for a family / caregiver setup with an admin view."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to be technical to use Offline Helper?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. The whole point is that the end user never has to look at a terminal, a config file, or a model card. They see one chat icon on their desktop, click it, and start typing. If they can use email, they can use what we install."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens to my data?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Nothing leaves your computer. The model runs locally, the chat history is stored locally, and there is no analytics or telemetry sent back to a vendor. We do not have remote access to your machine after the install session ends, and we do not retain copies of your chats."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #191713;
+      --muted: #554c42;
+      --soft: #f5efe2;
+      --paper: #fffaf0;
+      --line: #ded0bc;
+      --accent: #bb4e2f;
+      --accent-dark: #843521;
+      --warm: #f5b63f;
+      --sage: #dfe7dc;
+      --screen: #10221f;
+      --blue: #2d75bd;
+      --danger: #9a453a;
+      --shadow: 0 24px 80px rgba(42, 31, 20, .18);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --max: 1120px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 14% 8%, rgba(245, 182, 63, .34), transparent 30rem),
+        radial-gradient(circle at 84% 18%, rgba(45, 117, 189, .14), transparent 28rem),
+        linear-gradient(180deg, #fbf2df 0%, #f7efe2 48%, #fffaf0 100%);
+      color: var(--ink);
+      line-height: 1.55;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    a { color: inherit; }
+    .skip-link {
+      position: absolute; left: 1rem; top: -4rem;
+      background: var(--ink); color: white; padding: .75rem 1rem; z-index: 20;
+    }
+    .skip-link:focus { top: 1rem; }
+
+    header {
+      position: sticky; top: 0; z-index: 10;
+      backdrop-filter: blur(18px);
+      background: rgba(255, 250, 240, .88);
+      border-bottom: 1px solid rgba(222, 214, 200, .72);
+    }
+    .nav {
+      width: min(var(--max), calc(100% - 2rem));
+      margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; min-height: 72px;
+    }
+    .brand { font-weight: 700; font-size: 1.05rem; letter-spacing: -.01em; text-decoration: none; color: var(--ink); }
+    .brand-mark { display: inline-block; width: 28px; height: 28px; margin-right: .55rem; vertical-align: -.55rem; border-radius: 8px; }
+    nav ul { display: flex; gap: 1.4rem; list-style: none; padding: 0; margin: 0; }
+    nav a { text-decoration: none; color: var(--ink); font-weight: 500; }
+    nav a:hover { color: var(--accent); }
+
+    main { width: min(var(--max), calc(100% - 2rem)); margin: 0 auto; padding: 2.5rem 0 4rem; }
+    h1 { font-size: clamp(1.9rem, 3.2vw, 2.6rem); letter-spacing: -.02em; line-height: 1.15; margin: 0 0 .65rem; }
+    .lede { color: var(--muted); font-size: 1.1rem; max-width: 60ch; margin: 0 0 2rem; }
+
+    .faq { display: flex; flex-direction: column; gap: 1rem; }
+    .faq details {
+      background: rgba(255, 250, 240, .78);
+      border: 1px solid rgba(222, 214, 200, .85);
+      border-radius: var(--radius-md);
+      padding: 1.1rem 1.3rem;
+      box-shadow: 0 1px 0 rgba(255,255,255,.6) inset, 0 12px 30px rgba(42, 31, 20, .05);
+    }
+    .faq summary {
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1.08rem;
+      color: var(--ink);
+      list-style: none;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after {
+      content: "+"; font-size: 1.5rem; line-height: 1; color: var(--accent);
+      transition: transform .2s ease;
+    }
+    .faq details[open] summary::after { content: "−"; }
+    .faq .answer { color: var(--ink); margin-top: .85rem; }
+    .faq .answer p { margin: 0 0 .75rem; }
+    .faq .answer p:last-child { margin-bottom: 0; }
+    .faq a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
+    .cta {
+      margin-top: 2.5rem;
+      background: var(--ink);
+      color: var(--paper);
+      border-radius: var(--radius-lg);
+      padding: 1.8rem 1.6rem;
+      display: flex; flex-wrap: wrap; gap: 1.2rem; align-items: center; justify-content: space-between;
+    }
+    .cta h2 { font-size: 1.4rem; margin: 0 0 .35rem; }
+    .cta p { margin: 0; color: rgba(255, 250, 240, .78); max-width: 50ch; }
+    .cta .actions { display: flex; gap: .8rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-block; padding: .7rem 1.1rem; border-radius: 999px;
+      font-weight: 600; text-decoration: none; line-height: 1; min-height: 44px;
+      display: inline-flex; align-items: center;
+    }
+    .btn-primary { background: var(--warm); color: var(--ink); }
+    .btn-primary:hover { background: #ffc857; }
+    .btn-ghost { background: transparent; color: var(--paper); border: 1px solid rgba(255,250,240,.35); }
+    .btn-ghost:hover { background: rgba(255,250,240,.08); }
+
+    footer { padding: 2.5rem 0; color: var(--muted); font-size: .95rem; }
+    .footer-grid { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .footer-grid a { color: var(--ink); }
+
+    @media (max-width: 860px) {
+      nav ul { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .faq summary::after { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header>
+    <div class="nav" aria-label="Main navigation">
+      <a class="brand" href="../index.html" aria-label="Offline Helper home">
+        <img class="brand-mark" src="../assets/brand/offline-helpers-mark.png" alt="" width="28" height="28">Offline Helper
+      </a>
+      <nav>
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../fit-check/">Free fit check</a></li>
+          <li><a href="https://www.skool.com/offline-helper/about">Community</a></li>
+          <li><a href="mailto:pdbjork@gmail.com">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <h1>Frequently asked questions</h1>
+    <p class="lede">Honest answers to the questions families, caregivers, and older adults actually ask before they hand us a computer. No hype, no jargon, no pressure.</p>
+
+    <div class="faq" role="list">
+
+      <details role="listitem">
+        <summary>How can I set up a private AI assistant on my home computer?</summary>
+        <div class="answer">
+          <p>You have three honest paths.</p>
+          <p><strong>1. Do it yourself.</strong> Install a local model runner like Ollama or LM Studio, download a small open-weights model, and configure a chat UI. Free, but expect a weekend and some frustration if you have never used a terminal before.</p>
+          <p><strong>2. Use a managed privacy service.</strong> Proton Lumo and DuckDuckGo AI Chat encrypt your messages to the provider. Cheaper than DIY, but the data still leaves your device.</p>
+          <p><strong>3. Hire a done-for-you specialist.</strong> Offline Helper is this — we install, configure, and walk you through a private local AI on your own Mac or Windows PC, with a <a href="../fit-check/">free fit check</a> first so you know it is the right answer before you pay.</p>
+        </div>
+      </details>
+
+      <details role="listitem">
+        <summary>Can I run an AI writing assistant locally on my Mac?</summary>
+        <div class="answer">
+          <p>Yes. Modern Apple Silicon Macs (M1 and newer) run small but genuinely useful language models entirely offline. A typical 8&nbsp;billion-parameter model uses about 5&nbsp;GB of RAM and runs at a comfortable typing speed on an M2 or M3.</p>
+          <p>Offline Helper's <a href="../index.html#pricing">Starter Setup</a> installs Ollama plus a writing-tuned model (usually Mistral 7B or Llama 3.1 8B) and a clean chat app, and walks you through your first 30 minutes of use.</p>
+        </div>
+      </details>
+
+      <details role="listitem">
+        <summary>What are the best AI tools for beginners who want total data privacy?</summary>
+        <div class="answer">
+          <p>For beginners who want their data to <em>never leave the device</em>, the honest shortlist is:</p>
+          <p><strong>1. Ollama + LM Studio</strong> for running open models locally on Mac, Windows, or Linux. The only option that is genuinely 100% local.</p>
+          <p><strong>2. Apple Intelligence</strong> on recent Macs and iPads for built-in, Apple-controlled AI. Private by design, but limited to recent hardware and to whatever Apple decides to support.</p>
+          <p><strong>3. Proton Lumo</strong> or <strong>DuckDuckGo AI Chat</strong> for encrypted cloud chat. The provider cannot read your messages, but your data still leaves your device.</p>
+          <p>Offline Helper sets up option 1, which is the only one that is truly local.</p>
+        </div>
+      </details>
+
+      <details role="listitem">
+        <summary>How do I manage AI privacy settings for a non-technical family member?</summary>
+        <div class="answer">
+          <p>The cleanest answer is: do not configure a complex cloud service for them. Install a local AI on their own computer so there is nothing to configure, no accounts to leak, and no telemetry to toggle off.</p>
+          <p>Offline Helper's <a href="../index.html#pricing">Family Setup</a> is built exactly for this case — we set up the parent's or grandparent's Mac or PC so it has a single friendly AI chat icon, and the family organizer retains a separate admin view to update it later.</p>
+        </div>
+      </details>
+
+      <details role="listitem">
+        <summary>Can a professional help me configure AI software on a Windows PC for a non-technical user?</summary>
+        <div class="answer">
+          <p>Yes. Offline Helper installs Ollama, a small but capable open-weights model, and a one-click chat launcher on Windows 10 and Windows 11 PCs.</p>
+          <p>We then do a 30-minute video walkthrough with the actual end user (often an older relative) so they can practice opening the app and asking their first question with you on the call. The whole thing takes about 90 minutes, done remotely, and is included in the <a href="../index.html#pricing">Starter Setup</a> price.</p>
+        </div>
+      </details>
+
+      <details role="listitem">
+        <summary>What is the best way to help an older adult use AI for memoir writing?</summary>
+        <div class="answer">
+          <p>A local AI on the writer's own computer is the best fit, for three reasons.</p>
+          <p>First, memoir drafts contain deeply private family material that should not be sent to a third-party server. Second, older adults do better with a single-purpose, simple interface than with a web app full of account settings. Third, a local model has no per-message cost, so the writer can experiment freely without watching a meter.</p>
+          <p>Offline Helper's Family Setup has been used for exactly this — most recently by a 68-year-old first-time memoir writer who now drafts chapters in 45-minute sessions and uses the AI only as a quiet, non-judgmental first reader.</p>
+        </div>
+      </details>
+
+      <details role="listitem">
+        <summary>How can I get a custom AI assistant installed on my own device?</summary>
+        <div class="answer">
+          <p>Start with a <a href="../fit-check/">free fit check</a> — a 15-minute conversation about your device, your goals, and your privacy comfort level.</p>
+          <p>If we are a good fit, we schedule a 90-minute remote install session, configure a model that matches your machine, set up a single chat launcher, and stay on email for 30 days in case anything goes sideways. The whole service is $149 for one device or $249 for a family / caregiver setup with an admin view.</p>
+        </div>
+      </details>
+
+      <details role="listitem">
+        <summary>Do I need to be technical to use Offline Helper?</summary>
+        <div class="answer">
+          <p>No. The whole point is that the end user never has to look at a terminal, a config file, or a model card. They see one chat icon on their desktop, click it, and start typing. If they can use email, they can use what we install.</p>
+        </div>
+      </details>
+
+      <details role="listitem">
+        <summary>What happens to my data?</summary>
+        <div class="answer">
+          <p>Nothing leaves your computer. The model runs locally, the chat history is stored locally, and there is no analytics or telemetry sent back to a vendor. We do not have remote access to your machine after the install session ends, and we do not retain copies of your chats.</p>
+        </div>
+      </details>
+
+    </div>
+
+    <section class="cta" aria-label="Next step">
+      <div>
+        <h2>Still wondering if we are the right fit?</h2>
+        <p>Book a free 15-minute fit check. No pressure, no card, and a real human on the other end.</p>
+      </div>
+      <div class="actions">
+        <a class="btn btn-primary" href="../fit-check/">Start the free fit check</a>
+        <a class="btn btn-ghost" href="../index.html">Back to home</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-grid">
+      <span>© 2026 Offline Helper. Local-first AI setup, explained simply.</span>
+      <span><a href="../fit-check/">Free fit check</a> · <a href="https://www.skool.com/offline-helper/about">Community</a> · <a href="mailto:pdbjork@gmail.com">Contact</a></span>
+    </div>
+  </footer>
+</body>
+</html>
