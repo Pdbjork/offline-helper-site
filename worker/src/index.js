@@ -117,13 +117,24 @@ async function verifyStripeSignature(request, secret) {
   catch { return { ok: false, error: "invalid JSON body" }; }
 }
 
+// Returns null on OK, or a string describing the mismatch.
+//
+// Strictness model:
+//   live_approved=1 + test key    -> REJECT  (impossible combo, configuration bug)
+//   live_approved=0 + live key    -> WARN (allow)  useful for testing live catalog
+//                                                            in dev, with a console.warn
+//   live_approved=1 + live key    -> OK (production)
+//   live_approved=0 + test key    -> OK (legitimate test mode)
 function keyMatchesLiveFlag(key, liveApproved) {
   const isLive = key.startsWith("rk_live_") || key.startsWith("sk_live_");
   if (liveApproved === "1" && !isLive) {
     return "STRIPE_LIVE_APPROVED=1 but STRIPE_SECRET_KEY looks like a test key";
   }
   if (liveApproved !== "1" && isLive) {
-    return "STRIPE_SECRET_KEY looks live but STRIPE_LIVE_APPROVED is not set to 1";
+    // Not a rejection - just a loud warning. Lets us test against the live
+    // catalog (real price IDs) without flipping the production flag.
+    console.warn("[stripe] live key with STRIPE_LIVE_APPROVED=0 - proceeding for testing");
+    return null;
   }
   return null;
 }
