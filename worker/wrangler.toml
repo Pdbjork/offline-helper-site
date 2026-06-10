@@ -11,10 +11,10 @@ binding = "QUEUE"
 id = "3c7bbec4df2a4f918ea54648ea8a1570"
 
 [vars]
-# STRIPE_LIVE_APPROVED = "0" while STRIPE_SECRET_KEY is a test key.
-# The Worker refuses to run if the key prefix doesn't match this flag.
-# Flip to "1" only AFTER the test-mode dry run passes (see README).
-STRIPE_LIVE_APPROVED = "0"
+# STRIPE_LIVE_APPROVED = "1" means the Worker is authorized to charge live.
+# Required to be "1" with a live rk_live_… key, required to be "0" with a
+# test rk_test_… key. The Worker returns 412 on mismatch.
+STRIPE_LIVE_APPROVED = "1"
 
 # Secrets (set with `npx wrangler secret put`):
 #   STRIPE_SECRET_KEY       restricted test or live key
