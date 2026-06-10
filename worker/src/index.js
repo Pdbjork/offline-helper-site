@@ -12,22 +12,26 @@
 // Live-mode flag is STRIPE_LIVE_APPROVED set in wrangler.toml [vars].
 // Test mode = "0", live mode = "1". Refuses to run if mismatch with key prefix.
 
+// CATALOG keeps each product's Stripe Price ID and mode. Prices below are
+// LIVE-mode IDs (created in the Stripe Dashboard in 2026-06). Updating a price
+// here requires creating a new live price in Dashboard and pasting the ID —
+// Stripe IDs are immutable, you cannot edit an existing one.
 const CATALOG = {
   starter_setup: {
     name: "Offline Helper Starter Setup",
-    price: "price_1TgEQ35r5QARoiZNRyN1UW6E",
+    price: "price_1TgDrJ5r5QARoiZNrIxxs5wx", // $149 one-time, live
     mode: "payment",
     amount_cents: 14900,
   },
   family_setup: {
     name: "Offline Helper Family Setup",
-    price: "price_1TgEQ35r5QARoiZN2y4KTwxI",
+    price: "price_1TgDrN5r5QARoiZN1XpEhnDO", // $249 one-time, live
     mode: "payment",
     amount_cents: 24900,
   },
   family_support: {
     name: "Offline Helper Family Support",
-    price: "price_1TgEQ45r5QARoiZN9lhxRNtT",
+    price: "price_1TgDrJ5r5QARoiZNFzGaLIm6", // $29 / month, live
     mode: "subscription",
     amount_cents: 2900,
   },
@@ -69,7 +73,7 @@ function flattenForStripe(payload, prefix = "") {
 async function callStripe(method, path, key, payload) {
   const headers = {
     Authorization: `Bearer ${key}`,
-    "Stripe-Version": "2024-06-20",
+    "Stripe-Version": "2026-04-22.dahlia",
     "User-Agent": "offline-helper-worker/1.0",
   };
   let body;
@@ -151,9 +155,14 @@ async function handleCheckout(request, env) {
   if (body.fit_check_id) metadata.fit_check_id = String(body.fit_check_id).slice(0, 80);
   if (body.setup_window) metadata.setup_window = String(body.setup_window).slice(0, 80);
 
+  // automatic_payment_methods lets Stripe pick the best eligible methods per
+  // transaction (cards, Apple Pay, Link, etc.) from Dashboard settings. This
+  // replaces the deprecated practice of hardcoding payment_method_types.
+  // https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md
   const sessionPayload = {
     mode: product.mode,
     line_items: [{ price: product.price, quantity: 1 }],
+    automatic_payment_methods: { enabled: true },
     success_url: SUCCESS_URL,
     cancel_url: CANCEL_URL,
     metadata,

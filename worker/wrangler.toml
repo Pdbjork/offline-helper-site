@@ -1,6 +1,7 @@
 name = "offline-helper-payments"
 main = "src/index.js"
-compatibility_date = "2024-09-23"
+compatibility_date = "2026-06-01"
+account_id = "fdce143e2c4433ddae1c5efe3e3a1b45"
 
 # Create a KV namespace once with:
 #   npx wrangler kv namespace create OFFLINE_HELPER_QUEUE
