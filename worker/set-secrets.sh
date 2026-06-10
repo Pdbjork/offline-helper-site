@@ -17,7 +17,8 @@ set -euo pipefail
 # Load token if not present
 if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
   if [ -f "$HOME/.cloudflare_token" ]; then
-    export CLOUDFLARE_API_TOKEN="$(cat "$HOME/.cloudflare_token")"
+    read -r CLOUDFLARE_API_TOKEN < "$HOME/.cloudflare_token"
+    export CLOUDFLARE_API_TOKEN
   else
     echo "✘ No CLOUDFLARE_API_TOKEN. Run deploy.sh first to set it up."
     exit 1

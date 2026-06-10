@@ -1,21 +1,20 @@
 #!/usr/bin/env bash
 # Push the OPENAI_API_KEY Worker secret.
-#
-# Reads a hidden value and pushes it as a wrangler secret for the
-# offline-helper-payments Worker. The value is typed at the prompt
-# and never echoed to the terminal; it goes directly to Cloudflare's
-# encrypted secret store.
-
 set -euo pipefail
 
-# Load token if not present
 if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
-  if [ -f "$HOME/.cloudflare_token" ]; then
-    export CLOUDFLARE_API_TOKEN=*** "$HOME/.cloudflare_token")"
-  else
-    echo "✘ No CLOUDFLARE_API_TOKEN. Run deploy.sh first to set it up."
+  TOKEN_FILE="$HOME/.cloudflare_token"
+  if [ ! -f "$TOKEN_FILE" ]; then
+    echo "✘ No CLOUDFLARE_API_TOKEN set, and $TOKEN_FILE not found."
+    echo "  Create it with:"
+    echo "    read -rs CLOUDFLARE_API_TOKEN"
+    echo "    echo \"\$CLOUDFLARE_API_TOKEN\" > \$TOKEN_FILE"
+    echo "    chmod 600 \$TOKEN_FILE"
     exit 1
   fi
+  # Read token from file using bash < redirection, no command substitution
+  read -r CLOUDFLARE_API_TOKEN < "$TOKEN_FILE"
+  export CLOUDFLARE_API_TOKEN
 fi
 
 cd "$(dirname "$0")"
