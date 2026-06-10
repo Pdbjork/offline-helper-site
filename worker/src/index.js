@@ -166,14 +166,14 @@ async function handleCheckout(request, env) {
   if (body.fit_check_id) metadata.fit_check_id = String(body.fit_check_id).slice(0, 80);
   if (body.setup_window) metadata.setup_window = String(body.setup_window).slice(0, 80);
 
-  // automatic_payment_methods lets Stripe pick the best eligible methods per
-  // transaction (cards, Apple Pay, Link, etc.) from Dashboard settings. This
-  // replaces the deprecated practice of hardcoding payment_method_types.
-  // https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md
+  // Do NOT pass automatic_payment_methods or payment_method_types to
+  // Checkout Sessions - Stripe picks eligible methods dynamically from
+  // Dashboard settings for Checkout. (automatic_payment_methods is for
+  // PaymentIntents / SetupIntents only; hardcoding payment_method_types
+  // is the deprecated path.)
   const sessionPayload = {
     mode: product.mode,
     line_items: [{ price: product.price, quantity: 1 }],
-    automatic_payment_methods: { enabled: true },
     success_url: SUCCESS_URL,
     cancel_url: CANCEL_URL,
     metadata,
