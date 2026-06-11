@@ -324,6 +324,31 @@ async function handleFitCheckComplete(request, env) {
   const answers = body.answers || {};
   const transcript = Array.isArray(body.transcript) ? body.transcript : [];
 
+  // Attribution data is collected by the static form (UTMs from the URL +
+  // an optional "how did you hear" dropdown) and by future Telegram-bot
+  // payloads. Everything is optional and length-bounded on the way in.
+  const rawAttribution = (body.attribution && typeof body.attribution === "object")
+    ? body.attribution : {};
+  function clipStr(v, max) {
+    return typeof v === "string" ? v.trim().slice(0, max) : "";
+  }
+  const attribution = {
+    how_did_you_hear: clipStr(rawAttribution.how_did_you_hear, 32),
+    utm_source: clipStr(rawAttribution.utm_source, 64),
+    utm_medium: clipStr(rawAttribution.utm_medium, 64),
+    utm_campaign: clipStr(rawAttribution.utm_campaign, 96),
+    utm_content: clipStr(rawAttribution.utm_content, 96),
+    referrer: clipStr(rawAttribution.referrer, 256),
+    landing_path: clipStr(rawAttribution.landing_path, 256),
+    captured_at: new Date().toISOString(),
+  };
+  // Drop the timestamp if every meaningful field is empty so the record
+  // doesn't carry a misleading "attribution captured at" with no data.
+  const hasAttribution = !!(attribution.how_did_you_hear
+    || attribution.utm_source || attribution.utm_medium
+    || attribution.utm_campaign || attribution.utm_content
+    || attribution.referrer || attribution.landing_path);
+
   const result = scoreFitCheck(answers);
 
   const record = {
@@ -337,6 +362,7 @@ async function handleFitCheckComplete(request, env) {
     reason: result.reason,
     transcript_length: transcript.length,
   };
+  if (hasAttribution) record.attribution = attribution;
   await env.QUEUE.put(`fitcheck:${fit_check_id}`, JSON.stringify(record));
 
   // Build a checkout URL with metadata that the Stripe webhook will

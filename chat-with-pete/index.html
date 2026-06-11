@@ -241,6 +241,30 @@
         <input type="email" id="customer_email" name="customer_email" placeholder="you@example.com">
       </div>
 
+      <div class="field">
+        <label for="how_did_you_hear">How did you hear about Offline Helper?</label>
+        <div class="hint">Optional. Helps us learn which posts and groups are actually reaching people like you.</div>
+        <select id="how_did_you_hear" name="how_did_you_hear">
+          <option value="">Skip this — just give me the recommendation</option>
+          <option value="friend_or_family">A friend or family member mentioned it</option>
+          <option value="reddit">Reddit</option>
+          <option value="nextdoor">Nextdoor</option>
+          <option value="facebook_group">A Facebook group</option>
+          <option value="craigslist">Craigslist</option>
+          <option value="skool">The Skool community</option>
+          <option value="x_twitter">X (Twitter)</option>
+          <option value="search_engine">A search engine (Google, DuckDuckGo, etc.)</option>
+          <option value="other">Other (I'll tell Pete by email)</option>
+        </select>
+      </div>
+
+      <!-- Hidden UTM fields, populated from the page URL on load. -->
+      <input type="hidden" id="utm_source" name="utm_source" value="">
+      <input type="hidden" id="utm_medium" name="utm_medium" value="">
+      <input type="hidden" id="utm_campaign" name="utm_campaign" value="">
+      <input type="hidden" id="utm_content" name="utm_content" value="">
+      <input type="hidden" id="referrer" name="referrer" value="">
+
       <div class="submit">
         <button type="submit" id="submit-btn" class="btn btn-primary">Get my recommendation</button>
       </div>
@@ -340,18 +364,48 @@
         resultSlot.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
 
+      // Capture UTM params and referrer from the page URL on load.
+      // The form lives at /chat-with-pete/ which /fit-check/ redirects to, so
+      // UTMs survive the redirect as long as the link was clicked with them.
+      function captureAttribution() {
+        var params = new URLSearchParams(window.location.search);
+        function setIf(name, max) {
+          var v = (params.get(name) || '').toString().trim().slice(0, max);
+          var el = document.getElementById('utm_' + name.replace('utm_', ''));
+          if (el && v) el.value = v;
+        }
+        setIf('utm_source', 64);
+        setIf('utm_medium', 64);
+        setIf('utm_campaign', 96);
+        setIf('utm_content', 96);
+        // Referrer is best-effort and trims to a safe length.
+        var ref = (document.referrer || '').toString().trim().slice(0, 256);
+        var refEl = document.getElementById('referrer');
+        if (refEl && ref) refEl.value = ref;
+      }
+      captureAttribution();
+
       function collectAnswers() {
         var fd = new FormData(form);
         var device_kind = (fd.get('device_kind') || '').toString();
         var apple_silicon = (fd.get('apple_silicon') || '').toString();
+        function sTrim(name, max) {
+          return (fd.get(name) || '').toString().trim().slice(0, max);
+        }
         return {
           device_kind: device_kind,
           apple_silicon: device_kind === 'mac' ? (apple_silicon === 'yes') : false,
-          os_version: (fd.get('os_version') || '').toString().trim().slice(0, 80),
+          os_version: sTrim('os_version', 80),
           ram_gb: Number(fd.get('ram_gb')) || 0,
-          primary_goal: (fd.get('primary_goal') || '').toString().trim().slice(0, 200),
+          primary_goal: sTrim('primary_goal', 200),
           comfort_level: (fd.get('comfort_level') || '').toString(),
-          customer_email: (fd.get('customer_email') || '').toString().trim().slice(0, 120),
+          customer_email: sTrim('customer_email', 120),
+          how_did_you_hear: sTrim('how_did_you_hear', 32),
+          utm_source: sTrim('utm_source', 64),
+          utm_medium: sTrim('utm_medium', 64),
+          utm_campaign: sTrim('utm_campaign', 96),
+          utm_content: sTrim('utm_content', 96),
+          referrer: sTrim('referrer', 256),
         };
       }
 
@@ -397,6 +451,14 @@
                 apple_silicon: answers.apple_silicon,
                 primary_goal: answers.primary_goal,
                 comfort_level: answers.comfort_level,
+              },
+              attribution: {
+                how_did_you_hear: answers.how_did_you_hear,
+                utm_source: answers.utm_source,
+                utm_medium: answers.utm_medium,
+                utm_campaign: answers.utm_campaign,
+                utm_content: answers.utm_content,
+                referrer: answers.referrer,
               },
               transcript: [], // static form, no conversation
             }),
