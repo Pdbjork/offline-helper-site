@@ -106,8 +106,8 @@
         <h1>See if Offline Helper is right for you.</h1>
         <p class="lede">A short fit check protects the customer before payment. We confirm the goal, Mac or Windows PC readiness, privacy expectations, and whether a local-first AI helper can be set up safely and usefully.</p>
         <div class="actions">
-          <a class="button primary" href="#website-chat">Chat with Pete here</a>
-          <a class="button secondary" href="mailto:pdbjork@gmail.com?subject=Offline%20Helper%20free%20fit%20check&body=Hi%20Pete%2C%0A%0AI%27d%20like%20a%20free%20Offline%20Helper%20fit%20check.%0A%0AWho%20this%20is%20for%3A%0AMac%20or%20Windows%20PC%20model%2Fyear%20if%20known%3A%0ATop%201-3%20things%20we%27d%20want%20help%20with%3A%0ABiggest%20privacy%20or%20safety%20worry%3A%0AIs%20a%20family%20member%20or%20helper%20involved%3F%0AMay%20Pete%20follow%20up%3F%20yes%2Fno%3A%0A">Email instead</a>
+          <a class="button primary" href="#website-chat">Start here</a>
+          <a class="button secondary" href="mailto:pdbjork@gmail.com?subject=Offline%20Helper%20free%20fit%20check&body=Hello%2C%0A%0AI%27d%20like%20a%20free%20Offline%20Helper%20fit%20check.%0A%0AWho%20this%20is%20for%3A%0AMac%20or%20Windows%20PC%20model%2Fyear%20if%20known%3A%0ATop%201-3%20things%20we%27d%20want%20help%20with%3A%0ABiggest%20privacy%20or%20safety%20worry%3A%0AIs%20a%20family%20member%20or%20helper%20involved%3F%0AMay%20Offline%20Helper%20follow%20up%3F%20yes%2Fno%3A%0A">Email instead</a>
           <a class="button secondary" href="#questions">Preview the questions</a>
         </div>
         <p class="warning"><strong>Please do not send:</strong> passwords, recovery keys, bot tokens, private documents, medical/legal/financial details, or crisis information. The fit check only needs ordinary setup context.</p>
@@ -116,10 +116,10 @@
       <aside class="card" aria-labelledby="what-happens">
         <h2 id="what-happens">What happens next</h2>
         <ul class="checklist">
-          <li>Start with the website chat below so Pete receives the right data points.</li>
+          <li>Start with the guided form below so we receive the context needed for a safe fit check.</li>
           <li>We explain what can run locally and what still uses online services.</li>
-          <li>If it is a fit, payment opens by Stripe Checkout, Stripe Payment Link, or Jim mobile invoice/tap-to-pay.</li>
-          <li>If it is not a fit, Pete says so kindly before taking payment.</li>
+          <li>If it is a fit, we send clear payment and scheduling instructions.</li>
+          <li>If it is not a fit, we say so kindly before taking payment.</li>
         </ul>
       </aside>
     </div>
@@ -128,11 +128,11 @@
     <div class="wrap section" id="website-chat">
       <section class="card chat-card" aria-labelledby="website-chat-title">
         <span class="eyebrow">Website chat intake · structured for follow-up</span>
-        <h2 id="website-chat-title">Chat with Pete for a free fit check</h2>
-        <p class="muted">This is a guided website chat, not Telegram. It collects the minimum customer data Pete needs to decide whether Offline Helper is likely safe, useful, and realistic before any payment.</p>
+        <h2 id="website-chat-title">Start your free fit check</h2>
+        <p class="muted">This guided form collects only the ordinary setup context needed to decide whether Offline Helper is likely safe, useful, and realistic before any payment.</p>
         <div class="chat-window" aria-live="polite">
-          <div class="bubble pete"><strong>Pete:</strong> Hi, I’m Pete from Offline Helper. I’ll ask for ordinary setup context only. Please do not send passwords, recovery keys, bot tokens, private documents, medical/legal/financial details, or crisis information.</div>
-          <div class="bubble pete"><strong>Pete:</strong> When you submit this, I’ll try the private lead database first. If it is not available from this static preview, your email app opens with the same structured fit-check request. Payment only opens after fit is confirmed.</div>
+          <div class="bubble pete"><strong>Offline Helper:</strong> Hi, thanks for starting a fit check. I’ll ask for ordinary setup context only. Please do not send passwords, recovery keys, bot tokens, private documents, medical/legal/financial details, or crisis information.</div>
+          <div class="bubble pete"><strong>Offline Helper:</strong> When you submit this, your request is sent for review. If the secure form is temporarily unavailable, your email app may open with the same structured fit-check request. Payment only happens after fit is confirmed.</div>
         </div>
         <form class="intake-form" id="fit-check-form">
           <div class="form-grid">
@@ -153,7 +153,7 @@
           </div>
           <div class="field">
             <label for="contact_value">Follow-up address or handle</label>
-            <span>Use only what Pete needs to reach you. Do not enter passwords or account details.</span>
+            <span>Use only what we need to reach you. Do not enter passwords or account details.</span>
             <input id="contact_value" name="contact_value" autocomplete="email" required>
           </div>
           <div class="field">
@@ -175,7 +175,7 @@
             <div class="field">
               <label for="timeline">Ideal timing</label>
               <select id="timeline" name="timeline">
-                <option>Whenever Pete thinks it is ready</option>
+                <option>Whenever the setup is ready</option>
                 <option>This week</option>
                 <option>Next 2 weeks</option>
                 <option>This month</option>
@@ -194,9 +194,9 @@
             <textarea id="privacy_concern" name="privacy_concern" required></textarea>
           </div>
           <label class="field">
-            <span><input type="checkbox" name="consent_follow_up" value="yes" required> Pete may personally follow up about this free fit check. I understand this is not medical, legal, financial, or crisis support.</span>
+            <span><input type="checkbox" name="consent_follow_up" value="yes" required> Offline Helper may follow up about this free fit check. I understand this is not medical, legal, financial, or crisis support.</span>
           </label>
-          <button class="button primary" type="submit">Send fit-check request to Pete</button>
+          <button class="button primary" type="submit">Send fit-check request</button>
           <div id="fit-check-status" class="status" hidden></div>
         </form>
       </section>
@@ -220,8 +220,8 @@
       <section class="card">
         <h2>Pilot packages after fit check</h2>
         <div class="packages">
-          <div class="package"><strong>Starter Setup — $149 pilot</strong><br><span class="muted">Best for one person, one useful first workflow, privacy walkthrough, handoff guide, and 7-day setup-fix window.</span></div>
-          <div class="package"><strong>Family Setup — $249 pilot</strong><br><span class="muted">Best when an adult child, spouse, caregiver, or helper needs orientation, consent clarity, and a family handoff sheet.</span></div>
+          <div class="package"><strong>Starter Setup — $149</strong><br><span class="muted">Best for one person, one useful first workflow, privacy walkthrough, handoff guide, and 7-day setup-fix window.</span></div>
+          <div class="package"><strong>Family Setup — $249</strong><br><span class="muted">Best when an adult child, spouse, caregiver, or helper needs orientation, consent clarity, and a family handoff sheet.</span></div>
           <div class="package"><strong>Family Support — $29/month optional</strong><br><span class="muted">Offered only after value is proven. Includes monthly health check, update check, backup/archive verification when configured, and one short support question.</span></div>
         </div>
       </section>
@@ -247,7 +247,7 @@
 
     function buildMailto(data) {
       const body = [
-        'Hi Pete,',
+        'Hello,',
         '',
         'I would like a free Offline Helper fit check.',
         '',
@@ -272,7 +272,7 @@
       const data = Object.fromEntries(new FormData(form).entries());
       const joined = Object.values(data).join(' ').toLowerCase();
       if (requiredSecretWords.some(word => joined.includes(word))) {
-        setStatus('error', 'Pete caught a privacy-risk word. Please remove passwords, keys, tokens, payment-card details, or private records and describe only the setup goal.');
+        setStatus('error', 'Please remove passwords, keys, tokens, payment-card details, or private records and describe only the setup goal.');
         return;
       }
       try {
@@ -284,11 +284,11 @@
         if (!response.ok) throw new Error('API not available');
         const result = await response.json();
         if (!result.ok) throw new Error(result.error || 'Could not save');
-        setStatus('success', result.message + ' Lead ID: ' + result.lead_id + '. Recommended next review path: ' + result.package_recommendation + '.');
+        setStatus('success', result.message || 'Thanks — your fit-check request was received. We will review it before any payment is requested.');
         form.reset();
       } catch (error) {
         const link = buildMailto(data);
-        setStatus('error', 'The private website lead database is not available from this static preview, so your email app is opening with a structured fit-check request instead. Please review it before sending and keep secrets/private records out.');
+        setStatus('error', 'The secure form is temporarily unavailable, so your email app is opening with a structured fit-check request instead. Please review it before sending and keep secrets/private records out.');
         window.location.href = link;
       }
     });

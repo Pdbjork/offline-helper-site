@@ -71,14 +71,14 @@
   <main id="main">
     <div class="wrap hero">
       <section>
-        <span class="eyebrow">Confirmed fit only · no public checkout</span>
+        <span class="eyebrow">Confirmed fit only</span>
         <h1>Payment opens after the fit check.</h1>
         <p class="lede">This handoff page keeps Offline Helper honest: customers pay only after the free fit check confirms the setup is safe, useful, and realistic.</p>
         <div class="actions">
-          <a class="button primary" href="mailto:pdbjork@gmail.com?subject=Offline%20Helper%20confirmed-fit%20payment&body=Hi%20Pete%2C%0A%0AMy%20Offline%20Helper%20fit%20check%20was%20confirmed.%0A%0APackage%3A%0APayment%20preference%20%28Stripe%20or%20Jim%29%3A%0APreferred%20setup%20window%3A%0A">Ask for my confirmed payment link</a>
-          <a class="button secondary" href="#routes">Review payment routes</a>
+          <a class="button primary" href="mailto:pdbjork@gmail.com?subject=Offline%20Helper%20confirmed-fit%20payment&body=Hello%2C%0A%0AMy%20Offline%20Helper%20fit%20check%20was%20confirmed.%0A%0APackage%3A%0APreferred%20setup%20window%3A%0A">Ask for my confirmed payment link</a>
+          <a class="button secondary" href="#payment-options">Review payment options</a>
         </div>
-        <p class="warning"><strong>Safety rule:</strong> this page is not a checkout. Do not send passwords, recovery keys, bot tokens, private documents, medical/legal/financial details, or crisis information by email, chat, checkout, screenshots, or research forms.</p>
+        <p class="warning"><strong>Safety rule:</strong> do not send passwords, recovery keys, bot tokens, private documents, medical/legal/financial details, or crisis information by email, chat, checkout, or screenshots.</p>
       </section>
 
       <aside class="card" aria-labelledby="steps">
@@ -93,40 +93,39 @@
     </div>
 
     <div class="wrap section">
-      <section class="card" id="routes">
-        <h2>Confirmed payment routes</h2>
+      <section class="card" id="payment-options">
+        <h2>Confirmed payment options</h2>
         <div class="routes">
-          <div class="route"><strong>Remote customer:</strong> fresh Stripe Checkout Session after fit check, or Stripe Payment Link fallback if the serverless route is not live yet.</div>
-          <div class="route"><strong>In-person or phone-assisted customer:</strong> Jim tap-to-pay or Jim mobile invoice.</div>
-          <div class="route"><strong>Family member payer:</strong> send Stripe or Jim invoice to the payer only after customer and payer consent.</div>
-          <div class="route"><strong>Unsure customer:</strong> do not pressure payment; offer the research list or a safer next step.</div>
+          <div class="route"><strong>Remote setup:</strong> we send a secure payment link after your fit check is confirmed.</div>
+          <div class="route"><strong>Family member payer:</strong> payment instructions go only to the person who has agreed to pay.</div>
+          <div class="route"><strong>Not ready yet:</strong> no pressure. Reply to your fit-check email and we will recommend the safest next step.</div>
         </div>
       </section>
     </div>
 
     <div class="wrap section">
       <section class="card">
-        <h2>Pay after fit check (Stripe Checkout)</h2>
-        <p class="muted">These buttons open a Stripe-hosted Checkout Session for the package you selected. Payment is taken only after the fit check has been confirmed.</p>
+        <h2>Packages after fit check</h2>
+        <p class="muted">Use this page only after your fit check has been confirmed and you have selected a package. If you are ready, request your secure payment link.</p>
         <div class="routes">
           <div class="route">
-            <strong>Starter Setup — $149 pilot</strong>
+            <strong>Starter Setup — $149</strong>
             <p class="muted">One person, one useful first workflow, privacy walkthrough, handoff guide, and 7-day setup-fix window.</p>
-            <a class="button primary" href="https://buy.stripe.com/test_8x228k4Ys1tO4avbUudMI00" target="_blank" rel="noopener">Pay $149 — Starter Setup</a>
+            <a class="button primary" href="mailto:pdbjork@gmail.com?subject=Starter%20Setup%20payment%20link">Request Starter payment link</a>
           </div>
           <div class="route">
-            <strong>Family Setup — $249 pilot</strong>
+            <strong>Family Setup — $249</strong>
             <p class="muted">Loved-one/caregiver orientation, family handoff sheet, consent clarity, and a 30-minute follow-up.</p>
-            <a class="button primary" href="https://buy.stripe.com/test_8x2fZa9eI2xSdL51fQdMI01" target="_blank" rel="noopener">Pay $249 — Family Setup</a>
+            <a class="button primary" href="mailto:pdbjork@gmail.com?subject=Family%20Setup%20payment%20link">Request Family payment link</a>
           </div>
           <div class="route">
             <strong>Family Support — $29/month</strong>
             <p class="muted">Monthly health check, update check, archive verification, and one short support question. Cancel anytime in the Customer Portal.</p>
-            <a class="button primary" href="https://buy.stripe.com/test_3cIbIUbmQb4o22n4s2dMI02" target="_blank" rel="noopener">Subscribe $29/month</a>
+            <a class="button primary" href="mailto:pdbjork@gmail.com?subject=Family%20Support%20subscription">Ask about Family Support</a>
           </div>
         </div>
         <p class="warning"><strong>Safety rule:</strong> do not paste passwords, recovery keys, bot tokens, or private documents into Stripe Checkout or any other form on this site. We never ask for them.</p>
-        <p class="muted">Test mode only. Use card <code>4242 4242 4242 4242</code>, any future expiry, any CVC, any ZIP. When you're ready to go live, recreate the Payment Links in the Stripe Dashboard's Live mode and update these three URLs.</p>
+        <p class="muted">Questions before paying? Please reply to your fit-check email before using checkout.</p>
       </section>
     </div>
   </main>
