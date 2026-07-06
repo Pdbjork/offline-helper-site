@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Book a paid rescue session — Offline Helper</title>
+  <meta name="description" content="Book a paid Offline Helper rescue session: a 90-minute live-system setup call for Mac/Windows families and caregivers. $99 fixed-fee, no subscription." />
+  <meta name="robots" index,follow>
+  <link rel="canonical" href="https://offlinehelpers.com/paid-rescue/" />
+  <link rel="icon" type="image/png" href="/assets/brand/offline-helpers-mark.png" />
+  <meta property="og:title" content="Book a paid Offline Helper rescue session">
+  <meta property="og:description" content="$99 fixed-fee, 90-minute live-system setup. One Stripe checkout, no subscription. Optional Telegram handoff for scheduling.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://offlinehelpers.com/paid-rescue/">
+  <meta property="og:image" content="https://offlinehelpers.com/assets/brand/offline-helpers-logo.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://offlinehelpers.com/assets/brand/offline-helpers-logo.jpg">
+  <meta name="theme-color" content="#13231d">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "Private AI Setup",
+    "name": "Offline Helper paid rescue session",
+    "description": "A 90-minute live-system setup call for a Mac or Windows computer. One Stripe checkout, $99 fixed fee, no subscription.",
+    "provider": {
+      "@type": "Organization",
+      "name": "Offline Helper",
+      "url": "https://offlinehelpers.com/",
+      "logo": "https://offlinehelpers.com/assets/brand/offline-helpers-logo.jpg"
+    },
+    "areaServed": "US",
+    "offers": {
+      "@type": "Offer",
+      "price": "99",
+      "priceCurrency": "USD"
+    },
+    "url": "https://offlinehelpers.com/paid-rescue/"
+  }
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #191713;
+      --muted: #554c42;
+      --soft: #f5efe2;
+      --paper: #fffaf0;
+      --line: #ded0bc;
+      --accent: #bb4e2f;
+      --accent-dark: #843521;
+      --warm: #f5b63f;
+      --sage: #dfe7dc;
+      --screen: #10221f;
+      --blue: #2d75bd;
+      --danger: #9a453a;
+      --shadow: 0 24px 80px rgba(42, 31, 20, .18);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-apple, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 14% 8%, rgba(245, 182, 63, .28), transparent 30rem),
+        linear-gradient(180deg, #fbf2df 0%, #fffaf0 100%);
+      color: var(--ink);
+      line-height: 1.55;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--accent-dark); }
+    main { max-width: 760px; margin: 0 auto; padding: 4rem 1.5rem 6rem; }
+    header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; }
+    .logo {
+      width: 44px; height: 44px; border-radius: 14px;
+      background: linear-gradient(135deg, var(--screen), var(--accent));
+      box-shadow: var(--shadow);
+      display: grid; place-items: center; color: white; font-weight: 900; font-size: 18px;
+    }
+    .brand { font-weight: 800; font-size: 1.15rem; letter-spacing: -.01em; }
+    .brand small { display: block; color: var(--muted); font-weight: 600; font-size: .8rem; letter-spacing: 0; }
+    h1 { font-size: clamp(2.4rem, 5vw, 3.6rem); line-height: 1.05; letter-spacing: -.04em; margin: 0 0 1rem; }
+    p.lede { font-size: 1.2rem; color: var(--muted); margin: 0 0 2.5rem; max-width: 60ch; }
+    .price-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: clamp(1.5rem, 4vw, 2.5rem);
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+    }
+    .price-card .badge {
+      display: inline-block; background: var(--accent); color: white;
+      border-radius: 999px; padding: .4rem .8rem; font-weight: 800; font-size: .85rem;
+      margin-bottom: 1rem;
+    }
+    .price {
+      display: flex; align-items: baseline; gap: .5rem; margin: 0 0 1rem;
+    }
+    .price .amount { font-size: clamp(3rem, 7vw, 4.4rem); font-weight: 900; letter-spacing: -.05em; line-height: 1; }
+    .price .currency { font-size: 1.4rem; color: var(--muted); font-weight: 700; }
+    .price .per { color: var(--muted); font-size: 1rem; margin-left: auto; }
+    ul.includes { padding-left: 1.2rem; margin: 0 0 1.5rem; }
+    ul.includes li { margin: .35rem 0; color: var(--ink); }
+    ul.includes li::marker { color: var(--accent); }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-top: 1.5rem; }
+    .button {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 1rem 1.6rem; border-radius: 999px; font-weight: 800; font-size: 1.05rem;
+      border: 0; cursor: pointer; text-decoration: none;
+    }
+    .button.primary { background: var(--accent); color: white; box-shadow: 0 14px 30px rgba(187, 78, 47, .25); }
+    .button.primary:hover { background: var(--accent-dark); transform: translateY(-1px); }
+    .button.secondary { background: var(--paper); color: var(--ink); border: 1px solid var(--line); }
+    .small { font-size: .92rem; color: var(--muted); margin-top: 1rem; line-height: 1.5; }
+    .back { display: inline-block; margin-top: 2rem; color: var(--muted); }
+    .privacy {
+      background: var(--sage); border-radius: var(--radius-md); padding: 1rem 1.2rem;
+      margin-top: 1.5rem; font-size: .95rem; color: var(--ink);
+    }
+    header { margin-bottom: 1.5rem; }
+    .brand-top {
+      display: inline-flex; align-items: center; gap: .7rem;
+      text-decoration: none; color: inherit; font-weight: 800; letter-spacing: -.03em;
+    }
+    .brand-top:hover { color: inherit; }
+    .brand-mark {
+      width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center;
+      background: #f8fafc; border: 1px solid rgba(16, 25, 44, .12);
+      box-shadow: 0 10px 24px rgba(19, 35, 29, .18); overflow: hidden;
+    }
+    .brand-mark img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .brand-word { font-size: 1.15rem; font-weight: 800; line-height: 1.1; }
+    .brand-word small {
+      display: block; color: var(--muted); font-weight: 600;
+      font-size: .8rem; letter-spacing: 0;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <a class="brand-top" href="/" aria-label="Offline Helper home">
+        <span class="brand-mark" aria-hidden="true"><img src="/assets/brand/offline-helpers-mark.png" alt="" /></span>
+        <span class="brand-word">Offline Helper<small>paid rescue session</small></span>
+      </a>
+    </header>
+
+    <h1>Book a paid rescue session.</h1>
+    <p class="lede">A 90-minute live-system setup call for a Mac or Windows computer. One Stripe checkout, $99 fixed fee, no subscription. We meet on Telegram or by phone after you pay.</p>
+
+    <div class="price-card">
+      <span class="badge">Fixed fee · no subscription</span>
+      <div class="price">
+        <span class="currency">$</span>
+        <span class="amount">99</span>
+        <span class="per">USD · 90 minutes</span>
+      </div>
+      <ul class="includes">
+        <li>Diagnose the immediate setup problem on a real Mac or PC screen-share</li>
+        <li>Install, configure, or repair the local-first tools you actually need</li>
+        <li>Plain-English explanation of what stays local and what uses the network</li>
+        <li>One redacted research signal logged for the project (no screenshots, no personal files)</li>
+        <li>Optional Telegram handoff for any follow-up questions in the next 14 days</li>
+      </ul>
+      <div class="cta-row">
+        <!-- The Payment Link URL is set by Pete in Stripe Dashboard and pasted here.
+             Until then, the link is a placeholder that explains the build status. -->
+        <a class="button primary" id="paid-cta" href="#" data-payment-link="" rel="noopener">Pay $99 and book the session →</a>
+        <a class="button secondary" href="https://www.skool.com/offline-helper/about">Or join the free Skool first</a>
+      </div>
+      <p class="small">Stripe checkout opens in a new tab. After payment, you'll see a confirmation page with a Telegram-handle field for scheduling. No card is stored on our side.</p>
+      <div class="privacy">
+        <strong>Privacy:</strong> we do not collect or store your passwords, recovery keys, financial details, or medical/legal information during the call. Screen-share stays in the call window. If something feels off, you can stop the session and request a full refund within 7 days.
+      </div>
+    </div>
+
+    <h2 style="font-size: 1.6rem; margin: 0 0 1rem;">What this is not</h2>
+    <ul class="includes" style="margin-bottom: 2rem;">
+      <li>Not a subscription. Pay once, get one 90-minute session.</li>
+      <li>Not a fit check. The free fit check stays at <a href="/fit-check/index.html">/fit-check/</a> — do that first if you have not already.</li>
+      <li>Not crisis support. For urgent safety, mental-health, or medical issues, contact local emergency or crisis services instead.</li>
+    </ul>
+
+    <h2 style="font-size: 1.6rem; margin: 0 0 1rem;">After you pay</h2>
+    <ol style="padding-left: 1.2rem; color: var(--ink);">
+      <li>Stripe sends a receipt to your email and redirects you to a confirmation page.</li>
+      <li>The confirmation page asks for your Telegram handle (or phone number) for scheduling.</li>
+      <li>We propose 2-3 time windows within one business day and confirm by Telegram or phone.</li>
+      <li>The 90-minute session happens on a screen-share you control.</li>
+      <li>Optional 14-day follow-up by Telegram for the questions the call could not cover.</li>
+    </ol>
+
+    <a class="back" href="/">← Back to Offline Helper</a>
+  </main>
+
+  <script>
+    // The Stripe Payment Link is set by Pete in the Dashboard and pasted
+    // into the data-payment-link attribute on #paid-cta. Until then, the
+    // button shows a build-status message instead of a 404 to Stripe.
+    (function () {
+      var cta = document.getElementById('paid-cta');
+      if (!cta) return;
+      var link = (cta.getAttribute('data-payment-link') || '').trim();
+      if (!link) {
+        cta.addEventListener('click', function (e) {
+          e.preventDefault();
+          cta.textContent = 'Payment link not yet configured — check back soon';
+          cta.setAttribute('aria-disabled', 'true');
+        });
+        cta.setAttribute('aria-disabled', 'true');
+      }
+    })();
+  </script>
+</body>
+</html>
