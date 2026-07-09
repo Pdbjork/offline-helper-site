@@ -9,7 +9,7 @@
   <link rel="canonical" href="https://offlinehelpers.com/paid-rescue/" />
   <link rel="icon" type="image/png" href="/assets/brand/offline-helpers-mark.png" />
   <meta property="og:title" content="Book a paid Offline Helper rescue session">
-  <meta property="og:description" content="$99 fixed-fee, 90-minute live-system setup. One Stripe checkout, no subscription. Optional Telegram handoff for scheduling.">
+  <meta property="og:description" content="$99 fixed-fee, 90-minute live-system setup. Request a slot by Telegram, no subscription.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://offlinehelpers.com/paid-rescue/">
   <meta property="og:image" content="https://offlinehelpers.com/assets/brand/offline-helpers-logo.jpg">
@@ -22,7 +22,7 @@
     "@type": "Service",
     "serviceType": "Private AI Setup",
     "name": "Offline Helper paid rescue session",
-    "description": "A 90-minute live-system setup call for a Mac or Windows computer. One Stripe checkout, $99 fixed fee, no subscription.",
+    "description": "A 90-minute live-system setup call for a Mac or Windows computer. Request a paid slot by Telegram, $99 fixed fee, no subscription.",
     "provider": {
       "@type": "Organization",
       "name": "Offline Helper",
@@ -147,7 +147,7 @@
     </header>
 
     <h1>Book a paid rescue session.</h1>
-    <p class="lede">A 90-minute live-system setup call for a Mac or Windows computer. One Stripe checkout, $99 fixed fee, no subscription. We meet on Telegram or by phone after you pay.</p>
+    <p class="lede">A 90-minute live-system setup call for a Mac or Windows computer. $99 fixed fee, no subscription. Request a slot through Telegram and Pete will confirm fit, timing, and payment before the call.</p>
 
     <div class="price-card">
       <span class="badge">Fixed fee · no subscription</span>
@@ -164,12 +164,10 @@
         <li>Optional Telegram handoff for any follow-up questions in the next 14 days</li>
       </ul>
       <div class="cta-row">
-        <!-- The Payment Link URL is set by Pete in Stripe Dashboard and pasted here.
-             Until then, the link is a placeholder that explains the build status. -->
-        <a class="button primary" id="paid-cta" href="#" data-payment-link="" rel="noopener">Pay $99 and book the session →</a>
+        <a class="button primary" id="paid-cta" href="https://t.me/OfflineHelperPeteBot" rel="noopener" target="_blank">Request a $99 rescue slot on Telegram →</a>
         <a class="button secondary" href="https://www.skool.com/offline-helper/about">Or join the free Skool first</a>
       </div>
-      <p class="small">Stripe checkout opens in a new tab. After payment, you'll see a confirmation page with a Telegram-handle field for scheduling. No card is stored on our side.</p>
+      <p class="small">Telegram opens in a new tab. Send a short note about the device, the problem, and your time zone. Pete confirms fit, time, and payment before the session. No card is stored on our side.</p>
       <div class="privacy">
         <strong>Privacy:</strong> we do not collect or store your passwords, recovery keys, financial details, or medical/legal information during the call. Screen-share stays in the call window. If something feels off, you can stop the session and request a full refund within 7 days.
       </div>
@@ -182,10 +180,11 @@
       <li>Not crisis support. For urgent safety, mental-health, or medical issues, contact local emergency or crisis services instead.</li>
     </ul>
 
-    <h2 style="font-size: 1.6rem; margin: 0 0 1rem;">After you pay</h2>
+    <h2 style="font-size: 1.6rem; margin: 0 0 1rem;">After you request a slot</h2>
     <ol style="padding-left: 1.2rem; color: var(--ink);">
-      <li>Stripe sends a receipt to your email and redirects you to a confirmation page.</li>
-      <li>The confirmation page asks for your Telegram handle (or phone number) for scheduling.</li>
+      <li>Telegram opens a chat with Offline Helper Pete.</li>
+      <li>Send the device type, the setup problem, and your time zone.</li>
+      <li>Pete confirms whether the session fits the service before taking payment.</li>
       <li>We propose 2-3 time windows within one business day and confirm by Telegram or phone.</li>
       <li>The 90-minute session happens on a screen-share you control.</li>
       <li>Optional 14-day follow-up by Telegram for the questions the call could not cover.</li>
@@ -194,23 +193,5 @@
     <a class="back" href="/">← Back to Offline Helper</a>
   </main>
 
-  <script>
-    // The Stripe Payment Link is set by Pete in the Dashboard and pasted
-    // into the data-payment-link attribute on #paid-cta. Until then, the
-    // button shows a build-status message instead of a 404 to Stripe.
-    (function () {
-      var cta = document.getElementById('paid-cta');
-      if (!cta) return;
-      var link = (cta.getAttribute('data-payment-link') || '').trim();
-      if (!link) {
-        cta.addEventListener('click', function (e) {
-          e.preventDefault();
-          cta.textContent = 'Payment link not yet configured — check back soon';
-          cta.setAttribute('aria-disabled', 'true');
-        });
-        cta.setAttribute('aria-disabled', 'true');
-      }
-    })();
-  </script>
 </body>
 </html>
