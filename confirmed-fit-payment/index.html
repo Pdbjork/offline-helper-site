@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Confirmed-Fit Payment — Offline Helper</title>
   <meta name="description" content="Payment opens only after the free fit check confirms the setup is safe, useful, and realistic. Live Stripe checkout.">
-  <meta name="robots" index, follow">
+  <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#13231d">
   <meta property="og:title" content="Confirmed-Fit Payment — Offline Helper">
   <meta property="og:description" content="Payment opens only after the free fit check confirms your setup.">
@@ -127,6 +127,7 @@
             <p class="tier-title">Starter Setup — $149</p>
             <p class="muted small">One person, one useful first workflow, privacy walkthrough, handoff guide, and a 7-day setup-fix window.</p>
             <form class="checkout-form" method="POST" action="https://offline-helper-payments.offline-helper-payments.workers.dev/api/checkout" data-tier="starter_setup">
+              <input type="hidden" name="package" value="starter_setup">
               <input type="hidden" name="fit_check_id" id="fc-id-form-1">
               <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input" style="width:100%;padding:.65rem .9rem;border:1px solid var(--line);border-radius:12px;margin-bottom:.6rem;font:inherit;">
               <button type="submit" class="button primary" style="width:100%;">Pay $149 — Starter Setup</button>
@@ -136,6 +137,7 @@
             <p class="tier-title">Family Setup — $249</p>
             <p class="muted small">Loved-one/caregiver orientation, family handoff sheet, consent clarity, and a 30-minute follow-up.</p>
             <form class="checkout-form" method="POST" action="https://offline-helper-payments.offline-helper-payments.workers.dev/api/checkout" data-tier="family_setup">
+              <input type="hidden" name="package" value="family_setup">
               <input type="hidden" name="fit_check_id" id="fc-id-form-2">
               <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input" style="width:100%;padding:.65rem .9rem;border:1px solid var(--line);border-radius:12px;margin-bottom:.6rem;font:inherit;">
               <button type="submit" class="button primary" style="width:100%;">Pay $249 — Family Setup</button>
@@ -145,6 +147,7 @@
             <p class="tier-title">Family Support — $29/month</p>
             <p class="muted small">Monthly health check, update check, archive verification, and one short support question. Cancel anytime in the Customer Portal from the receipt.</p>
             <form class="checkout-form" method="POST" action="https://offline-helper-payments.offline-helper-payments.workers.dev/api/checkout" data-tier="family_support">
+              <input type="hidden" name="package" value="family_support">
               <input type="hidden" name="fit_check_id" id="fc-id-form-3">
               <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input" style="width:100%;padding:.65rem .9rem;border:1px solid var(--line);border-radius:12px;margin-bottom:.6rem;font:inherit;">
               <button type="submit" class="button primary" style="width:100%;">Subscribe $29/month</button>
