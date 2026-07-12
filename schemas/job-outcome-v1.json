@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://offlinehelpers.com/schemas/job-outcome-v1.json",
+  "title": "OfflineHelperJobOutcome",
+  "type": "object",
+  "required": [
+    "job_id",
+    "created_at",
+    "channel",
+    "package",
+    "payment_status",
+    "device_os",
+    "customer_segment",
+    "problem_class",
+    "problem_summary",
+    "outcome",
+    "operator"
+  ],
+  "properties": {
+    "job_id": { "type": "string", "pattern": "^OH-[0-9]{8}-[0-9]{3,}$" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "closed_at": { "type": ["string", "null"], "format": "date-time" },
+    "channel": {
+      "type": "string",
+      "enum": ["fit_check", "telegram", "email", "skool", "referral", "partner", "other"]
+    },
+    "package": {
+      "type": "string",
+      "enum": ["starter_setup", "family_setup", "family_support", "paid_rescue", "fit_check_only", "unknown"]
+    },
+    "payment_status": {
+      "type": "string",
+      "enum": ["unpaid", "paid", "refunded", "comp", "subscription_active"]
+    },
+    "amount_usd": { "type": ["number", "null"], "minimum": 0 },
+    "stripe_session_id": { "type": ["string", "null"] },
+    "device_os": {
+      "type": "string",
+      "enum": ["macos", "windows", "both", "unknown"]
+    },
+    "device_class": {
+      "type": "string",
+      "enum": ["laptop", "desktop", "both", "unknown"]
+    },
+    "customer_segment": {
+      "type": "string",
+      "enum": ["self", "adult_child_for_parent", "caregiver", "household", "other"]
+    },
+    "problem_class": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 3,
+      "items": {
+        "type": "string",
+        "enum": [
+          "ai_setup",
+          "ai_confusion",
+          "account_login",
+          "wifi_network",
+          "email_comms",
+          "printer_peripheral",
+          "browser_safety",
+          "update_breakage",
+          "performance",
+          "family_handoff",
+          "privacy_concern",
+          "other"
+        ]
+      }
+    },
+    "problem_summary": { "type": "string", "maxLength": 240 },
+    "root_cause": {
+      "type": "string",
+      "enum": [
+        "skill_gap",
+        "bad_prior_setup",
+        "os_bug",
+        "account_lock",
+        "hardware",
+        "scam_attempt",
+        "expectation_mismatch",
+        "scope_outside_oh",
+        "unknown"
+      ]
+    },
+    "minutes_live": { "type": ["integer", "null"], "minimum": 0 },
+    "minutes_async": { "type": ["integer", "null"], "minimum": 0 },
+    "outcome": {
+      "type": "string",
+      "enum": ["fixed", "partial", "not_fixed", "wrong_fit", "no_show", "refunded", "in_progress"]
+    },
+    "reopen_within_14d": { "type": "boolean" },
+    "playbook_ids": { "type": "array", "items": { "type": "string" } },
+    "bot_helped": { "type": "boolean" },
+    "referral_source": { "type": ["string", "null"] },
+    "partner_id": { "type": ["string", "null"] },
+    "nps_proxy": {
+      "type": "string",
+      "enum": ["detractor", "passive", "promoter", "unknown"]
+    },
+    "testimonial_ok": { "type": "boolean" },
+    "lessons": { "type": ["string", "null"], "maxLength": 500 },
+    "follow_up_due": { "type": ["string", "null"], "format": "date" },
+    "operator": { "type": "string" }
+  },
+  "additionalProperties": false
+}

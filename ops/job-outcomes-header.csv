@@ -1,0 +1,1 @@
+job_id,created_at,closed_at,channel,package,payment_status,amount_usd,stripe_session_id,device_os,device_class,customer_segment,problem_class,problem_summary,root_cause,minutes_live,minutes_async,outcome,reopen_within_14d,playbook_ids,bot_helped,referral_source,partner_id,nps_proxy,testimonial_ok,lessons,follow_up_due,operator
