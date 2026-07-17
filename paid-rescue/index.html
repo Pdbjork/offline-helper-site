@@ -119,6 +119,22 @@
       background: var(--sage); border-radius: var(--radius-md); padding: 1rem 1.2rem;
       margin-top: 1.5rem; font-size: .95rem; color: var(--ink);
     }
+    .starter-note {
+      background: #fff7e7;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 1.2rem;
+      margin: 1.5rem 0 0;
+    }
+    .starter-note h2 { font-size: 1.35rem; margin: 0 0 .5rem; letter-spacing: -.03em; }
+    .starter-note p { margin: 0 0 1rem; color: var(--muted); }
+    textarea {
+      width: 100%; min-height: 170px; resize: vertical;
+      border: 1px solid var(--line); border-radius: 16px;
+      background: white; color: var(--ink); padding: 1rem;
+      font: inherit; line-height: 1.45;
+    }
+    .copy-status { min-height: 1.4rem; color: var(--accent-dark); font-weight: 700; margin-top: .65rem; }
     header { margin-bottom: 1.5rem; }
     .brand-top {
       display: inline-flex; align-items: center; gap: .7rem;
@@ -168,7 +184,24 @@
         <a class="button primary" id="paid-cta" href="https://t.me/OfflineHelperPeteBot" rel="noopener" target="_blank">Request a $99 rescue slot on Telegram →</a>
         <a class="button secondary" href="https://www.skool.com/offline-helper/about">Or join the free Skool first</a>
       </div>
-      <p class="small">Telegram opens in a new tab. Send a short note about the device, the problem, and your time zone. Pete confirms fit, time, and payment before the session. No card is stored on our side.</p>
+      <p class="small">Telegram opens in a new tab. Send the starter note below with the device, the problem, and your time zone. Pete confirms fit, time, and payment before the session. No card is stored on our side.</p>
+      <div class="starter-note" aria-labelledby="starter-note-title">
+        <h2 id="starter-note-title">Copy/paste starter note</h2>
+        <p>This removes the blank-page problem when Telegram opens. Edit anything that does not fit.</p>
+        <textarea id="telegram-note" aria-label="Starter note for Telegram">Hi Pete, I want to request a $99 Offline Helper rescue session.
+
+Device: Mac / Windows / not sure
+Problem I need help with:
+Best time zone and 2–3 good time windows:
+What I want working by the end:
+
+I understand you will confirm fit and payment before the session, and I should not send passwords, recovery keys, private documents, medical/legal/financial details, or crisis information in Telegram.</textarea>
+        <div class="cta-row">
+          <button class="button secondary" type="button" id="copy-note">Copy starter note</button>
+          <a class="button primary" href="https://t.me/OfflineHelperPeteBot" rel="noopener" target="_blank">Open Telegram</a>
+        </div>
+        <div class="copy-status" id="copy-status" role="status" aria-live="polite"></div>
+      </div>
       <div class="privacy">
         <strong>Privacy:</strong> we do not collect or store your passwords, recovery keys, financial details, or medical/legal information during the call. Screen-share stays in the call window. If something feels off, you can stop the session and request a full refund within 7 days.
       </div>
@@ -194,5 +227,26 @@
     <a class="back" href="/">← Back to Offline Helper</a>
   </main>
 
+  <script>
+    (function () {
+      var button = document.getElementById('copy-note');
+      var note = document.getElementById('telegram-note');
+      var status = document.getElementById('copy-status');
+      if (!button || !note || !status) return;
+      button.addEventListener('click', function () {
+        var text = note.value;
+        function done(message) { status.textContent = message; }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () {
+            done('Starter note copied. Open Telegram and paste it into the chat.');
+          }).catch(function () {
+            note.focus(); note.select(); done('Copy did not auto-run. Select the note and copy it manually.');
+          });
+        } else {
+          note.focus(); note.select(); done('Select the note and copy it manually.');
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
