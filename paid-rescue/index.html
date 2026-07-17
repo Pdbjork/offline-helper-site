@@ -236,14 +236,23 @@ I understand you will confirm fit and payment before the session, and I should n
       button.addEventListener('click', function () {
         var text = note.value;
         function done(message) { status.textContent = message; }
+        function selectFallback() {
+          note.focus();
+          note.select();
+          try {
+            if (document.execCommand && document.execCommand('copy')) {
+              done('Starter note copied. Open Telegram and paste it into the chat.');
+              return;
+            }
+          } catch (err) {}
+          done('Copy did not auto-run. Select the note and copy it manually.');
+        }
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(text).then(function () {
             done('Starter note copied. Open Telegram and paste it into the chat.');
-          }).catch(function () {
-            note.focus(); note.select(); done('Copy did not auto-run. Select the note and copy it manually.');
-          });
+          }).catch(selectFallback);
         } else {
-          note.focus(); note.select(); done('Select the note and copy it manually.');
+          selectFallback();
         }
       });
     })();
