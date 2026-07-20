@@ -24,30 +24,100 @@ import {
 // Live-mode flag is STRIPE_LIVE_APPROVED set in wrangler.toml [vars].
 // Test mode = "0", live mode = "1". Refuses to run if mismatch with key prefix.
 
-// CATALOG keeps each product's Stripe Price ID and mode. Prices below are
-// LIVE-mode IDs (created in the Stripe Dashboard in 2026-06). Updating a price
-// here requires creating a new live price in Dashboard and pasting the ID —
-// Stripe IDs are immutable, you cannot edit an existing one.
+// CATALOG: source of truth for checkout packages.
+//
+// Prefer a fixed Stripe Price ID when present (immutable Dashboard prices).
+// If `price` is missing, Checkout uses `price_data` (inline amount) so new
+// SKUs ship without a Dashboard round-trip. After creating live prices,
+// paste IDs here and drop the inline path for cleaner reporting.
+//
+// Offer catalog writeup: business/offer-catalog.md
 const CATALOG = {
+  // --- L1 setups (current offer) ---
+  home_setup: {
+    name: "Offline Helper Home Setup",
+    description: "Done-for-you local-first AI setup on one Mac or Windows PC, training, handoff guide, 14-day working-system guarantee.",
+    mode: "payment",
+    amount_cents: 49700,
+  },
+  family_care_setup: {
+    name: "Offline Helper Family Care Setup",
+    description: "Home Setup plus caregiver orientation, consent/handoff sheet, and a 30-minute follow-up.",
+    mode: "payment",
+    amount_cents: 99700,
+  },
+  org_setup: {
+    name: "Offline Helper Micro-Org Setup",
+    description: "1–3 seats for a small office, library-style partner, or community site. Local-first AI with staff handoff.",
+    mode: "payment",
+    amount_cents: 150000,
+  },
+  // --- L2 retention (primary subscription) ---
+  care_plan: {
+    name: "Offline Helper Care Plan",
+    description: "Monthly: updates, health check, skill of the month, one support call, privacy review. Cancel anytime.",
+    mode: "subscription",
+    amount_cents: 7900,
+  },
+  // --- Hardware / network kits (offline depth + OSS model class) ---
+  hw_edge: {
+    name: "Edge Privacy Kit",
+    description: "Network + device hygiene kit. Soft offline on existing hardware; models limited by your current Mac/PC.",
+    mode: "payment",
+    amount_cents: 34900,
+  },
+  hw_home: {
+    name: "Home AI Node",
+    description: "Curated mini PC + home LAN setup. Mostly offline; realistic daily host for ~7B–14B open models.",
+    mode: "payment",
+    amount_cents: 149900,
+  },
+  hw_lab: {
+    name: "Open Model Lab",
+    description: "GPU workstation stack for deep offline / self-host. Realistic host for ~32B–70B quantized open models.",
+    mode: "payment",
+    amount_cents: 399700,
+  },
+  // --- Legacy pilot SKUs (keep working; prefer new names on site) ---
   starter_setup: {
-    name: "Offline Helper Starter Setup",
+    name: "Offline Helper Starter Setup (pilot)",
     price: "price_1TgDrJ5r5QARoiZNrIxxs5wx", // $149 one-time, live
     mode: "payment",
     amount_cents: 14900,
   },
   family_setup: {
-    name: "Offline Helper Family Setup",
+    name: "Offline Helper Family Setup (pilot)",
     price: "price_1TgDrN5r5QARoiZN1XpEhnDO", // $249 one-time, live
     mode: "payment",
     amount_cents: 24900,
   },
   family_support: {
-    name: "Offline Helper Family Support",
+    name: "Offline Helper Family Support (legacy)",
     price: "price_1TgDrJ5r5QARoiZNFzGaLIm6", // $29 / month, live
     mode: "subscription",
     amount_cents: 2900,
   },
 };
+
+function lineItemFor(product) {
+  if (product.price) {
+    return { price: product.price, quantity: 1 };
+  }
+  const price_data = {
+    currency: "usd",
+    unit_amount: product.amount_cents,
+    product_data: {
+      name: product.name,
+    },
+  };
+  if (product.description) {
+    price_data.product_data.description = String(product.description).slice(0, 500);
+  }
+  if (product.mode === "subscription") {
+    price_data.recurring = { interval: "month" };
+  }
+  return { price_data, quantity: 1 };
+}
 
 const SUCCESS_URL = "https://offlinehelpers.com/payment-success/?session_id={CHECKOUT_SESSION_ID}";
 const CANCEL_URL = "https://offlinehelpers.com/payment-canceled/";
@@ -185,7 +255,7 @@ async function handleCheckout(request, env) {
   // is the deprecated path.)
   const sessionPayload = {
     mode: product.mode,
-    line_items: [{ price: product.price, quantity: 1 }],
+    line_items: [lineItemFor(product)],
     success_url: SUCCESS_URL,
     cancel_url: CANCEL_URL,
     metadata,

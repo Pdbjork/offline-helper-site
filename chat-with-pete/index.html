@@ -324,17 +324,17 @@
         var silicon = answers.apple_silicon;
 
         if (dev === 'mac' && silicon === 'yes') {
-          if (ram >= 16) return { score: 95, eligible: true, tier: 'starter_setup', reason: 'Apple Silicon Mac with 16+ GB memory - great fit for any of our packages.' };
-          if (ram >= 8)  return { score: 80, eligible: true, tier: 'starter_setup', reason: 'Apple Silicon Mac with 8 GB memory - runs a 7B model comfortably.' };
+          if (ram >= 16) return { score: 95, eligible: true, tier: 'home_setup', reason: 'Apple Silicon Mac with 16+ GB memory - great fit for Home Setup; Family Care if a caregiver is involved.' };
+          if (ram >= 8)  return { score: 80, eligible: true, tier: 'home_setup', reason: 'Apple Silicon Mac with 8 GB memory - runs a 7B model comfortably.' };
           return { score: 50, eligible: false, reason: 'Apple Silicon Mac with less than 8 GB memory - will run, but you will want more headroom. Consider an upgrade first.' };
         }
         if (dev === 'mac' && silicon === 'no') {
-          if (ram >= 16) return { score: 55, eligible: true, tier: 'starter_setup', reason: 'Intel Mac with 16+ GB memory - works, but slower than Apple Silicon.' };
+          if (ram >= 16) return { score: 55, eligible: true, tier: 'home_setup', reason: 'Intel Mac with 16+ GB memory - works, but slower than Apple Silicon.' };
           return { score: 25, eligible: false, reason: 'Intel Mac - a local LLM will be slow. A managed cloud AI is the more honest recommendation.' };
         }
         if (dev === 'windows') {
-          if (ram >= 16) return { score: 85, eligible: true, tier: 'starter_setup', reason: 'Windows PC with 16+ GB memory - excellent fit.' };
-          if (ram >= 8)  return { score: 70, eligible: true, tier: 'starter_setup', reason: 'Windows PC with 8 GB memory - runs a 7B model fine, tighter on headroom.' };
+          if (ram >= 16) return { score: 85, eligible: true, tier: 'home_setup', reason: 'Windows PC with 16+ GB memory - excellent fit.' };
+          if (ram >= 8)  return { score: 70, eligible: true, tier: 'home_setup', reason: 'Windows PC with 8 GB memory - runs a 7B model fine, tighter on headroom.' };
           return { score: 35, eligible: false, reason: 'Windows PC with less than 8 GB memory - too tight for a comfortable local AI.' };
         }
         return { score: 20, eligible: false, reason: 'Offline Helper currently supports Mac and Windows PCs.' };

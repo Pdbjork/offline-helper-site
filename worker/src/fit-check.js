@@ -27,22 +27,22 @@ function scoreDevice(answers) {
 
   // Macs with Apple Silicon
   if (answers.device_kind === "mac" && answers.apple_silicon) {
-    if (answers.ram_gb >= 16) return { score: 95, eligible: true, tier: "starter_setup", reason: "Apple Silicon Mac with 16+ GB RAM - great fit for any of our packages" };
-    if (answers.ram_gb >= 8)  return { score: 80, eligible: true, tier: "starter_setup", reason: "Apple Silicon Mac with 8 GB RAM - runs a 7B model comfortably" };
+    if (answers.ram_gb >= 16) return { score: 95, eligible: true, tier: "home_setup", reason: "Apple Silicon Mac with 16+ GB RAM - great fit for Home Setup; Family Care if a caregiver is involved" };
+    if (answers.ram_gb >= 8)  return { score: 80, eligible: true, tier: "home_setup", reason: "Apple Silicon Mac with 8 GB RAM - runs a 7B model comfortably on Home Setup" };
     return { score: 50, eligible: false, reason: "Apple Silicon Mac with <8 GB RAM - will run, but you'll want more headroom" };
   }
 
   // Macs without Apple Silicon (Intel)
   if (answers.device_kind === "mac" && !answers.apple_silicon) {
-    if (answers.ram_gb >= 16) return { score: 55, eligible: true, tier: "starter_setup", reason: "Intel Mac with 16+ GB RAM - works, but slower than Apple Silicon" };
+    if (answers.ram_gb >= 16) return { score: 55, eligible: true, tier: "home_setup", reason: "Intel Mac with 16+ GB RAM - Home Setup works; slower than Apple Silicon. Home AI Node optional if you want a dedicated box" };
     return { score: 25, eligible: false, reason: "Intel Mac - local LLM will be slow; recommend a managed cloud service instead" };
   }
 
   // Windows
   if (answers.device_kind === "windows") {
-    if (answers.ram_gb >= 16) return { score: 85, eligible: true, tier: "starter_setup", reason: "Windows PC with 16+ GB RAM - excellent fit" };
-    if (answers.ram_gb >= 8)  return { score: 70, eligible: true, tier: "starter_setup", reason: "Windows PC with 8 GB RAM - runs a 7B model fine, tighter on headroom" };
-    return { score: 35, eligible: false, reason: "Windows PC with <8 GB RAM - too tight for a comfortable local LLM" };
+    if (answers.ram_gb >= 16) return { score: 85, eligible: true, tier: "home_setup", reason: "Windows PC with 16+ GB RAM - excellent Home Setup fit" };
+    if (answers.ram_gb >= 8)  return { score: 70, eligible: true, tier: "home_setup", reason: "Windows PC with 8 GB RAM - runs a 7B model fine, tighter on headroom" };
+    return { score: 35, eligible: false, reason: "Windows PC with <8 GB RAM - too tight for a comfortable local LLM; consider Home AI Node hardware after diagnosis" };
   }
 
   return { score: 20, eligible: false, reason: "We currently only support Mac and Windows PCs" };
