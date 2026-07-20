@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Confirmed-Fit Payment — Offline Helper</title>
-  <meta name="description" content="Payment opens only after the free fit check confirms the setup is safe, useful, and realistic. Live Stripe checkout.">
+  <meta name="description" content="Payment opens only after the free fit check confirms the setup is safe, useful, and realistic. Live Stripe checkout for setup, Care Plan, and hardware kits.">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#13231d">
   <meta property="og:title" content="Confirmed-Fit Payment — Offline Helper">
@@ -55,26 +55,23 @@
     .actions { display: flex; flex-wrap: wrap; gap: .9rem; margin-top: 2rem; }
     .card { background: rgba(255, 253, 248, .9); border: 1px solid var(--line); border-radius: 24px; padding: clamp(1.15rem, 3vw, 1.8rem); box-shadow: var(--shadow); }
     .card h2 { font-size: clamp(1.8rem, 4vw, 2.7rem); }
-    .list, .routes, .packages { display: grid; gap: .9rem; padding: 0; margin: 1.25rem 0 0; list-style: none; }
-    .list li, .route, .package { background: white; border: 1px solid var(--line); border-radius: 18px; padding: 1rem; }
+    .list, .packages { display: grid; gap: .9rem; padding: 0; margin: 1.25rem 0 0; list-style: none; }
+    .list li, .package { background: white; border: 1px solid var(--line); border-radius: 18px; padding: 1rem; }
     .list li::before { content: "✓"; color: var(--accent-dark); font-weight: 900; margin-right: .55rem; }
     .muted { color: var(--muted); }
     .warning { margin-top: 1.25rem; padding: 1rem; border-radius: 18px; border: 1px solid rgba(154, 69, 58, .24); background: rgba(154, 69, 58, .07); color: #633028; }
     .section { margin-top: 2rem; }
     .small { font-size: .9rem; }
     code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .92em; background: rgba(19, 35, 29, .06); padding: .1rem .35rem; border-radius: 6px; }
-
     .fit-summary { display: grid; gap: .4rem; margin-top: 1rem; padding: .85rem 1rem; background: rgba(47, 125, 92, .08); border: 1px solid rgba(47, 125, 92, .2); border-radius: 14px; }
     .fit-summary .row { display: flex; justify-content: space-between; gap: 1rem; }
     .fit-summary .row strong { font-weight: 600; }
-
     .checkout-card { display: grid; gap: .75rem; }
     .checkout-card .tier-title { font-size: 1.15rem; font-weight: 700; margin: 0; }
-    .checkout-card .tier-price { color: var(--accent-dark); font-weight: 760; font-size: 1.05rem; margin: 0; }
-
+    .group-label { margin: 1.5rem 0 0; font-size: .95rem; font-weight: 780; color: var(--accent-dark); letter-spacing: .02em; text-transform: uppercase; }
     footer { border-top: 1px solid var(--line); padding: 2rem 0; color: var(--muted); }
     .footer-grid { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; }
-
+    .email-input { width:100%;padding:.65rem .9rem;border:1px solid var(--line);border-radius:12px;margin-bottom:.6rem;font:inherit; }
     @media (max-width: 780px) { .hero { grid-template-columns: 1fr; } .nav { align-items: flex-start; flex-direction: column; padding: 1rem 0; } main { padding: 3.5rem 0; } }
   </style>
 </head>
@@ -90,9 +87,9 @@
   <main id="main">
     <div class="wrap hero">
       <section>
-        <span class="eyebrow">Confirmed fit only · no public checkout</span>
+        <span class="eyebrow">Confirmed fit only · live Stripe checkout</span>
         <h1>Payment opens after the fit check.</h1>
-        <p class="lede">This handoff page keeps Offline Helper honest: customers pay only after the free fit check confirms the setup is safe, useful, and realistic.</p>
+        <p class="lede">Pay only after we confirmed the setup is safe, useful, and realistic — including which offline / open-source hardware tier (if any) matches your goals.</p>
 
         <div class="fit-summary" id="fit-summary" hidden>
           <div class="row"><strong>Fit check ID</strong><code id="fc-id">…</code></div>
@@ -100,7 +97,7 @@
         </div>
 
         <div class="actions">
-          <a class="button primary" id="primary-cta" href="#" data-tier="starter_setup">Open secure Stripe checkout</a>
+          <a class="button primary" id="primary-cta" href="#" data-tier="home_setup">Open secure Stripe checkout</a>
           <a class="button secondary" href="mailto:pdbjork@gmail.com?subject=Offline%20Helper%20confirmed-fit%20payment">Ask Pete first</a>
         </div>
 
@@ -111,7 +108,7 @@
         <h2 id="steps">Before payment</h2>
         <ul class="list">
           <li>Fit check is complete and marked confirmed-fit.</li>
-          <li>Package is selected from the recommendation.</li>
+          <li>Package selected (setup, Care Plan, and/or hardware).</li>
           <li>Local versus cloud boundaries were explained.</li>
           <li>Refund/cancel path is clear before scheduling.</li>
         </ul>
@@ -121,43 +118,122 @@
     <div class="wrap section">
       <section class="card">
         <h2>Pick your package</h2>
-        <p class="muted">Each card is the same live Stripe checkout, just a different package. The link sends a fresh Stripe Checkout Session with your fit-check ID attached, so we can follow up personally.</p>
+        <p class="muted">Each card creates a live Stripe Checkout Session with your fit-check ID attached. Prefer the package recommended on your fit check; hardware is optional and sized to offline depth.</p>
+
+        <p class="group-label">Setup &amp; Care Plan</p>
         <div class="packages">
           <div class="package checkout-card">
-            <p class="tier-title">Starter Setup — $149</p>
-            <p class="muted small">One person, one useful first workflow, privacy walkthrough, handoff guide, and a 7-day setup-fix window.</p>
+            <p class="tier-title">Home Setup — $497</p>
+            <p class="muted small">One Mac/PC, local-first AI, one first workflow, privacy walkthrough, handoff guide, 14-day fix guarantee.</p>
+            <form class="checkout-form" method="POST" action="https://offline-helper-payments.offline-helper-payments.workers.dev/api/checkout" data-tier="home_setup">
+              <input type="hidden" name="package" value="home_setup">
+              <input type="hidden" name="fit_check_id" class="fc-id-field">
+              <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input">
+              <button type="submit" class="button primary" style="width:100%;">Pay $497 — Home Setup</button>
+            </form>
+          </div>
+          <div class="package checkout-card">
+            <p class="tier-title">Family Care Setup — $997</p>
+            <p class="muted small">Home Setup plus caregiver orientation, consent/handoff sheet, and a 30-minute follow-up.</p>
+            <form class="checkout-form" method="POST" action="https://offline-helper-payments.offline-helper-payments.workers.dev/api/checkout" data-tier="family_care_setup">
+              <input type="hidden" name="package" value="family_care_setup">
+              <input type="hidden" name="fit_check_id" class="fc-id-field">
+              <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input">
+              <button type="submit" class="button primary" style="width:100%;">Pay $997 — Family Care Setup</button>
+            </form>
+          </div>
+          <div class="package checkout-card">
+            <p class="tier-title">Micro-Org Setup — $1,500</p>
+            <p class="muted small">1–3 seats for a small office, library-style partner, or community site.</p>
+            <form class="checkout-form" method="POST" action="https://offline-helper-payments.offline-helper-payments.workers.dev/api/checkout" data-tier="org_setup">
+              <input type="hidden" name="package" value="org_setup">
+              <input type="hidden" name="fit_check_id" class="fc-id-field">
+              <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input">
+              <button type="submit" class="button primary" style="width:100%;">Pay $1,500 — Micro-Org Setup</button>
+            </form>
+          </div>
+          <div class="package checkout-card">
+            <p class="tier-title">Care Plan — $79/month</p>
+            <p class="muted small">Monthly health check, updates, skill of the month, one support call, privacy review. Cancel anytime from the receipt portal.</p>
+            <form class="checkout-form" method="POST" action="https://offline-helper-payments.offline-helper-payments.workers.dev/api/checkout" data-tier="care_plan">
+              <input type="hidden" name="package" value="care_plan">
+              <input type="hidden" name="fit_check_id" class="fc-id-field">
+              <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input">
+              <button type="submit" class="button primary" style="width:100%;">Subscribe $79/month — Care Plan</button>
+            </form>
+          </div>
+        </div>
+
+        <p class="group-label">Hardware &amp; network (offline depth)</p>
+        <div class="packages">
+          <div class="package checkout-card">
+            <p class="tier-title">Edge Privacy Kit — $349</p>
+            <p class="muted small">Soft offline. Network hygiene on existing hardware. Open models ~3B–8B limited by your current Mac/PC.</p>
+            <form class="checkout-form" method="POST" action="https://offline-helper-payments.offline-helper-payments.workers.dev/api/checkout" data-tier="hw_edge">
+              <input type="hidden" name="package" value="hw_edge">
+              <input type="hidden" name="fit_check_id" class="fc-id-field">
+              <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input">
+              <button type="submit" class="button primary" style="width:100%;">Pay $349 — Edge Privacy Kit</button>
+            </form>
+          </div>
+          <div class="package checkout-card">
+            <p class="tier-title">Home AI Node — $1,499</p>
+            <p class="muted small">Mostly offline. Curated mini PC + LAN. Daily open models ~7B–14B.</p>
+            <form class="checkout-form" method="POST" action="https://offline-helper-payments.offline-helper-payments.workers.dev/api/checkout" data-tier="hw_home">
+              <input type="hidden" name="package" value="hw_home">
+              <input type="hidden" name="fit_check_id" class="fc-id-field">
+              <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input">
+              <button type="submit" class="button primary" style="width:100%;">Pay $1,499 — Home AI Node</button>
+            </form>
+          </div>
+          <div class="package checkout-card">
+            <p class="tier-title">Open Model Lab — $3,997</p>
+            <p class="muted small">Deep offline. GPU stack for ~32B–70B quantized open models. Exact hardware confirmed after fit check.</p>
+            <form class="checkout-form" method="POST" action="https://offline-helper-payments.offline-helper-payments.workers.dev/api/checkout" data-tier="hw_lab">
+              <input type="hidden" name="package" value="hw_lab">
+              <input type="hidden" name="fit_check_id" class="fc-id-field">
+              <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input">
+              <button type="submit" class="button primary" style="width:100%;">Pay $3,997 — Open Model Lab</button>
+            </form>
+          </div>
+        </div>
+
+        <p class="group-label">Legacy pilot packages (still valid)</p>
+        <div class="packages">
+          <div class="package checkout-card">
+            <p class="tier-title">Starter Setup (pilot) — $149</p>
+            <p class="muted small">Earlier pilot SKU. Prefer Home Setup ($497) for full service.</p>
             <form class="checkout-form" method="POST" action="https://offline-helper-payments.offline-helper-payments.workers.dev/api/checkout" data-tier="starter_setup">
               <input type="hidden" name="package" value="starter_setup">
-              <input type="hidden" name="fit_check_id" id="fc-id-form-1">
-              <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input" style="width:100%;padding:.65rem .9rem;border:1px solid var(--line);border-radius:12px;margin-bottom:.6rem;font:inherit;">
-              <button type="submit" class="button primary" style="width:100%;">Pay $149 — Starter Setup</button>
+              <input type="hidden" name="fit_check_id" class="fc-id-field">
+              <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input">
+              <button type="submit" class="button secondary" style="width:100%;">Pay $149 — Starter (pilot)</button>
             </form>
           </div>
           <div class="package checkout-card">
-            <p class="tier-title">Family Setup — $249</p>
-            <p class="muted small">Loved-one/caregiver orientation, family handoff sheet, consent clarity, and a 30-minute follow-up.</p>
+            <p class="tier-title">Family Setup (pilot) — $249</p>
+            <p class="muted small">Earlier pilot SKU. Prefer Family Care Setup ($997).</p>
             <form class="checkout-form" method="POST" action="https://offline-helper-payments.offline-helper-payments.workers.dev/api/checkout" data-tier="family_setup">
               <input type="hidden" name="package" value="family_setup">
-              <input type="hidden" name="fit_check_id" id="fc-id-form-2">
-              <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input" style="width:100%;padding:.65rem .9rem;border:1px solid var(--line);border-radius:12px;margin-bottom:.6rem;font:inherit;">
-              <button type="submit" class="button primary" style="width:100%;">Pay $249 — Family Setup</button>
+              <input type="hidden" name="fit_check_id" class="fc-id-field">
+              <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input">
+              <button type="submit" class="button secondary" style="width:100%;">Pay $249 — Family (pilot)</button>
             </form>
           </div>
           <div class="package checkout-card">
-            <p class="tier-title">Family Support — $29/month</p>
-            <p class="muted small">Monthly health check, update check, archive verification, and one short support question. Cancel anytime in the Customer Portal from the receipt.</p>
+            <p class="tier-title">Family Support (legacy) — $29/month</p>
+            <p class="muted small">Prefer Care Plan ($79/mo) for the full retention product.</p>
             <form class="checkout-form" method="POST" action="https://offline-helper-payments.offline-helper-payments.workers.dev/api/checkout" data-tier="family_support">
               <input type="hidden" name="package" value="family_support">
-              <input type="hidden" name="fit_check_id" id="fc-id-form-3">
-              <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input" style="width:100%;padding:.65rem .9rem;border:1px solid var(--line);border-radius:12px;margin-bottom:.6rem;font:inherit;">
-              <button type="submit" class="button primary" style="width:100%;">Subscribe $29/month</button>
+              <input type="hidden" name="fit_check_id" class="fc-id-field">
+              <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input">
+              <button type="submit" class="button secondary" style="width:100%;">Subscribe $29/month (legacy)</button>
             </form>
           </div>
         </div>
 
         <p id="error-slot" class="warning" hidden></p>
-
-        <p class="warning"><strong>Safety rule:</strong> do not paste passwords, recovery keys, bot tokens, or private documents into Stripe Checkout or any other form on this site. We never ask for them.</p>
+        <p class="warning"><strong>Safety rule:</strong> do not paste passwords, recovery keys, bot tokens, or private documents into Stripe Checkout. We never ask for them.</p>
       </section>
     </div>
   </main>
@@ -174,16 +250,22 @@
       'use strict';
       var WORKER = 'https://offline-helper-payments.offline-helper-payments.workers.dev';
       var params = new URLSearchParams(window.location.search);
-      var tier = (params.get('tier') || 'starter_setup').replace(/[^a-z_]/g, '').slice(0, 32);
+      var tier = (params.get('tier') || 'home_setup').replace(/[^a-z_]/g, '').slice(0, 40);
       var fitCheckId = (params.get('fit_check_id') || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 40);
 
       var TIER_NAMES = {
-        starter_setup: 'Starter Setup — $149',
-        family_setup:  'Family Setup — $249',
-        family_support: 'Family Support — $29/month',
+        home_setup: 'Home Setup — $497',
+        family_care_setup: 'Family Care Setup — $997',
+        org_setup: 'Micro-Org Setup — $1,500',
+        care_plan: 'Care Plan — $79/month',
+        hw_edge: 'Edge Privacy Kit — $349',
+        hw_home: 'Home AI Node — $1,499',
+        hw_lab: 'Open Model Lab — $3,997',
+        starter_setup: 'Starter Setup (pilot) — $149',
+        family_setup: 'Family Setup (pilot) — $249',
+        family_support: 'Family Support (legacy) — $29/month',
       };
 
-      // Pre-fill fit check id into the summary box and every form
       var summary = document.getElementById('fit-summary');
       var fcIdEl = document.getElementById('fc-id');
       var fcTierEl = document.getElementById('fc-tier');
@@ -191,20 +273,15 @@
         summary.hidden = false;
         fcIdEl.textContent = fitCheckId;
         fcTierEl.textContent = TIER_NAMES[tier] || tier;
-        // Fill all hidden inputs
-        document.querySelectorAll('input[type="hidden"][name="fit_check_id"]').forEach(function (i) {
+        document.querySelectorAll('.fc-id-field').forEach(function (i) {
           i.value = fitCheckId;
         });
-        // Set the primary CTA label
         var cta = document.getElementById('primary-cta');
         cta.textContent = 'Open secure Stripe checkout for ' + (TIER_NAMES[tier] || tier);
         cta.dataset.tier = tier;
         cta.dataset.fcId = fitCheckId;
         cta.addEventListener('click', function (e) {
           e.preventDefault();
-          // Build a real form and submit it. The browser does a full
-          // navigation to the Worker 303 -> Stripe. No fetch, no CORS
-          // edge cases, no opaque-redirect pitfalls.
           var f = document.createElement('form');
           f.method = 'POST';
           f.action = WORKER + '/api/checkout';
@@ -217,13 +294,9 @@
           f.submit();
         });
       } else {
-        // No fit-check context: hide the primary CTA (use the per-package forms)
         document.getElementById('primary-cta').style.display = 'none';
       }
 
-      // Disable submit buttons on click so the buyer can't double-click
-      // while the browser navigates. Real submission is the default form
-      // behavior - no JS fetch, no CORS, no opaque redirects.
       document.querySelectorAll('form.checkout-form').forEach(function (f) {
         f.addEventListener('submit', function () {
           f.querySelectorAll('button[type="submit"]').forEach(function (b) {

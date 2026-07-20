@@ -397,8 +397,52 @@
 
     .pricing {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 1rem;
+    }
+    .pricing-band {
+      margin-top: 1.5rem;
+      padding: 1.25rem 1.4rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(47, 125, 92, .22);
+      background: linear-gradient(135deg, rgba(220, 233, 222, .55), rgba(255, 253, 248, .9));
+    }
+    .hardware-matrix {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .hw-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 1.4rem;
+      box-shadow: 0 12px 40px rgba(19, 35, 29, .08);
+      display: flex;
+      flex-direction: column;
+      gap: .55rem;
+    }
+    .hw-card h3 { margin: 0; font-size: 1.35rem; }
+    .hw-meta {
+      display: grid;
+      gap: .35rem;
+      margin: .4rem 0 .2rem;
+      padding: .75rem .85rem;
+      border-radius: 14px;
+      background: rgba(16, 34, 31, .04);
+      font-size: .95rem;
+    }
+    .hw-meta strong { color: var(--ink); }
+    .tier-depth {
+      display: inline-flex;
+      width: fit-content;
+      padding: .3rem .6rem;
+      border-radius: 999px;
+      background: rgba(45, 117, 189, .12);
+      color: #1d4f85;
+      font-weight: 780;
+      font-size: .8rem;
     }
     .price-card {
       background: #fff;
@@ -518,16 +562,16 @@
       },
       {
         "@type": "Service",
-        "@id": "https://offlinehelpers.com/#service-starter",
+        "@id": "https://offlinehelpers.com/#service-home-setup",
         "serviceType": "AI Privacy Setup",
-        "name": "Offline Helper Starter Setup",
-        "description": "A one-time, done-for-you install of a private local AI assistant on one Mac or Windows PC, tuned for a non-technical owner. Includes fit check, remote setup, hand-off call, and 30 days of email support.",
+        "name": "Offline Helper Home Setup",
+        "description": "Done-for-you local-first AI install on one Mac or Windows PC with training, handoff guide, and a 14-day working-system guarantee.",
         "provider": { "@id": "https://offlinehelpers.com/#organization" },
         "areaServed": "US",
         "offers": {
           "@type": "Offer",
           "url": "https://offlinehelpers.com/#pricing",
-          "price": "149.00",
+          "price": "497.00",
           "priceCurrency": "USD",
           "availability": "https://schema.org/InStock",
           "category": "One-time setup"
@@ -535,16 +579,16 @@
       },
       {
         "@type": "Service",
-        "@id": "https://offlinehelpers.com/#service-family",
+        "@id": "https://offlinehelpers.com/#service-family-care-setup",
         "serviceType": "AI Privacy Setup",
-        "name": "Offline Helper Family Setup",
-        "description": "A one-time, done-for-you install of a private local AI assistant for a family or household, set up so a non-technical relative (often an older adult) can use it confidently. Includes a caregiver admin view, privacy controls, and a one-hour family walkthrough.",
+        "name": "Offline Helper Family Care Setup",
+        "description": "Home Setup plus caregiver orientation, consent and handoff sheet, and a 30-minute follow-up for households supporting a loved one.",
         "provider": { "@id": "https://offlinehelpers.com/#organization" },
         "areaServed": "US",
         "offers": {
           "@type": "Offer",
           "url": "https://offlinehelpers.com/#pricing",
-          "price": "249.00",
+          "price": "997.00",
           "priceCurrency": "USD",
           "availability": "https://schema.org/InStock",
           "category": "One-time setup"
@@ -552,25 +596,39 @@
       },
       {
         "@type": "Service",
-        "@id": "https://offlinehelpers.com/#service-family-support",
+        "@id": "https://offlinehelpers.com/#service-care-plan",
         "serviceType": "AI Privacy Support",
-        "name": "Offline Helper Family Support",
-        "description": "Monthly support subscription for households that completed Family Setup. Includes software updates, model upgrades, gentle check-ins, and same-week help when something goes sideways. Cancel anytime from your email receipt.",
+        "name": "Offline Helper Care Plan",
+        "description": "Monthly Care Plan: software and model health checks, skill of the month, one support call, and privacy review so private local AI keeps working.",
         "provider": { "@id": "https://offlinehelpers.com/#organization" },
         "areaServed": "US",
         "offers": {
           "@type": "Offer",
           "url": "https://offlinehelpers.com/#pricing",
-          "price": "29.00",
+          "price": "79.00",
           "priceCurrency": "USD",
           "availability": "https://schema.org/InStock",
           "category": "Subscription",
           "priceSpecification": {
             "@type": "UnitPriceSpecification",
-            "price": "29.00",
+            "price": "79.00",
             "priceCurrency": "USD",
             "unitText": "MONTH"
           }
+        }
+      },
+      {
+        "@type": "Product",
+        "@id": "https://offlinehelpers.com/#product-home-ai-node",
+        "name": "Home AI Node",
+        "description": "Curated mini PC and home network setup for mostly-offline open-source models in the 7B–14B class.",
+        "brand": { "@id": "https://offlinehelpers.com/#organization" },
+        "offers": {
+          "@type": "Offer",
+          "url": "https://offlinehelpers.com/#hardware",
+          "price": "1499.00",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
         }
       },
       {
@@ -596,9 +654,8 @@
         <ul>
           <li><a href="#for-families">Who it helps</a></li>
           <li><a href="#setup">Setup</a></li>
-          <li><a href="odysseus/index.html">Odysseus</a></li>
           <li><a href="#pricing">Pricing</a></li>
-          <li><a href="#research">Research</a></li>
+          <li><a href="#hardware">Hardware</a></li>
           <li><a href="#safety">Safety</a></li>
         </ul>
       </nav>
@@ -745,69 +802,118 @@
     <section id="pricing">
       <div class="wrap">
         <div class="section-head">
-          <h2>Market-research-backed pilot pricing.</h2>
-          <p>Public competitor research showed families already pay for trusted senior tech help. Offline Helper keeps the pilot simple: a free fit check first, then payment only if the setup is a good match.</p>
+          <h2>Fit check first. Setup once. Care Plan monthly.</h2>
+          <p>Offline Helper is a service business, not a chatbot subscription. You get a working private AI on hardware you control, then optional monthly care so it keeps working — plus curated hardware if you want deeper offline / open-source hosting.</p>
         </div>
         <div class="pricing">
           <article class="price-card">
-            <span class="price-tag">Step 1</span>
-            <h3>Free fit check</h3>
-            <div class="price">Free <small>10–15 min</small></div>
-            <p>A short call to confirm goals, device readiness, privacy concerns, and whether a local-first AI setup is realistic on a Mac or Windows PC.</p>
+            <span class="price-tag">Step 1 · free</span>
+            <h3>Private AI Fit Check</h3>
+            <div class="price">Free <small>15–20 min</small></div>
+            <p>We confirm goals, device readiness, privacy comfort, and which offline / open-source tier is realistic before anyone pays.</p>
             <ul>
               <li>Who the helper is for</li>
-              <li>Mac or Windows PC readiness</li>
-              <li>Top use case: memoir, letters, learning, planning, or everyday questions</li>
-              <li>Plain-English local versus cloud explanation</li>
+              <li>Mac or Windows readiness + memory</li>
+              <li>Offline depth vs cloud boundaries</li>
+              <li>Honest model-size recommendation</li>
             </ul>
             <p class="payment-note"><strong>No payment before fit check.</strong> If it is not a good fit, we say so kindly.</p>
             <a class="button primary" href="fit-check/index.html">Book a free fit check</a>
           </article>
-          <article class="price-card">
-            <span class="price-tag">Fast path</span>
-            <h3>Paid Rescue Session</h3>
-            <div class="price">$99 <small>90 min</small></div>
-            <p>Best when a Mac or Windows setup is stuck today and a real person needs a careful screen-share rescue instead of more articles.</p>
-            <ul>
-              <li>Same privacy boundaries as the free fit check</li>
-              <li>Live diagnosis on the real device</li>
-              <li>Payment only after Pete confirms the session fits</li>
-              <li>Optional 14-day Telegram follow-up</li>
-            </ul>
-            <p class="payment-note"><strong>Fast, not pressured.</strong> Request a slot, then Pete confirms fit, timing, and payment before the call.</p>
-            <a class="button primary" href="paid-rescue/index.html">Request a paid rescue slot</a>
-          </article>
           <article class="price-card featured">
-            <span class="price-tag">Pilot offer</span>
-            <h3>Starter Setup</h3>
-            <div class="price">$149 <small>pilot</small></div>
-            <p>Best for one person who wants a working, local-first AI helper and a calm walkthrough.</p>
+            <span class="price-tag">L1 · one-time</span>
+            <h3>Home Setup</h3>
+            <div class="price">$497 <small>setup</small></div>
+            <p>Done-for-you local-first install on <strong>your</strong> Mac or Windows PC, one useful first workflow, and a calm walkthrough.</p>
             <ul>
-              <li>Device readiness check</li>
-              <li>Local AI setup or verification where practical</li>
-              <li>One useful first workflow</li>
+              <li>Local AI install where practical</li>
+              <li>One first workflow (memoir, letters, planning…)</li>
               <li>Plain-English privacy walkthrough</li>
-              <li>7-day “one question” follow-up</li>
+              <li>Handoff guide + 14-day fix guarantee</li>
             </ul>
-            <p class="payment-note"><strong>Payment opens after fit check.</strong> A secure payment option is offered only after we confirm the setup is a good fit.</p>
+            <p class="payment-note"><strong>Payment after fit check.</strong> Checkout only when goals, device, and boundaries are clear.</p>
             <a class="button primary" href="fit-check/index.html">Start with a fit check</a>
           </article>
           <article class="price-card">
-            <span class="price-tag">For loved ones</span>
-            <h3>Family Setup</h3>
-            <div class="price">$249 <small>pilot</small></div>
-            <p>Best when an adult child, spouse, or caregiver wants the setup to feel safe, dignified, and easy to support.</p>
+            <span class="price-tag">L1 · loved ones</span>
+            <h3>Family Care Setup</h3>
+            <div class="price">$997 <small>setup</small></div>
+            <p>For adult children, spouses, and caregivers who want the setup to feel safe, dignified, and easy to support.</p>
             <ul>
-              <li>Everything in Starter Setup</li>
-              <li>Caregiver/loved-one onboarding</li>
-              <li>Consent and support-boundary walkthrough</li>
-              <li>Simple support handoff sheet</li>
+              <li>Everything in Home Setup</li>
+              <li>Caregiver orientation</li>
+              <li>Consent + support-boundary sheet</li>
               <li>30-minute follow-up session</li>
             </ul>
-            <p class="payment-note"><strong>Payment only after fit check.</strong> No one is routed to checkout until the goals, device, and consent path are clear.</p>
+            <p class="payment-note"><strong>Payment only after fit check.</strong> Consent path must be clear before checkout.</p>
             <a class="button primary" href="fit-check/index.html">Set up for a loved one</a>
           </article>
+          <article class="price-card">
+            <span class="price-tag">L2 · keep it working</span>
+            <h3>Care Plan</h3>
+            <div class="price">$79 <small>/ month</small></div>
+            <p>The product that keeps private AI useful after install day — updates, health checks, and one new skill each month.</p>
+            <ul>
+              <li>Model / software update check</li>
+              <li>Backup &amp; archive health (when configured)</li>
+              <li>Skill of the month</li>
+              <li>One short support call</li>
+              <li>Privacy / scam boundary refresh</li>
+            </ul>
+            <p class="payment-note"><strong>Cancel anytime.</strong> Usually attached at setup or day 14. Offered after value is proven.</p>
+            <a class="button primary" href="fit-check/index.html">Ask about Care Plan</a>
+          </article>
         </div>
+        <div class="pricing-band">
+          <strong>Also available:</strong> Micro-Org Setup ($1,500) for 1–3 seats / partner sites · Paid Rescue Session ($99, 90 min) when something is stuck today ·
+          <a href="paid-rescue/index.html">Request rescue</a> ·
+          <a href="#hardware">Hardware kits ↓</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="hardware">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>How offline — and how open-source — do you want to be?</h2>
+          <p>Hardware and network kits set the ceiling: soft offline on a laptop, mostly-offline on a home node, or deep offline with a GPU lab that can host larger open models. Fit check first; we never upsell hardware you do not need.</p>
+        </div>
+        <div class="hardware-matrix">
+          <article class="hw-card">
+            <span class="tier-depth">H1 · soft offline</span>
+            <h3>Edge Privacy Kit — $349</h3>
+            <p>Network and device hygiene on the computer you already own. Improves privacy posture without buying a new box.</p>
+            <div class="hw-meta">
+              <div><strong>Offline depth:</strong> soft offline (local model when RAM allows)</div>
+              <div><strong>Open models:</strong> ~3B–8B on existing hardware</div>
+              <div><strong>Includes:</strong> guest Wi‑Fi / IoT isolation guidance, DNS hygiene, no open ports, plain-English boundary map</div>
+            </div>
+            <a class="button secondary" href="fit-check/index.html">Discuss on fit check</a>
+          </article>
+          <article class="hw-card">
+            <span class="tier-depth">H2 · mostly offline</span>
+            <h3>Home AI Node — $1,499</h3>
+            <p>Curated mini PC plus home LAN setup so the family AI lives on a box you control — not a random cloud tab.</p>
+            <div class="hw-meta">
+              <div><strong>Offline depth:</strong> mostly offline on the home LAN</div>
+              <div><strong>Open models:</strong> ~7B–14B daily drivers</div>
+              <div><strong>Includes:</strong> sized mini PC, imaging, local chat UI, network isolation, handoff training</div>
+            </div>
+            <a class="button primary" href="fit-check/index.html">See if Home Node fits</a>
+          </article>
+          <article class="hw-card">
+            <span class="tier-depth">H3 · deep offline</span>
+            <h3>Open Model Lab — $3,997</h3>
+            <p>GPU workstation class for power users and small orgs who want to self-host larger open-weight models.</p>
+            <div class="hw-meta">
+              <div><strong>Offline depth:</strong> deep offline / air-gap-capable option</div>
+              <div><strong>Open models:</strong> ~32B–70B quantized (VRAM dependent)</div>
+              <div><strong>Includes:</strong> curated GPU stack, cooling/power notes, local UI only by default, staff handoff</div>
+            </div>
+            <a class="button secondary" href="fit-check/index.html">Plan a lab build</a>
+          </article>
+        </div>
+        <p class="payment-note" style="margin-top:1.25rem;"><strong>Honest limit:</strong> “100% offline forever” is rare if email, phone chat, cloud backup, or voice services stay in the mix. We size kits to your dream outcome and electricity/noise budget — not hype. Shipping, tax, and exact SKUs are confirmed after fit check.</p>
       </div>
     </section>
 
