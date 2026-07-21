@@ -56,3 +56,11 @@ New SKUs use Stripe Checkout `price_data` until Dashboard Price IDs are pasted i
 3. Fit-check first; memoir proof; no secrets in forms.
 4. Fit Check → Setup (± hardware) → Care Plan.
 5. Ask: book free Fit Check / warm intro / partner mini-session.
+
+
+## Safety and trust boundaries
+
+- No public checkout as the first step for setup packages; fit check first.
+- Never ask customers to paste passwords, recovery keys, private documents, medical/legal/financial details, or crisis information into forms, Telegram, email, or Stripe Checkout.
+- Payment copy should say what is included, what is not included, and the follow-up/refund path plainly.
+- Hardware SKUs require human confirmation before purchase because device fit, availability, shipping, and local constraints can change.
