@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Free Family AI Safety Checklist — Offline Helper</title>
+  <meta name="description" content="A free one-page checklist for families setting up AI for a parent, caregiver, or non-technical loved one: privacy, consent, passwords, scams, and when to ask for help." />
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://offlinehelpers.com/family-ai-safety-checklist/" />
+  <link rel="icon" type="image/png" href="/assets/brand/offline-helpers-mark.png" />
+  <meta property="og:title" content="Free Family AI Safety Checklist">
+  <meta property="og:description" content="A plain-English checklist before you set up AI for a loved one. Privacy, consent, passwords, scams, and fit-check guidance.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://offlinehelpers.com/family-ai-safety-checklist/">
+  <meta property="og:image" content="https://offlinehelpers.com/assets/brand/offline-helpers-logo.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://offlinehelpers.com/assets/brand/offline-helpers-logo.jpg">
+  <meta name="theme-color" content="#13231d">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Free Family AI Safety Checklist",
+    "description": "A plain-English checklist for families setting up AI for a parent, caregiver, or non-technical loved one.",
+    "author": { "@type": "Person", "name": "Pete Bjork" },
+    "publisher": { "@type": "Organization", "name": "Offline Helper", "url": "https://offlinehelpers.com/" },
+    "url": "https://offlinehelpers.com/family-ai-safety-checklist/"
+  }
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #191713;
+      --muted: #554c42;
+      --paper: #fffaf0;
+      --line: #ded0bc;
+      --accent: #bb4e2f;
+      --accent-dark: #843521;
+      --warm: #f5b63f;
+      --sage: #dfe7dc;
+      --screen: #10221f;
+      --blue: #2d75bd;
+      --shadow: 0 24px 80px rgba(42, 31, 20, .18);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 14% 8%, rgba(245, 182, 63, .28), transparent 30rem),
+        radial-gradient(circle at 86% 12%, rgba(45, 117, 189, .12), transparent 26rem),
+        linear-gradient(180deg, #fbf2df 0%, #fffaf0 100%);
+      color: var(--ink);
+      line-height: 1.55;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--accent-dark); }
+    main { max-width: 920px; margin: 0 auto; padding: 3.5rem 1.5rem 6rem; }
+    .brand-top { display: inline-flex; align-items: center; gap: .7rem; color: inherit; font-weight: 800; letter-spacing: -.03em; margin-bottom: 2.5rem; }
+    .brand-mark { width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; background: #f8fafc; border: 1px solid rgba(16, 25, 44, .12); box-shadow: 0 10px 24px rgba(19, 35, 29, .18); overflow: hidden; }
+    .brand-mark img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .brand-word { font-size: 1.15rem; font-weight: 800; line-height: 1.1; }
+    .brand-word small { display: block; color: var(--muted); font-weight: 600; font-size: .8rem; letter-spacing: 0; }
+    .eyebrow { display: inline-flex; align-items: center; gap: .5rem; color: var(--accent-dark); background: rgba(245, 182, 63, .18); border: 1px solid rgba(187, 78, 47, .22); border-radius: 999px; padding: .45rem .72rem; font-size: .87rem; font-weight: 780; }
+    h1 { font-size: clamp(2.7rem, 7vw, 5.2rem); line-height: 1.03; letter-spacing: -.055em; margin: 1rem 0; max-width: 12ch; }
+    h2 { font-size: clamp(1.7rem, 3vw, 2.35rem); line-height: 1.1; letter-spacing: -.04em; margin: 0 0 .7rem; }
+    h3 { margin: 0 0 .35rem; font-size: 1.15rem; letter-spacing: -.02em; }
+    .lede { font-size: clamp(1.15rem, 2vw, 1.35rem); color: #405149; max-width: 66ch; margin: 0 0 1.5rem; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: .9rem; margin: 1.5rem 0 0; }
+    .button { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; min-height: 48px; padding: .9rem 1.15rem; border-radius: 999px; border: 1px solid transparent; font-weight: 800; text-decoration: none; }
+    .button.primary { background: var(--accent); color: white; box-shadow: 0 14px 30px rgba(187, 78, 47, .23); }
+    .button.primary:hover { background: var(--accent-dark); color: white; }
+    .button.secondary { border-color: var(--line); background: rgba(255, 255, 255, .72); color: var(--ink); }
+    .grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 1.2rem; align-items: start; margin-top: 2rem; }
+    .card, .checklist, .print-card { background: rgba(255, 253, 248, .9); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: clamp(1.2rem, 3vw, 1.8rem); box-shadow: 0 12px 40px rgba(19, 35, 29, .08); }
+    .card + .card { margin-top: 1rem; }
+    .checklist ol { margin: 0; padding-left: 1.3rem; }
+    .checklist li { margin: .8rem 0; color: var(--ink); }
+    .checklist strong { color: var(--accent-dark); }
+    .print-card { position: sticky; top: 1rem; background: var(--screen); color: white; }
+    .print-card p, .print-card li { color: rgba(255,255,255,.78); }
+    .print-card ul { padding-left: 1.1rem; }
+    .print-card .button.primary { background: var(--warm); color: var(--ink); box-shadow: none; }
+    .script-box { width: 100%; min-height: 210px; border: 1px solid rgba(255,255,255,.22); border-radius: 16px; background: rgba(255,255,255,.08); color: white; padding: 1rem; font: inherit; line-height: 1.45; margin-top: .9rem; }
+    .copy-status { min-height: 1.3rem; color: #ffd978; font-weight: 800; margin-top: .65rem; }
+    .note { margin-top: 1rem; padding: 1rem; border-radius: var(--radius-md); background: var(--sage); color: var(--ink); }
+    footer { margin-top: 2rem; color: var(--muted); font-size: .95rem; }
+    @media print {
+      body { background: white; }
+      main { max-width: none; padding: 0; }
+      .brand-top, .hero-actions, .print-card, footer { display: none; }
+      .grid { display: block; }
+      .card, .checklist { box-shadow: none; border-color: #999; page-break-inside: avoid; }
+    }
+    @media (max-width: 820px) { .grid { grid-template-columns: 1fr; } .print-card { position: static; } h1 { max-width: 14ch; } }
+  </style>
+</head>
+<body>
+  <main>
+    <a class="brand-top" href="/" aria-label="Offline Helper home">
+      <span class="brand-mark" aria-hidden="true"><img src="/assets/brand/offline-helpers-mark.png" alt="" /></span>
+      <span class="brand-word">Offline Helper<small>family AI safety</small></span>
+    </a>
+
+    <span class="eyebrow">Free printable checklist · no email wall</span>
+    <h1>Before you set up AI for a loved one, check these seven things.</h1>
+    <p class="lede">Use this plain-English safety checklist when a parent, grandparent, caregiver, student, or non-technical family member wants help from AI but does not want to manage accounts, privacy settings, scams, or confusing setup choices alone.</p>
+    <div class="hero-actions">
+      <a class="button primary" href="javascript:window.print()">Print / save the checklist</a>
+      <a class="button secondary" href="/fit-check/">Get a free fit check</a>
+      <a class="button secondary" href="https://www.skool.com/offline-helper/about">Join the free community</a>
+    </div>
+
+    <div class="grid">
+      <div>
+        <section class="checklist" aria-labelledby="checklist-title">
+          <h2 id="checklist-title">The seven-point family AI safety check</h2>
+          <ol>
+            <li><strong>Consent first:</strong> the person using AI understands what is being set up and can say no, pause, or ask for help without pressure.</li>
+            <li><strong>No secret sharing:</strong> nobody pastes passwords, recovery keys, bank details, medical records, legal documents, Social Security numbers, or private family files into a chatbot.</li>
+            <li><strong>Local vs. cloud is explained:</strong> everyone knows which parts run on the home computer and which parts may use the internet, phone messaging, email, cloud backup, or third-party APIs.</li>
+            <li><strong>Scam boundary is clear:</strong> AI does not verify strangers, investment offers, gift-card requests, romance messages, tech-support popups, or emergency money asks.</li>
+            <li><strong>First useful job is simple:</strong> start with one safe task: memoir writing, kind reply drafts, grocery planning, plain-English explanations, study help, or organizing thoughts.</li>
+            <li><strong>Support access can turn off:</strong> any remote-support tool has a clear start/stop moment, and the loved one knows who can see the screen.</li>
+            <li><strong>Human override stays in charge:</strong> AI never makes medical, legal, financial, emergency, or crisis decisions. It can draft questions to ask a qualified human.</li>
+          </ol>
+        </section>
+
+        <section class="card" aria-labelledby="good-fit-title">
+          <h2 id="good-fit-title">Good first AI jobs for families</h2>
+          <ul>
+            <li>Turn a memory into a memoir chapter outline.</li>
+            <li>Draft a kind text or email, then let the human edit before sending.</li>
+            <li>Explain confusing letters in plain English without uploading sensitive details.</li>
+            <li>Create a weekly grocery or appointment checklist.</li>
+            <li>Make a “questions to ask the doctor / lawyer / advisor” list without asking AI to decide.</li>
+          </ul>
+          <p class="note"><strong>Offline Helper rule:</strong> if the setup cannot be made understandable, safe, and useful, do not take payment yet. Start with the free fit check.</p>
+        </section>
+
+        <section class="card" aria-labelledby="share-title">
+          <h2 id="share-title">Share this with the person who becomes tech support</h2>
+          <p>If this checklist helped, send the page to the adult child, caregiver, teacher, pastor, coach, or neighbor who usually gets the “can you help me with my computer?” call.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="mailto:?subject=Family%20AI%20Safety%20Checklist&body=I%20thought%20this%20Offline%20Helper%20checklist%20might%20help%20before%20setting%20up%20AI%20for%20a%20loved%20one%3A%0A%0Ahttps%3A%2F%2Fofflinehelpers.com%2Ffamily-ai-safety-checklist%2F">Email this checklist</a>
+            <a class="button secondary" href="/paid-rescue/">Need help today?</a>
+          </div>
+        </section>
+      </div>
+
+      <aside class="print-card" aria-labelledby="followup-title">
+        <h2 id="followup-title">Want Pete to follow up?</h2>
+        <p>Copy this note into email or Telegram. It creates a consent-first subscriber / fit-check signal without asking anyone to reveal private details.</p>
+        <textarea class="script-box" id="starter-note" aria-label="Starter note to request Offline Helper follow-up">Hi Pete, I read the Family AI Safety Checklist.
+
+The person this could help:
+Device: Mac / Windows / not sure
+First safe AI job we want:
+What feels risky or confusing:
+May you follow up? yes / no
+
+I understand I should not send passwords, recovery keys, private documents, medical/legal/financial details, or crisis information.</textarea>
+        <div class="hero-actions">
+          <button class="button primary" type="button" id="copy-note">Copy note</button>
+          <a class="button secondary" href="mailto:pdbjork@gmail.com?subject=Offline%20Helper%20family%20AI%20checklist%20follow-up">Email Pete</a>
+          <a class="button secondary" href="https://t.me/OfflineHelperPeteBot" target="_blank" rel="noopener">Telegram</a>
+        </div>
+        <div class="copy-status" id="copy-status" role="status" aria-live="polite"></div>
+        <ul>
+          <li>Free checklist first</li>
+          <li>Free fit check before payment</li>
+          <li>$99 rescue if stuck today</li>
+          <li>$497+ setup only after confirmed fit</li>
+        </ul>
+      </aside>
+    </div>
+
+    <footer>
+      <p>© 2026 Offline Helper. Local-first AI setup, explained simply. <a href="/privacy/">Privacy</a> · <a href="/faq/">FAQ</a> · <a href="/">Home</a></p>
+    </footer>
+  </main>
+  <script>
+    (function () {
+      var button = document.getElementById('copy-note');
+      var note = document.getElementById('starter-note');
+      var status = document.getElementById('copy-status');
+      if (!button || !note || !status) return;
+      button.addEventListener('click', function () {
+        var text = note.value;
+        function done(message) { status.textContent = message; }
+        function fallback() {
+          note.focus();
+          note.select();
+          try {
+            if (document.execCommand && document.execCommand('copy')) {
+              done('Starter note copied. Paste it into email or Telegram.');
+              return;
+            }
+          } catch (err) {}
+          done('Copy did not auto-run. Select the note and copy it manually.');
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () {
+            done('Starter note copied. Paste it into email or Telegram.');
+          }).catch(fallback);
+        } else {
+          fallback();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
