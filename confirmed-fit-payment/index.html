@@ -328,6 +328,20 @@
                 b.disabled = true;
                 b.textContent = 'Pending Stripe catalog deploy';
               });
+              if (tier === 'paid_rescue') {
+                var primary = document.getElementById('primary-cta');
+                if (primary) {
+                  primary.textContent = 'Pending Stripe catalog deploy';
+                  primary.href = '#paid-rescue-package';
+                  primary.classList.remove('primary');
+                  primary.classList.add('secondary');
+                  primary.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    document.getElementById('paid-rescue-package').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  }, true);
+                }
+              }
               paidRescueStatus.textContent = 'The page is ready, but the Worker catalog has not accepted paid_rescue yet. Use Telegram confirmation first.';
             }
           })
