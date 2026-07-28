@@ -138,6 +138,7 @@
       font: inherit;
       margin-bottom: .8rem;
     }
+    .is-hidden { display: none !important; }
     textarea {
       width: 100%; min-height: 170px; resize: vertical;
       border: 1px solid var(--line); border-radius: 16px;
@@ -216,11 +217,12 @@ I understand you will confirm fit and payment before the session, and I should n
       <div class="checkout-note" id="confirmed-payment" aria-labelledby="confirmed-payment-title">
         <h2 id="confirmed-payment-title">Confirmed by Pete? Pay for the rescue session</h2>
         <p>Use this only after Pete confirms the session fits and gives you a time window. Stripe handles the card. Offline Helper receives the receipt and a redacted fulfillment task.</p>
-        <form method="POST" action="https://offline-helper-payments.offline-helper-payments.workers.dev/api/checkout">
+        <form id="rescue-checkout-form" class="is-hidden" method="POST" action="https://offline-helper-payments.offline-helper-payments.workers.dev/api/checkout">
           <input type="hidden" name="package" value="paid_rescue">
           <input class="email-input" type="email" name="customer_email" autocomplete="email" placeholder="Email for your Stripe receipt (optional)">
           <button class="button primary" type="submit">Pay $99 securely with Stripe</button>
         </form>
+        <p class="small" id="rescue-checkout-status">Checking whether the $99 Stripe checkout is live. If the button does not appear, request the slot in Telegram first.</p>
         <p class="small">If you pay before Pete confirms fit and timing, reply in Telegram or email <a href="mailto:pdbjork@gmail.com">pdbjork@gmail.com</a>. If the session cannot be scheduled, ask for a refund within 7 days.</p>
       </div>
       <div class="privacy">
@@ -254,6 +256,26 @@ I understand you will confirm fit and payment before the session, and I should n
       var note = document.getElementById('telegram-note');
       var status = document.getElementById('copy-status');
       if (!button || !note || !status) return;
+
+      var checkoutForm = document.getElementById('rescue-checkout-form');
+      var checkoutStatus = document.getElementById('rescue-checkout-status');
+      if (checkoutForm && checkoutStatus && window.fetch) {
+        fetch('https://offline-helper-payments.offline-helper-payments.workers.dev/api/health')
+          .then(function (res) { return res.json(); })
+          .then(function (data) {
+            var live = data && Array.isArray(data.catalog) && data.catalog.indexOf('paid_rescue') !== -1;
+            if (live) {
+              checkoutForm.classList.remove('is-hidden');
+              checkoutStatus.textContent = 'Stripe checkout is live for confirmed $99 rescue sessions.';
+            } else {
+              checkoutStatus.textContent = 'Stripe checkout for the $99 rescue session is being enabled. Request the slot in Telegram first; Pete will send payment instructions after confirming fit and timing.';
+            }
+          })
+          .catch(function () {
+            checkoutStatus.textContent = 'Could not check Stripe status from this browser. Request the slot in Telegram first; Pete will send payment instructions after confirming fit and timing.';
+          });
+      }
+
       button.addEventListener('click', function () {
         var text = note.value;
         function done(message) { status.textContent = message; }

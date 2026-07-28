@@ -122,7 +122,7 @@
 
         <p class="group-label">Paid rescue</p>
         <div class="packages">
-          <div class="package checkout-card">
+          <div class="package checkout-card" id="paid-rescue-package">
             <p class="tier-title">Paid Rescue Session — $99</p>
             <p class="muted small">One 90-minute live-system rescue call for a stuck Mac or Windows AI setup. Use after Pete confirms fit and timing.</p>
             <form class="checkout-form" method="POST" action="https://offline-helper-payments.offline-helper-payments.workers.dev/api/checkout" data-tier="paid_rescue">
@@ -131,6 +131,7 @@
               <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input">
               <button type="submit" class="button primary" style="width:100%;">Pay $99 — Paid Rescue Session</button>
             </form>
+            <p class="muted small" id="paid-rescue-status">Checking live catalog before showing this payment path.</p>
           </div>
         </div>
 
@@ -310,6 +311,29 @@
         });
       } else {
         document.getElementById('primary-cta').style.display = 'none';
+      }
+
+
+      var paidRescuePackage = document.getElementById('paid-rescue-package');
+      var paidRescueStatus = document.getElementById('paid-rescue-status');
+      if (paidRescuePackage && paidRescueStatus && window.fetch) {
+        fetch(WORKER + '/api/health')
+          .then(function (res) { return res.json(); })
+          .then(function (data) {
+            var live = data && Array.isArray(data.catalog) && data.catalog.indexOf('paid_rescue') !== -1;
+            if (live) {
+              paidRescueStatus.textContent = 'Live in Stripe catalog.';
+            } else {
+              paidRescuePackage.querySelectorAll('button[type="submit"]').forEach(function (b) {
+                b.disabled = true;
+                b.textContent = 'Pending Stripe catalog deploy';
+              });
+              paidRescueStatus.textContent = 'The page is ready, but the Worker catalog has not accepted paid_rescue yet. Use Telegram confirmation first.';
+            }
+          })
+          .catch(function () {
+            paidRescueStatus.textContent = 'Could not verify Worker catalog from this browser. Use Telegram confirmation first.';
+          });
       }
 
       document.querySelectorAll('form.checkout-form').forEach(function (f) {
