@@ -18,9 +18,9 @@ Base: `https://offline-helper-payments.offline-helper-payments.workers.dev`
 
 ## Package keys (after worker redeploy)
 
-`home_setup` · `family_care_setup` · `org_setup` · `care_plan` · `hw_edge` · `hw_home` · `hw_lab` · legacy `starter_setup` · `family_setup` · `family_support`
+`home_setup` · `family_care_setup` · `org_setup` · `care_plan` · `paid_rescue` · `hw_edge` · `hw_home` · `hw_lab` · legacy `starter_setup` · `family_setup` · `family_support`
 
-Until Cloudflare redeploy, health only lists legacy three keys; new checkouts 400 with unknown package.
+After Cloudflare redeploy, health should list the full catalog above; a missing key means live checkout for that package still returns 400.
 
 ## Redeploy worker (Pete)
 

@@ -13,6 +13,7 @@ Single source of truth for site copy, Stripe products, worker `CATALOG`, and fun
 | L1b | `family_care_setup` | Family Care Setup | **$997** | payment | Home Setup + caregiver orientation, consent sheet, 30-min follow-up |
 | L1c | `org_setup` | Micro-Org Setup | **$1,500** | payment | 1–3 seats / small office / library-style partner site |
 | L2 | `care_plan` | **Care Plan** (primary sub) | **$79/mo** | subscription | Monthly updates, health check, skill of the month, 1 support call, privacy review |
+| R1 | `paid_rescue` | **Paid Rescue Session** | **$99** | payment | 90-minute live-system rescue call after Pete confirms fit and timing |
 | H1 | `hw_edge` | Edge Privacy Kit | **$349** | payment | Network + device hygiene; soft offline; models limited by **existing** hardware |
 | H2 | `hw_home` | Home AI Node | **$1,499** | payment | Curated mini PC + LAN setup; **mostly offline**; host ~7B–14B open models daily |
 | H3 | `hw_lab` | Open Model Lab | **$3,997** | payment | GPU workstation stack; **deep offline**; host ~32B–70B quantized open models |
@@ -40,7 +41,7 @@ Worker: `POST https://offline-helper-payments.offline-helper-payments.workers.de
 
 ```json
 {
-  "package": "home_setup | family_care_setup | org_setup | care_plan | hw_edge | hw_home | hw_lab | starter_setup | family_setup | family_support",
+  "package": "home_setup | family_care_setup | org_setup | care_plan | paid_rescue | hw_edge | hw_home | hw_lab | starter_setup | family_setup | family_support",
   "fit_check_id": "optional",
   "customer_email": "optional",
   "setup_window": "optional"

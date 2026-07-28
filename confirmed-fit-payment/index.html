@@ -120,6 +120,20 @@
         <h2>Pick your package</h2>
         <p class="muted">Each card creates a live Stripe Checkout Session with your fit-check ID attached. Prefer the package recommended on your fit check; hardware is optional and sized to offline depth.</p>
 
+        <p class="group-label">Paid rescue</p>
+        <div class="packages">
+          <div class="package checkout-card">
+            <p class="tier-title">Paid Rescue Session — $99</p>
+            <p class="muted small">One 90-minute live-system rescue call for a stuck Mac or Windows AI setup. Use after Pete confirms fit and timing.</p>
+            <form class="checkout-form" method="POST" action="https://offline-helper-payments.offline-helper-payments.workers.dev/api/checkout" data-tier="paid_rescue">
+              <input type="hidden" name="package" value="paid_rescue">
+              <input type="hidden" name="fit_check_id" class="fc-id-field">
+              <input type="email" name="customer_email" placeholder="Your email (optional, for the receipt)" class="email-input">
+              <button type="submit" class="button primary" style="width:100%;">Pay $99 — Paid Rescue Session</button>
+            </form>
+          </div>
+        </div>
+
         <p class="group-label">Setup &amp; Care Plan</p>
         <div class="packages">
           <div class="package checkout-card">
@@ -258,6 +272,7 @@
         family_care_setup: 'Family Care Setup — $997',
         org_setup: 'Micro-Org Setup — $1,500',
         care_plan: 'Care Plan — $79/month',
+        paid_rescue: 'Paid Rescue Session — $99',
         hw_edge: 'Edge Privacy Kit — $349',
         hw_home: 'Home AI Node — $1,499',
         hw_lab: 'Open Model Lab — $3,997',

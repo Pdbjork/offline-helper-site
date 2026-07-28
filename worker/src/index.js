@@ -59,6 +59,12 @@ const CATALOG = {
     mode: "subscription",
     amount_cents: 7900,
   },
+  paid_rescue: {
+    name: "Offline Helper Paid Rescue Session",
+    description: "One 90-minute live-system rescue call for a stuck Mac or Windows AI setup. Human confirmation first, fixed fee, no subscription.",
+    mode: "payment",
+    amount_cents: 9900,
+  },
   // --- Hardware / network kits (offline depth + OSS model class) ---
   hw_edge: {
     name: "Edge Privacy Kit",
