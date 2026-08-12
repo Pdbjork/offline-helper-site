@@ -53,9 +53,12 @@
     .button.primary:hover { background:var(--accent-dark); }
     .button.secondary { background:white; color:var(--ink); border-color:var(--line); }
     .note { margin-top:1.6rem; padding:1rem 1.15rem; background:var(--sage); border-radius:18px; border:1px solid rgba(19,35,29,.08); }
+    .rescue-strip { margin-top:2rem; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:1rem; align-items:center; padding:1.15rem; background:linear-gradient(180deg,#fff8e9 0%,#fffaf0 100%); border:1px solid rgba(187,78,47,.36); border-radius:24px; box-shadow:var(--shadow); }
+    .rescue-strip h2 { font-size:1.5rem; }
+    .rescue-strip p { margin:.35rem 0 0; color:var(--muted); }
     .note p { margin:.35rem 0; }
     footer { margin-top:2rem; color:var(--muted); font-size:.95rem; }
-    @media (max-width: 820px) { .grid { grid-template-columns:1fr; } main { padding-top:2.5rem; } }
+    @media (max-width: 820px) { .grid, .rescue-strip { grid-template-columns:1fr; } main { padding-top:2.5rem; } }
   </style>
 </head>
 <body>
@@ -67,6 +70,14 @@
     <span class="eyebrow">Choose the safest next step</span>
     <h1>Start with the path that fits today.</h1>
     <p class="lede">Offline Helper should feel calm before it asks for money. Use this router to choose free guidance, a fit check, urgent rescue, Care Plan support, or confirmed payment.</p>
+
+    <section class="rescue-strip" aria-labelledby="rescue-fast-title">
+      <div>
+        <h2 id="rescue-fast-title">Stuck today? Use the paid rescue path.</h2>
+        <p>For one urgent Mac or Windows AI setup problem: request a $99, 90-minute rescue slot. Pete confirms fit, timing, and safety boundaries before payment.</p>
+      </div>
+      <a class="button primary" href="/paid-rescue/?utm_source=start_router&utm_medium=urgent_strip">Request $99 rescue</a>
+    </section>
 
     <section class="grid" aria-label="Offline Helper start paths">
       <article class="card featured">
