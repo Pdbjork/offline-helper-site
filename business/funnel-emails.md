@@ -37,6 +37,8 @@ Would [organization] be open to a short plain-English session:
 
 I run Offline Helper (Chicago-area / remote US). No product pitch in the room — education first. People who want help afterward can book a free fit check.
 
+Invite page: https://offlinehelpers.com/community-talk/
+
 Happy to send a one-pager if useful.
 
 — Pete  

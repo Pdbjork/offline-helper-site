@@ -49,6 +49,8 @@ I’m offering community groups a free 20-minute talk:
 
 No hype. Education first. Fit check only if someone wants help afterward.
 
+Invite page: https://offlinehelpers.com/community-talk/
+
 DM or email pdbjork@gmail.com.
 
 ---
