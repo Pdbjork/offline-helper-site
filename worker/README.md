@@ -58,6 +58,25 @@ so the key never lives in the static site or in chat.
 | GET  | `/api/queue`   | Staff debug view of the redacted fulfillment queue. |
 | GET  | `/api/health`  | Returns `{ ok, live_approved, catalog }`. |
 
+## Fulfillment alerts
+
+On `checkout.session.completed` and `checkout.session.async_payment_succeeded`,
+the Worker now writes a redacted `checkout_fulfillment` task to KV and then tries
+to send a minimal Telegram alert. The alert text deliberately excludes customer
+email and any fit-check answers; it only names package, amount, compact session
+ID, whether a fit check is attached, and the setup window.
+
+Optional alert secrets:
+
+```bash
+npx wrangler secret put TELEGRAM_BOT_TOKEN
+npx wrangler secret put TELEGRAM_CHAT_ID
+```
+
+If either secret is missing, checkout webhooks still return success and the KV
+record is marked `fulfillment_alert.skipped=true` so payment fulfillment is not
+blocked by notification configuration.
+
 ## Going live
 
 When the bank account is connected in the Stripe Dashboard and you have

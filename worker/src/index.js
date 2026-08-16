@@ -284,6 +284,57 @@ async function handleCheckout(request, env) {
   return jsonResponse({ url: session.url, session_id: session.id });
 }
 
+function formatMoneyFromCents(amount, currency) {
+  if (!Number.isFinite(amount)) return "amount unknown";
+  const code = String(currency || "usd").toUpperCase();
+  return `${code} ${(amount / 100).toFixed(2)}`;
+}
+
+function compactSessionId(id) {
+  const value = String(id || "");
+  if (!value) return "unknown session";
+  return value.length <= 12 ? value : `${value.slice(0, 7)}…${value.slice(-5)}`;
+}
+
+function buildFulfillmentAlertText(record) {
+  const packageName = record.package || "unknown_package";
+  const fitCheck = record.fit_check_id ? "yes" : "no";
+  const setupWindow = record.setup_window || "not provided";
+  return [
+    "Offline Helper paid checkout completed",
+    `Package: ${packageName}`,
+    `Amount: ${formatMoneyFromCents(record.amount_total, record.currency)}`,
+    `Session: ${compactSessionId(record.stripe_session_id)}`,
+    `Fit check attached: ${fitCheck}`,
+    `Setup window: ${setupWindow}`,
+    "Action: create/schedule fulfillment task; never ask for passwords or private files.",
+  ].join("\n");
+}
+
+async function sendFulfillmentAlert(record, env) {
+  // Optional alert hook. Secrets are Cloudflare Worker env vars, never stored in repo:
+  //   TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID
+  // The alert intentionally excludes customer email and other private details.
+  if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) {
+    return { ok: false, skipped: true, reason: "telegram alert secrets not configured" };
+  }
+  const endpoint = `https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`;
+  const res = await fetch(endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      chat_id: env.TELEGRAM_CHAT_ID,
+      text: buildFulfillmentAlertText(record),
+      disable_web_page_preview: true,
+    }),
+  });
+  const text = await res.text();
+  if (!res.ok) {
+    throw new Error(`Telegram alert HTTP ${res.status}: ${text.slice(0, 240)}`);
+  }
+  return { ok: true };
+}
+
 async function handleWebhook(request, env) {
   if (!env.STRIPE_WEBHOOK_SECRET) {
     return jsonResponse({ error: "webhook secret not configured" }, 500);
@@ -296,6 +347,8 @@ async function handleWebhook(request, env) {
     const session = event.data && event.data.object;
     if (session && env.QUEUE) {
       const record = {
+        task_type: "checkout_fulfillment",
+        status: "needs_human_scheduling",
         event_id: event.id,
         event_type: event.type,
         received_at: new Date().toISOString(),
@@ -308,7 +361,19 @@ async function handleWebhook(request, env) {
         mode: session.mode,
         customer_email: session.customer_email || "",
         payment_status: session.payment_status,
+        fulfillment_alert: { ok: false, skipped: true, reason: "not attempted" },
       };
+      await env.QUEUE.put(`session:${session.id}`, JSON.stringify(record));
+      try {
+        record.fulfillment_alert = await sendFulfillmentAlert(record, env);
+      } catch (err) {
+        record.fulfillment_alert = {
+          ok: false,
+          skipped: false,
+          reason: String(err && err.message || err).slice(0, 240),
+        };
+      }
+      record.fulfillment_alert_checked_at = new Date().toISOString();
       await env.QUEUE.put(`session:${session.id}`, JSON.stringify(record));
     }
   }
