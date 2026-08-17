@@ -380,15 +380,54 @@ async function handleWebhook(request, env) {
   return jsonResponse({ received: true });
 }
 
-async function handleQueue(env) {
-  if (!env.QUEUE) return jsonResponse({ items: [] });
-  const list = await env.QUEUE.list({ prefix: "session:" });
+function redactQueueRecord(record) {
+  const redacted = { ...record };
+  if ("customer_email" in redacted) {
+    redacted.customer_email_present = Boolean(redacted.customer_email);
+    delete redacted.customer_email;
+  }
+  return redacted;
+}
+
+async function readQueueRecords(env, prefix) {
+  if (!env.QUEUE) return [];
+  const list = await env.QUEUE.list({ prefix });
   const items = [];
   for (const key of list.keys) {
     const value = await env.QUEUE.get(key.name);
-    if (value) { try { items.push(JSON.parse(value)); } catch { /* skip */ } }
+    if (value) { try { items.push(JSON.parse(value)); } catch { /* skip corrupt KV row */ } }
   }
-  return jsonResponse({ items });
+  return items;
+}
+
+async function handleQueue(env) {
+  const items = (await readQueueRecords(env, "session:")).map(redactQueueRecord);
+  return jsonResponse({ items, redacted: true });
+}
+
+async function handleStats(env) {
+  const sessions = await readQueueRecords(env, "session:");
+  const fitChecks = await readQueueRecords(env, "fitcheck:");
+  const byPackage = {};
+  const byStatus = {};
+  for (const record of sessions) {
+    const pkg = record.package || "unknown";
+    const status = record.status || "unknown";
+    byPackage[pkg] = (byPackage[pkg] || 0) + 1;
+    byStatus[status] = (byStatus[status] || 0) + 1;
+  }
+  const eligibleFitChecks = fitChecks.filter((record) => record.eligible === true).length;
+  return jsonResponse({
+    ok: true,
+    totals: {
+      checkout_fulfillment_tasks: sessions.length,
+      fit_checks: fitChecks.length,
+      eligible_fit_checks: eligibleFitChecks,
+    },
+    by_package: byPackage,
+    by_status: byStatus,
+    redacted: true,
+  });
 }
 
 // --- AI fit-check chat --------------------------------------------------
@@ -555,6 +594,9 @@ export default {
       }
       if (url.pathname === "/api/queue" && request.method === "GET") {
         return await handleQueue(env);
+      }
+      if (url.pathname === "/api/stats" && request.method === "GET") {
+        return await handleStats(env);
       }
       if (url.pathname === "/api/fit-check/chat" && request.method === "POST") {
         return await handleFitCheckChat(request, env);

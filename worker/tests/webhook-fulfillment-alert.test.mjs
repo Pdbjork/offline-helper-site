@@ -136,7 +136,56 @@ async function testBadSignatureRejectedWithoutQueueWrite() {
   assert.equal(queue.store.size, 0);
 }
 
+async function testQueueEndpointRedactsCustomerEmail() {
+  const queue = makeQueue();
+  await queue.put('session:cs_test_redact', JSON.stringify({
+    task_type: 'checkout_fulfillment',
+    status: 'needs_human_scheduling',
+    package: 'paid_rescue',
+    customer_email: 'customer@example.test',
+  }));
+  const response = await worker.fetch(new Request('https://offline-helper-payments.offline-helper-payments.workers.dev/api/queue'), {
+    QUEUE: queue,
+  });
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.equal(body.redacted, true);
+  assert.equal(body.items.length, 1);
+  assert.equal(body.items[0].customer_email, undefined);
+  assert.equal(body.items[0].customer_email_present, true);
+  assert.deepEqual(JSON.stringify(body).includes('customer@example.test'), false);
+}
+
+async function testStatsEndpointReturnsAggregateIntakeMetrics() {
+  const queue = makeQueue();
+  await queue.put('session:cs_test_paid_rescue', JSON.stringify({
+    task_type: 'checkout_fulfillment',
+    status: 'needs_human_scheduling',
+    package: 'paid_rescue',
+    customer_email: 'customer@example.test',
+  }));
+  await queue.put('fitcheck:fc_eligible', JSON.stringify({ type: 'fit_check', eligible: true, tier: 'home_setup' }));
+  await queue.put('fitcheck:fc_ineligible', JSON.stringify({ type: 'fit_check', eligible: false }));
+  const response = await worker.fetch(new Request('https://offline-helper-payments.offline-helper-payments.workers.dev/api/stats'), {
+    QUEUE: queue,
+  });
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.equal(body.ok, true);
+  assert.equal(body.redacted, true);
+  assert.deepEqual(body.totals, {
+    checkout_fulfillment_tasks: 1,
+    fit_checks: 2,
+    eligible_fit_checks: 1,
+  });
+  assert.deepEqual(body.by_package, { paid_rescue: 1 });
+  assert.deepEqual(body.by_status, { needs_human_scheduling: 1 });
+  assert.deepEqual(JSON.stringify(body).includes('customer@example.test'), false);
+}
+
 await testStoresFulfillmentTaskAndTelegramAlert();
 await testWebhookStillSucceedsWhenAlertSecretsMissing();
 await testBadSignatureRejectedWithoutQueueWrite();
+await testQueueEndpointRedactsCustomerEmail();
+await testStatsEndpointReturnsAggregateIntakeMetrics();
 console.log('PASS webhook fulfillment alert tests');
