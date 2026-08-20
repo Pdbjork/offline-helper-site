@@ -53,7 +53,7 @@
     .button.primary:hover { background:var(--accent-dark); }
     .button.secondary { background:white; color:var(--ink); border-color:var(--line); }
     .note { margin-top:1.6rem; padding:1rem 1.15rem; background:var(--sage); border-radius:18px; border:1px solid rgba(19,35,29,.08); }
-    .rescue-strip { margin-top:2rem; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:1rem; align-items:center; padding:1.15rem; background:linear-gradient(180deg,#fff8e9 0%,#fffaf0 100%); border:1px solid rgba(187,78,47,.36); border-radius:24px; box-shadow:var(--shadow); }
+    .rescue-strip { margin-top:2rem; display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:1rem; align-items:center; padding:1.15rem; background:linear-gradient(180deg,#fff8e9 0%,#fffaf0 100%); border:1px solid rgba(187,78,47,.36); border-radius:24px; box-shadow:var(--shadow); }
     .rescue-strip h2 { font-size:1.5rem; }
     .rescue-strip p { margin:.35rem 0 0; color:var(--muted); }
     .note p { margin:.35rem 0; }
@@ -74,9 +74,10 @@
     <section class="rescue-strip" aria-labelledby="rescue-fast-title">
       <div>
         <h2 id="rescue-fast-title">Stuck today? Use the paid rescue path.</h2>
-        <p>For one urgent Mac or Windows AI setup problem: request a $99, 90-minute rescue slot. Pete confirms fit, timing, and safety boundaries before payment.</p>
+        <p>For one urgent Mac or Windows AI setup problem: request a $99, 90-minute rescue slot. Pete confirms fit, timing, and safety boundaries before payment. If you are not sure whether rescue fits, use the readiness checklist first.</p>
       </div>
       <a class="button primary" href="/paid-rescue/?utm_source=start_router&utm_medium=urgent_strip">Request $99 rescue</a>
+      <a class="button secondary" href="/rescue-readiness/?utm_source=start_router&utm_medium=urgent_strip">Check readiness</a>
     </section>
 
     <section class="grid" aria-label="Offline Helper start paths">
