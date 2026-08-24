@@ -427,6 +427,32 @@
     .rescue-card p { color: var(--muted); margin: .45rem 0 0; max-width: 62rem; }
     .rescue-actions { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: flex-end; }
     .rescue-card .button { white-space: nowrap; }
+    .decision-card {
+      margin-top: 1.2rem;
+      padding: clamp(1.15rem, 3vw, 1.45rem);
+      border: 1px solid rgba(45, 117, 189, .26);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(255,255,255,.86), rgba(223,231,220,.78));
+      box-shadow: 0 18px 48px rgba(42, 31, 20, .1);
+    }
+    .decision-card h2 { font-size: clamp(1.45rem, 3vw, 2rem); margin: 0; }
+    .decision-card p { color: var(--muted); margin: .55rem 0 0; max-width: 62rem; }
+    .decision-steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: .75rem;
+      margin: 1rem 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .decision-steps li {
+      padding: .85rem;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 250, 240, .82);
+      color: #405149;
+      font-weight: 650;
+    }
     .hardware-matrix {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -533,7 +559,7 @@
     @media (max-width: 860px) {
       nav ul { display: none; }
       .hero { padding-top: 4.4rem; }
-      .hero-grid, .split, .pricing, .rescue-card { grid-template-columns: 1fr; }
+      .hero-grid, .split, .pricing, .rescue-card, .decision-steps { grid-template-columns: 1fr; }
       .cards { grid-template-columns: 1fr; }
       .demo-screen-row { grid-template-columns: .35fr 1fr .35fr; }
       .use-case-shelf { grid-template-columns: repeat(2, 1fr); }
@@ -748,14 +774,29 @@
     </section>
 
     <section class="rescue-strip" aria-labelledby="rescue-strip-title">
-      <div class="wrap rescue-card">
-        <div>
-          <h2 id="rescue-strip-title">Stuck today? Ask for the $99 rescue slot.</h2>
-          <p>One 90-minute live-system call for a Mac or Windows AI setup problem, with fit and timing confirmed before payment. Use this when the free path is not enough and you need Pete in the loop today.</p>
+      <div class="wrap">
+        <div class="rescue-card">
+          <div>
+            <h2 id="rescue-strip-title">Stuck today? Ask for the $99 rescue slot.</h2>
+            <p>One 90-minute live-system call for a Mac or Windows AI setup problem, with fit and timing confirmed before payment. Use this when the free path is not enough and you need Pete in the loop today.</p>
+          </div>
+          <div class="rescue-actions">
+            <a class="button primary" href="paid-rescue/index.html?utm_source=home_strip&utm_medium=rescue_cta">Request paid rescue</a>
+            <a class="button secondary" href="rescue-readiness/index.html?utm_source=home_strip&utm_medium=rescue_readiness">Check readiness first</a>
+          </div>
         </div>
-        <div class="rescue-actions">
-          <a class="button primary" href="paid-rescue/index.html?utm_source=home_strip&utm_medium=rescue_cta">Request paid rescue</a>
-          <a class="button secondary" href="rescue-readiness/index.html?utm_source=home_strip&utm_medium=rescue_readiness">Check readiness first</a>
+        <div class="decision-card" aria-labelledby="buyer-decision-title">
+          <h2 id="buyer-decision-title">Fastest paid path: rescue first, setup second.</h2>
+          <p>If a family is stuck right now, do not make them decode the whole site. The practical route is simple: request the rescue slot, confirm the device and timing with Pete, then pay through Stripe only after the fit is clear.</p>
+          <ol class="decision-steps">
+            <li><strong>1. Name the stuck point.</strong><br>Mac or Windows, what broke, and the one outcome that would make the call worth $99.</li>
+            <li><strong>2. Confirm fit and timing.</strong><br>No passwords, recovery keys, private files, medical/legal/financial details, or crisis support.</li>
+            <li><strong>3. Pay only when confirmed.</strong><br>The paid-rescue page opens Stripe checkout for the confirmed $99 rescue session.</li>
+          </ol>
+          <div class="hero-actions">
+            <a class="button primary" href="paid-rescue/index.html?utm_source=home_decision_card&utm_medium=first_paid_path">Open the $99 rescue path</a>
+            <a class="button secondary" href="start/index.html?utm_source=home_decision_card&utm_medium=router">Compare all start options</a>
+          </div>
         </div>
       </div>
     </section>
