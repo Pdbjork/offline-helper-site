@@ -82,6 +82,23 @@
     .brand small { display: block; color: var(--muted); font-weight: 600; font-size: .8rem; letter-spacing: 0; }
     h1 { font-size: clamp(2.4rem, 5vw, 3.6rem); line-height: 1.05; letter-spacing: -.04em; margin: 0 0 1rem; }
     p.lede { font-size: 1.2rem; color: var(--muted); margin: 0 0 2.5rem; max-width: 60ch; }
+    .decision-strip {
+      display: grid;
+      gap: .8rem;
+      margin: 0 0 2rem;
+      padding: clamp(1.2rem, 3vw, 1.6rem);
+      border: 1px solid rgba(187, 78, 47, .28);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(255,255,255,.9), rgba(245, 182, 63, .18));
+      box-shadow: 0 12px 36px rgba(42, 31, 20, .1);
+    }
+    .decision-strip h2 { font-size: 1.45rem; margin: 0; letter-spacing: -.03em; }
+    .decision-strip p { margin: 0; color: var(--muted); }
+    .decision-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; margin-top: .4rem; }
+    .decision-option { border: 1px solid var(--line); border-radius: 16px; background: rgba(255,250,240,.86); padding: .9rem; color: var(--muted); }
+    .decision-option strong { display: block; color: var(--ink); margin-bottom: .2rem; }
+    .decision-option a { font-weight: 850; }
+    @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
     .price-card {
       background: var(--paper);
       border: 1px solid var(--line);
@@ -176,6 +193,16 @@
 
     <h1>Book a paid rescue session.</h1>
     <p class="lede">A 90-minute live-system setup call for a Mac or Windows computer. $99 fixed fee, no subscription. Request a slot through Telegram and Pete will confirm fit, timing, and payment before the call.</p>
+
+    <section class="decision-strip" aria-labelledby="right-lane-title">
+      <h2 id="right-lane-title">Pick the right lane before you pay.</h2>
+      <p>Most families do not need to decode the whole site. Choose the path that matches today’s problem, then send one clear starter note.</p>
+      <div class="decision-grid">
+        <div class="decision-option"><strong>Setup is stuck today</strong>Request the $99 rescue slot, then pay only after Pete confirms fit and timing.</div>
+        <div class="decision-option"><strong>Not sure what you need</strong><a href="/rescue-readiness/?utm_source=paid_rescue&utm_medium=right_lane">Use the rescue checklist</a> or the free fit check first.</div>
+        <div class="decision-option"><strong>Helping a loved one</strong>Confirm consent, privacy boundaries, and device access before scheduling any screen-share.</div>
+      </div>
+    </section>
 
     <div class="price-card">
       <span class="badge">Fixed fee · no subscription</span>
