@@ -136,15 +136,38 @@
       background: var(--sage); border-radius: var(--radius-md); padding: 1rem 1.2rem;
       margin-top: 1.5rem; font-size: .95rem; color: var(--ink);
     }
-    .starter-note, .checkout-note {
+    .starter-note, .checkout-note, .share-note {
       background: #fff7e7;
       border: 1px solid var(--line);
       border-radius: var(--radius-md);
       padding: 1.2rem;
       margin: 1.5rem 0 0;
     }
-    .starter-note h2, .checkout-note h2 { font-size: 1.35rem; margin: 0 0 .5rem; letter-spacing: -.03em; }
-    .starter-note p, .checkout-note p { margin: 0 0 1rem; color: var(--muted); }
+    .starter-note h2, .checkout-note h2, .share-note h2 { font-size: 1.35rem; margin: 0 0 .5rem; letter-spacing: -.03em; }
+    .starter-note p, .checkout-note p, .share-note p { margin: 0 0 1rem; color: var(--muted); }
+    .share-link {
+      display: block;
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: white;
+      color: var(--ink);
+      padding: 1rem;
+      font: inherit;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+    .mini-proof {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: .75rem;
+      margin: 1rem 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .mini-proof li { border: 1px solid var(--line); border-radius: 14px; background: rgba(255,250,240,.82); padding: .8rem; color: var(--muted); }
+    .mini-proof strong { display: block; color: var(--ink); }
+    @media (max-width: 720px) { .mini-proof { grid-template-columns: 1fr; } }
     .email-input {
       width: 100%;
       padding: .8rem 1rem;
@@ -238,9 +261,24 @@ What I want working by the end:
 I understand you will confirm fit and payment before the session, and I should not send passwords, recovery keys, private documents, medical/legal/financial details, or crisis information in Telegram.</textarea>
         <div class="cta-row">
           <button class="button secondary" type="button" id="copy-note">Copy starter note</button>
-          <a class="button primary" href="https://t.me/OfflineHelperPeteBot" rel="noopener" target="_blank">Open Telegram</a>
+          <a class="button primary" href="https://t.me/OfflineHelperPeteBot?start=paid_rescue_page" rel="noopener" target="_blank">Open Telegram</a>
         </div>
         <div class="copy-status" id="copy-status" role="status" aria-live="polite"></div>
+      </div>
+      <div class="share-note" aria-labelledby="share-note-title">
+        <h2 id="share-note-title">Helping a parent or loved one? Send this first.</h2>
+        <p>Adult children are often the buyer. This gives them a low-friction, consent-first way to ask the family decision-maker before booking.</p>
+        <div class="share-link" id="share-copy" role="textbox" aria-readonly="true">Would this help you? Offline Helper offers a $99, 90-minute rescue call to get a Mac or Windows AI setup unstuck, with Pete confirming fit and timing before payment. No passwords, recovery keys, private files, or medical/legal/financial details in chat. Page: https://offlinehelpers.com/paid-rescue/?utm_source=family_forward&utm_medium=share_copy</div>
+        <div class="cta-row">
+          <button class="button secondary" type="button" id="copy-share">Copy family note</button>
+          <a class="button primary" href="https://offlinehelpers.com/paid-rescue/?utm_source=family_forward&utm_medium=share_button">Open/share the rescue page</a>
+        </div>
+        <ul class="mini-proof" aria-label="Why this is safe to forward">
+          <li><strong>Fixed scope</strong>$99 for one 90-minute rescue session, no subscription.</li>
+          <li><strong>Consent first</strong>Fit, timing, and screen-share boundaries are confirmed before payment.</li>
+          <li><strong>Private by default</strong>No passwords, recovery keys, or private documents requested in chat.</li>
+        </ul>
+        <div class="copy-status" id="share-status" role="status" aria-live="polite"></div>
       </div>
       <div class="checkout-note" id="confirmed-payment" aria-labelledby="confirmed-payment-title">
         <h2 id="confirmed-payment-title">Confirmed by Pete? Pay for the rescue session</h2>
@@ -313,28 +351,42 @@ I understand you will confirm fit and payment before the session, and I should n
           });
       }
 
-      button.addEventListener('click', function () {
-        var text = note.value;
-        function done(message) { status.textContent = message; }
+      function copyText(text, doneNode, textareaFallback) {
+        function done(message) { if (doneNode) doneNode.textContent = message; }
         function selectFallback() {
-          note.focus();
-          note.select();
-          try {
-            if (document.execCommand && document.execCommand('copy')) {
-              done('Starter note copied. Open Telegram and paste it into the chat.');
-              return;
-            }
-          } catch (err) {}
-          done('Copy did not auto-run. Select the note and copy it manually.');
+          if (textareaFallback && textareaFallback.focus && textareaFallback.select) {
+            textareaFallback.focus();
+            textareaFallback.select();
+            try {
+              if (document.execCommand && document.execCommand('copy')) {
+                done('Copied. Open Telegram and paste it into the chat.');
+                return;
+              }
+            } catch (err) {}
+          }
+          done('Copy did not auto-run. Select the text and copy it manually.');
         }
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(text).then(function () {
-            done('Starter note copied. Open Telegram and paste it into the chat.');
+            done('Copied. Open Telegram and paste it into the chat.');
           }).catch(selectFallback);
         } else {
           selectFallback();
         }
+      }
+
+      button.addEventListener('click', function () {
+        copyText(note.value, status, note);
       });
+
+      var shareButton = document.getElementById('copy-share');
+      var shareCopy = document.getElementById('share-copy');
+      var shareStatus = document.getElementById('share-status');
+      if (shareButton && shareCopy && shareStatus) {
+        shareButton.addEventListener('click', function () {
+          copyText(shareCopy.textContent, shareStatus, null);
+        });
+      }
     })();
   </script>
 </body>
