@@ -53,12 +53,17 @@
     .button.primary:hover { background:var(--accent-dark); }
     .button.secondary { background:white; color:var(--ink); border-color:var(--line); }
     .note { margin-top:1.6rem; padding:1rem 1.15rem; background:var(--sage); border-radius:18px; border:1px solid rgba(19,35,29,.08); }
+    .share-helper { margin-top:2rem; display:grid; grid-template-columns:minmax(0,1.35fr) minmax(260px,.65fr); gap:1rem; align-items:stretch; padding:1.15rem; background:linear-gradient(135deg,#fff8e9 0%,#fffaf0 62%,rgba(223,231,220,.85) 100%); border:1px solid rgba(187,78,47,.32); border-radius:24px; box-shadow:var(--shadow); }
+    .share-helper h2 { font-size:1.55rem; }
+    .share-helper p { margin:.4rem 0 0; color:var(--muted); }
+    .share-copy { display:block; width:100%; min-height:100%; border:1px solid var(--line); border-radius:18px; background:white; padding:1rem; color:var(--ink); overflow-wrap:anywhere; }
+    .copy-status { min-height:1.35rem; color:var(--accent-dark); font-weight:800; margin-top:.55rem; }
     .rescue-strip { margin-top:2rem; display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:1rem; align-items:center; padding:1.15rem; background:linear-gradient(180deg,#fff8e9 0%,#fffaf0 100%); border:1px solid rgba(187,78,47,.36); border-radius:24px; box-shadow:var(--shadow); }
     .rescue-strip h2 { font-size:1.5rem; }
     .rescue-strip p { margin:.35rem 0 0; color:var(--muted); }
     .note p { margin:.35rem 0; }
     footer { margin-top:2rem; color:var(--muted); font-size:.95rem; }
-    @media (max-width: 820px) { .grid, .rescue-strip { grid-template-columns:1fr; } main { padding-top:2.5rem; } }
+    @media (max-width: 820px) { .grid, .rescue-strip, .share-helper { grid-template-columns:1fr; } main { padding-top:2.5rem; } }
   </style>
 </head>
 <body>
@@ -70,6 +75,21 @@
     <span class="eyebrow">Choose the safest next step</span>
     <h1>Start with the path that fits today.</h1>
     <p class="lede">Offline Helper should feel calm before it asks for money. Use this router to choose free guidance, a fit check, urgent rescue, Care Plan support, or confirmed payment.</p>
+
+    <section class="share-helper" aria-labelledby="family-forward-title">
+      <div>
+        <span class="tag">For the family text thread</span>
+        <h2 id="family-forward-title">Helping a parent or loved one? Send one calm note first.</h2>
+        <p>Adult children and caregivers often discover Offline Helper before the person who needs the setup. This copy keeps the first ask consent-first, privacy-safe, and concrete: read the start page together, then choose free checklist, fit check, or $99 rescue.</p>
+        <div class="cta-row">
+          <button class="button secondary" type="button" id="copy-family-forward">Copy family note</button>
+          <a class="button primary" href="/paid-rescue/?utm_source=start_router&utm_medium=family_forward_button">Open $99 rescue</a>
+          <a class="button secondary" href="/family-ai-safety-checklist/?utm_source=start_router&utm_medium=family_forward_button">Open free checklist</a>
+        </div>
+        <div class="copy-status" id="family-forward-status" role="status" aria-live="polite"></div>
+      </div>
+      <div class="share-copy" id="family-forward-copy" role="textbox" aria-readonly="true">Would this help us? Offline Helper is a calm start page for private AI setup on a Mac or Windows computer. We can read it together, choose the free safety checklist or fit check first, and only use the $99 rescue path if something is stuck today. No passwords, recovery keys, private files, medical/legal/financial details, or crisis details go in chat. Page: https://offlinehelpers.com/start/?utm_source=family_forward&utm_medium=share_copy</div>
+    </section>
 
     <section class="rescue-strip" aria-labelledby="rescue-fast-title">
       <div>
@@ -134,5 +154,34 @@
       <a href="/">Home</a> · <a href="/fit-check/">Fit check</a> · <a href="/community-talk/">Free community talk</a> · <a href="/support/">Care Plan support</a> · <a href="/paid-rescue/">Paid rescue</a> · <a href="/checkout/">Checkout</a>
     </footer>
   </main>
+  <script>
+    (function () {
+      var button = document.getElementById('copy-family-forward');
+      var copy = document.getElementById('family-forward-copy');
+      var status = document.getElementById('family-forward-status');
+      if (!button || !copy || !status) return;
+      function setStatus(message) { status.textContent = message; }
+      function fallback() {
+        var range = document.createRange();
+        range.selectNodeContents(copy);
+        var selection = window.getSelection();
+        if (selection) {
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }
+        setStatus('Copy did not auto-run. Select the note and copy it manually.');
+      }
+      button.addEventListener('click', function () {
+        var text = copy.textContent.trim();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () {
+            setStatus('Copied. Paste it into the family text thread.');
+          }).catch(fallback);
+        } else {
+          fallback();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
