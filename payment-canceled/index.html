@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Payment canceled | Offline Helper</title>
-  <meta name="description" content="Offline Helper payment canceled next steps.">
+  <title>Checkout next steps | Offline Helper</title>
+  <meta name="description" content="Review Offline Helper checkout options or ask Pete a question before continuing.">
   <style>
     :root { color-scheme: light; --ink:#17201b; --muted:#5d6b63; --paper:#fffaf1; --card:#ffffff; --accent:#2e7d5b; --warm:#b45309; }
     body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background:linear-gradient(135deg,#fffaf1,#f7efe5); color:var(--ink); }
@@ -15,14 +15,22 @@
     strong { color:var(--ink); }
     .badge { display:inline-block; color:#fff; background:var(--warm); border-radius:999px; padding:.4rem .75rem; font-weight:800; margin-bottom:1rem; }
     a { color:var(--accent); font-weight:800; }
+    .actions { display:flex; flex-wrap:wrap; gap:.75rem; margin:1.5rem 0; }
+    .actions a { display:inline-flex; align-items:center; min-height:48px; padding:.6rem 1rem; border:1px solid var(--accent); border-radius:16px; box-sizing:border-box; }
+    a:focus-visible { outline:3px solid var(--ink); outline-offset:4px; }
   </style>
 </head>
 <body>
   <main>
     <section>
-      <span class="badge">Payment not completed</span>
-      <h1>No worries — checkout was canceled.</h1>
-      <p>You have not completed payment. Offline Helper keeps the process human-led: a free fit check comes first, and payment only happens if the setup is a good match.</p>
+      <span class="badge">Checkout next steps</span>
+      <h1>Need a hand with checkout?</h1>
+      <p>You can review your options or ask Pete a question before continuing. Pay only after Pete confirms fit, timing, and price.</p>
+      <p>If you saw a payment confirmation or are unsure whether payment went through, check with Pete before trying again. This page does not verify payment status.</p>
+      <div class="actions" aria-label="Checkout next steps">
+        <a href="/checkout/">Review checkout options</a>
+        <a href="mailto:pdbjork@gmail.com?subject=Offline%20Helper%20checkout%20question">Ask Pete about checkout</a>
+      </div>
       <ul>
         <li>If you had a question about privacy, scheduling, or price, reply to the fit-check message.</li>
         <li>If the setup is not a fit, we would rather say so kindly than take your money.</li>
