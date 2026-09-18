@@ -39,6 +39,10 @@
     .button { display:inline-flex; align-items:center; justify-content:center; min-height:48px; padding:.9rem 1.08rem; border-radius:999px; border:1px solid transparent; font-weight:800; text-decoration:none; margin-top:auto; }
     .button.primary { background:var(--accent); color:white; box-shadow:0 14px 30px rgba(187,78,47,.23); }
     .button.secondary { background:white; color:var(--ink); border-color:var(--line); }
+    a:focus-visible { outline:3px solid var(--ink); outline-offset:4px; }
+    .help { margin-top:2rem; }
+    .help h2 { font-size:1.55rem; }
+    .help .button { margin-top:.5rem; }
     .note { margin-top:1.6rem; padding:1rem 1.15rem; background:var(--sage); border-radius:18px; border:1px solid rgba(19,35,29,.08); }
     .note p { margin:.35rem 0; }
     footer { margin-top:2rem; color:var(--muted); font-size:.95rem; }
@@ -74,6 +78,14 @@
         <p>Use this only if Pete sent you back to pay after confirming the service, schedule, and package.</p>
         <a class="button secondary" href="/confirmed-fit-payment/">Open confirmed-fit payment</a>
       </article>
+    </section>
+
+    <section class="help" aria-labelledby="checkout-help">
+      <h2 id="checkout-help">Not sure which option to choose?</h2>
+      <p>Ask Pete about the service, price, or timing before you pay. If you already have a fit-check conversation, reply there so Pete has the context.</p>
+      <a class="button secondary" href="mailto:pdbjork@gmail.com?subject=Offline%20Helper%20checkout%20question">Ask Pete about checkout</a>
+      <p>No email app? <a href="https://t.me/OfflineHelperPeteBot">Start a Telegram intake</a>. Share only a general question, not private documents or payment details.</p>
+      <p><strong>Already tried paying?</strong> If you saw a confirmation or are unsure whether payment went through, check with Pete before trying again. This page does not verify payment status.</p>
     </section>
 
     <section class="note" aria-label="Payment safety rules">
