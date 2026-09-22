@@ -27,6 +27,30 @@ No live checkout POST, payment, lead submission, email, or message was made. Bro
 3. Publish through the existing GitHub Pages release process, then read back `/confirmed-fit-payment/` and verify the exact shipped script. No release occurred in this run.
 4. Record real confirmed-fit conversations, checkout completions and revenue separately. Passing tests are not conversions.
 
+## Native browser verification — 2026-09-22
+
+Added `tests/checkout-native-back.browser.mjs`. This serves the actual payment HTML on an ephemeral loopback port, replaces only the Worker origin with the fixture origin, and adds a native pageshow observer. A local POST redirects to a clearly labeled local handoff; no Stripe session is created. A restrictive CSP limits connections and form submissions to the fixture origin. The test also asserts zero external page requests and zero browser script errors. The server and browser close in finally blocks.
+
+Executed with Playwright 1.63.0 and full Chromium 153.0.8010.12:
+
+- Historical HTML from `7e0650f^`: native BFCache restoration reproduced disabled=true and `Opening Stripe…` (expected-broken assertion passed).
+- Current HTML: two consecutive submit/Back cycles restored enabled buttons and original labels. Native `pageshow.persisted=true` and the same document UUID establish actual BFCache restoration, not a synthetic event or reload.
+- Historical run: one local fixture POST; fixed run: two. Both runs: zero external page requests, zero page errors.
+- Existing Node suite: 14 passes, zero failures. `git diff --check`: passed.
+- Public GET returned 200 but did not contain `pendingButtons`; the fix remains unshipped at the time of this check.
+
+Reproduce (install development dependencies outside the site, not in its public tree):
+
+    npm install --prefix /root/.hermes/cache/scratch/checkout-browser-20260922 --no-audit --no-fund --ignore-scripts playwright@1.63.0
+    /root/.hermes/cache/scratch/checkout-browser-20260922/node_modules/.bin/playwright install chromium
+    PLAYWRIGHT_MODULE=/root/.hermes/cache/scratch/checkout-browser-20260922/node_modules/playwright/index.mjs node tests/checkout-native-back.browser.mjs
+
+For regression sensitivity, extract `git show 7e0650f^:confirmed-fit-payment/index.html` into a scratch file, then supply its absolute path as `CHECKOUT_HTML` and set `EXPECT_BROKEN=1` with the same command. No customer data or real fit ID is needed.
+
+Harness troubleshooting encountered during this run: the first launch lacked its matching browser build; installed it. The headless-shell run did not produce a persisted event, so switched to full Chromium via channel=chromium. Waiting for a new load event after Back then timed out; changed the harness to native history.back(), URL commit observation, and pageshow assertions, since cache restoration does not require a new load. Failed attempts were not counted as verification.
+
+Limits: this verifies local Chromium restoration for the paid-rescue package control, not Safari/Firefox, the separate hero CTA, live Stripe redirects, fulfillment, or payment success. Existing unit tests separately cover catalog-disable precedence. Release checklist item 2 above is now satisfied for this local Chromium handoff; production deployment/readback remains outstanding. Do not interpret test success as revenue or conversion lift.
+
 ## Rollback
 
 Revert the dedicated commit that adds this change. No schema, backend, or data rollback is needed. Do not reset unrelated work.
