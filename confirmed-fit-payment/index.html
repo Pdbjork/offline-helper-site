@@ -314,6 +314,7 @@
       }
 
 
+      var pendingButtons = new Map();
       var paidRescuePackage = document.getElementById('paid-rescue-package');
       var paidRescueStatus = document.getElementById('paid-rescue-status');
       if (paidRescuePackage && paidRescueStatus && window.fetch) {
@@ -325,6 +326,7 @@
               paidRescueStatus.textContent = 'Live in Stripe catalog.';
             } else {
               paidRescuePackage.querySelectorAll('button[type="submit"]').forEach(function (b) {
+                pendingButtons.delete(b);
                 b.disabled = true;
                 b.textContent = 'Pending Stripe catalog deploy';
               });
@@ -353,10 +355,22 @@
       document.querySelectorAll('form.checkout-form').forEach(function (f) {
         f.addEventListener('submit', function () {
           f.querySelectorAll('button[type="submit"]').forEach(function (b) {
+            if (b.disabled) return;
+            pendingButtons.set(b, b.textContent);
             b.disabled = true;
             b.textContent = 'Opening Stripe…';
           });
         });
+      });
+
+      // Back/forward cache restores the DOM with its pending submission state.
+      // Restore only our busy buttons, never a catalog-disabled payment path.
+      window.addEventListener('pageshow', function () {
+        pendingButtons.forEach(function (label, b) {
+          b.disabled = false;
+          b.textContent = label;
+        });
+        pendingButtons.clear();
       });
     })();
   </script>
