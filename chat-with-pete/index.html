@@ -323,12 +323,12 @@
         var dev = answers.device_kind;
         var silicon = answers.apple_silicon;
 
-        if (dev === 'mac' && silicon === 'yes') {
+        if (dev === 'mac' && silicon === true) {
           if (ram >= 16) return { score: 95, eligible: true, tier: 'home_setup', reason: 'Apple Silicon Mac with 16+ GB memory - great fit for Home Setup; Family Care if a caregiver is involved.' };
           if (ram >= 8)  return { score: 80, eligible: true, tier: 'home_setup', reason: 'Apple Silicon Mac with 8 GB memory - runs a 7B model comfortably.' };
           return { score: 50, eligible: false, reason: 'Apple Silicon Mac with less than 8 GB memory - will run, but you will want more headroom. Consider an upgrade first.' };
         }
-        if (dev === 'mac' && silicon === 'no') {
+        if (dev === 'mac' && silicon === false) {
           if (ram >= 16) return { score: 55, eligible: true, tier: 'home_setup', reason: 'Intel Mac with 16+ GB memory - works, but slower than Apple Silicon.' };
           return { score: 25, eligible: false, reason: 'Intel Mac - a local LLM will be slow. A managed cloud AI is the more honest recommendation.' };
         }
@@ -340,16 +340,19 @@
         return { score: 20, eligible: false, reason: 'Offline Helper currently supports Mac and Windows PCs.' };
       }
 
-      function renderResult(result, fitCheckId) {
+      function renderResult(result, fitCheckId, saved) {
         var cls = result.eligible ? 'good' : 'warn';
-        var heading = result.eligible
+        var heading = !saved ? 'Your preview is ready; please retry to save it' : result.eligible
           ? 'Looks like a fit'
           : 'Probably not a fit - and that is worth knowing up front';
         var html = '<div class="result ' + cls + '">' +
           '<h2>' + escapeHTML(heading) + '</h2>' +
           '<p class="reason">' + escapeHTML(result.reason) + '</p>' +
           '<div class="actions">';
-        if (result.eligible) {
+        if (!saved) {
+          html += '<p>We could not save your fit check. This is a preview from your browser, not a confirmed fit. Your answers are still in the form. Select Get my recommendation to try again, or email Pete for help.</p>';
+          html += '<a class="btn btn-warm" href="mailto:pdbjork@gmail.com?subject=Fit%20check%20could%20not%20save">Email Pete for help</a>';
+        } else if (result.eligible) {
           html += '<a class="btn btn-warm" href="../confirmed-fit-payment/?tier=' + encodeURIComponent(result.tier) +
             '&fit_check_id=' + encodeURIComponent(fitCheckId) + '">Continue to payment</a>';
           html += '<a class="btn btn-ghost" href="mailto:pdbjork@gmail.com?subject=Free%20fit%20check%20follow-up%20(' + encodeURIComponent(fitCheckId) + ')">Email Pete directly</a>';
@@ -465,12 +468,15 @@
           });
           if (res.ok) {
             var data = await res.json();
-            if (data && data.fit_check_id) clientId = data.fit_check_id;
-            if (data && typeof data.score === 'number') {
+            if (data && data.ok === true && /^fc_[a-zA-Z0-9_-]{1,32}$/.test(data.fit_check_id || '') &&
+                Number.isFinite(data.score) && data.score >= 0 && data.score <= 100 &&
+                typeof data.eligible === 'boolean' && typeof data.reason === 'string' &&
+                (!data.eligible || data.tier === 'home_setup')) {
+              clientId = data.fit_check_id;
               renderResult({
                 score: data.score, eligible: data.eligible,
                 tier: data.tier, reason: data.reason,
-              }, clientId);
+              }, clientId, true);
               submitBtn.disabled = false;
               submitBtn.textContent = 'Get my recommendation';
               return;
@@ -479,7 +485,7 @@
         } catch (_) { /* fall through to local result */ }
 
         // Worker didn't respond or returned a bad payload - show local result anyway
-        renderResult(local, clientId);
+        renderResult(local, clientId, false);
         submitBtn.disabled = false;
         submitBtn.textContent = 'Get my recommendation';
       });
