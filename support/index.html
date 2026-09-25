@@ -48,6 +48,8 @@
     .button { display:inline-flex; align-items:center; justify-content:center; min-height:48px; padding:.9rem 1.08rem; border-radius:999px; border:1px solid transparent; font-weight:800; text-decoration:none; }
     .button.primary { background:var(--accent); color:white; box-shadow:0 14px 30px rgba(187,78,47,.23); }
     .button.secondary { background:white; color:var(--ink); border-color:var(--line); }
+    a:focus-visible { outline:3px solid var(--ink); outline-offset:4px; }
+    .button { text-align:center; }
     .card { background:rgba(255,250,240,.92); border:1px solid var(--line); border-radius:24px; padding:1.25rem; box-shadow:var(--shadow); }
     .price { font-size:clamp(2.8rem,7vw,4.6rem); font-weight:900; letter-spacing:-.06em; margin:.7rem 0 0; }
     .price small { font-size:1rem; color:var(--muted); letter-spacing:0; }
@@ -72,12 +74,13 @@
         <span class="eyebrow">Keep the setup working</span>
         <h1>Support after install day.</h1>
         <p class="lede">The Care Plan is for families who want their private AI setup checked, updated, and explained without turning a helpful tool into another chore.</p>
-        <div class="actions">
-          <a class="button primary" href="/support-intake/">Request support</a>
-          <a class="button secondary" href="/fit-check/">Ask about Care Plan fit</a>
-          <a class="button secondary" href="/checkout/">Already confirmed? Pay here</a>
-          <a class="button secondary" href="https://www.skool.com/offline-helper/about">Use the free community first</a>
+        <div class="actions" aria-label="Care Plan next steps">
+          <a class="button primary" href="mailto:pdbjork@gmail.com?subject=Offline%20Helper%20Care%20Plan%20question">Ask Pete about the $79/month plan</a>
+          <a class="button secondary" href="/support-intake/">Current customer? Request support</a>
         </div>
+        <p>Before you subscribe, ask Pete whether your setup fits the plan and confirm what support includes. Asking does not start a subscription.</p>
+        <p>No email app? <a href="https://t.me/OfflineHelperPeteBot">Start a Telegram intake</a>. Share your device type and a general question, not private files or account details.</p>
+        <p>Need a new setup? <a href="/fit-check/">Start the free device fit check</a>.</p>
       </div>
       <aside class="card" aria-label="Care Plan price">
         <h2>Care Plan</h2>
@@ -112,8 +115,13 @@
       <strong>Safety rule:</strong> support never needs passwords, recovery keys, private documents, medical, legal, financial, or crisis details in email, Telegram, screenshots, checkout, or research forms.
     </section>
 
+    <section class="section note" aria-labelledby="confirmed-plan">
+      <h2 id="confirmed-plan">Pete already confirmed your plan?</h2>
+      <p><a href="/confirmed-fit-payment/">Open confirmed-fit payment</a> only after Pete confirms the service, price, and timing. If you are unsure whether an earlier payment went through, ask Pete before trying again.</p>
+    </section>
+
     <footer>
-      <a href="/">Home</a> · <a href="/support-intake/">Support intake</a> · <a href="/paid-rescue/">Paid rescue</a> · <a href="/family-ai-safety-checklist/">Free checklist</a>
+      <a href="/">Home</a> · <a href="/support-intake/">Support intake</a> · <a href="/paid-rescue/">Paid rescue</a> · <a href="/family-ai-safety-checklist/">Free checklist</a> · <a href="https://www.skool.com/offline-helper/about">Free community</a>
     </footer>
   </main>
 </body>
