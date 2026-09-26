@@ -350,7 +350,7 @@
           '<p class="reason">' + escapeHTML(result.reason) + '</p>' +
           '<div class="actions">';
         if (!saved) {
-          html += '<p>We could not save your fit check. This is a preview from your browser, not a confirmed fit. Your answers are still in the form. Select Get my recommendation to try again, or email Pete for help.</p>';
+          html += '<p>We could not confirm that your fit check was saved. This is a preview from your browser, not a confirmed fit. Your answers are still in the form. Select Get my recommendation to try again, or email Pete for help.</p>';
           html += '<a class="btn btn-warm" href="mailto:pdbjork@gmail.com?subject=Fit%20check%20could%20not%20save">Email Pete for help</a>';
         } else if (result.eligible) {
           html += '<a class="btn btn-warm" href="../confirmed-fit-payment/?tier=' + encodeURIComponent(result.tier) +
@@ -440,9 +440,14 @@
         // if the Worker call fails - the email follow-up will include it).
         var clientId = 'fc_' + (crypto.randomUUID ? crypto.randomUUID().slice(0, 8) : Math.random().toString(36).slice(2, 10));
 
+        // Bound both response headers and body reading; a stalled request
+        // must restore the preview/help route instead of trapping the visitor.
+        var controller = new AbortController();
+        var timeoutId = setTimeout(function () { controller.abort(); }, 15000);
         // Try to write the record to the Worker (best-effort).
         try {
           var res = await fetch(WORKER + '/api/fit-check/complete', {
+            signal: controller.signal,
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -483,6 +488,7 @@
             }
           }
         } catch (_) { /* fall through to local result */ }
+        finally { clearTimeout(timeoutId); }
 
         // Worker didn't respond or returned a bad payload - show local result anyway
         renderResult(local, clientId, false);

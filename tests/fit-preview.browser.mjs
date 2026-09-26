@@ -37,7 +37,7 @@ try {
   await page.fill('#primary_goal', 'Test fixture only');
   await page.selectOption('#comfort_level', 'some');
   await page.click('#submit-btn');
-  await page.waitForFunction(() => document.querySelector('#result-slot').textContent.includes('could not save'));
+  await page.waitForFunction(() => document.querySelector('#result-slot').textContent.includes('could not confirm'));
   assert.match(await page.locator('#result-slot').innerText(), /Score: 95\/100/);
   assert.equal(await page.locator('#result-slot a[href*="confirmed-fit-payment"]').count(), 0);
   assert.equal(await page.inputValue('#primary_goal'), 'Test fixture only');
