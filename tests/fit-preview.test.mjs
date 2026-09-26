@@ -20,7 +20,7 @@ async function submit({ device = 'mac', silicon = 'yes', ram = 16, response = nu
   const requests = [];
   vm.runInNewContext(script, {
     document: { getElementById: id => id === 'fit-form' ? form : nodes[id], referrer: '' },
-    window: { location: { search: '' } }, URLSearchParams,
+    window: { location: { search: '' } }, URLSearchParams, AbortController, setTimeout, clearTimeout,
     FormData: class { get(name) { return values[name] ?? ''; } },
     crypto: { randomUUID: () => 'test1234-fixture' },
     fetch: async (url, opts) => {
@@ -43,7 +43,7 @@ for (const [device, silicon, ram, score] of [
   test(`local preview: ${device}/${silicon}/${ram} scores ${score} without payment`, async () => {
     const result = await submit({ device, silicon, ram });
     assert.match(result, new RegExp(`Score: ${score}/100`));
-    assert.match(result, /could not save your fit check/i);
+    assert.match(result, /could not confirm that your fit check was saved/i);
     assert.doesNotMatch(result, /confirmed-fit-payment|Continue to payment/);
     assert.match(result, /mailto:/);
   });
@@ -59,11 +59,11 @@ test('successful persisted fit still offers the existing payment route', async (
   const result = await submit({ response: { ok: true, fit_check_id: 'fc_saved', score: 95,
     eligible: true, tier: 'home_setup', reason: 'Test response' } });
   assert.match(result, /confirmed-fit-payment\/\?tier=home_setup&fit_check_id=fc_saved/);
-  assert.doesNotMatch(result, /could not save/);
+  assert.doesNotMatch(result, /could not confirm/);
 });
 
 test('malformed success payload cannot authorize payment', async () => {
   const result = await submit({ response: { score: 95, eligible: true, tier: 'home_setup' } });
   assert.doesNotMatch(result, /confirmed-fit-payment/);
-  assert.match(result, /could not save/);
+  assert.match(result, /could not confirm/);
 });
