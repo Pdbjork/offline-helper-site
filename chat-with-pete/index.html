@@ -88,6 +88,7 @@
     .card .sub { color: var(--muted); margin: 0 0 1.1rem; font-size: .92rem; }
 
     .field { display: block; margin-bottom: 1.1rem; }
+    .field[hidden] { display: none; }
     .field > label { display: block; font-weight: 600; margin-bottom: .35rem; }
     .field > .hint { color: var(--muted); font-size: .85rem; margin: 0 0 .4rem; }
     .field input[type="text"],
@@ -194,8 +195,8 @@
       </div>
 
       <div class="field" id="apple-silicon-field" hidden>
-        <label>Is it a recent Mac (M1, M2, M3, or M4)?</label>
-        <div class="hint">Click the Apple menu → About This Mac. The chip name shows on the second line.</div>
+        <label>Does your Mac have an Apple chip (M1 or newer)?</label>
+        <div class="hint">Open the Apple menu → About This Mac. Look for “Chip” (Apple M-series) or “Processor” (Intel). Choose Not sure if you cannot find it.</div>
         <div class="checkbox-grid" role="radiogroup" aria-label="Apple Silicon">
           <label class="pill"><input type="radio" name="apple_silicon" value="yes"> Yes (M1 or newer)</label>
           <label class="pill"><input type="radio" name="apple_silicon" value="no"> No, it's an older Intel Mac</label>
@@ -397,7 +398,7 @@
         }
         return {
           device_kind: device_kind,
-          apple_silicon: device_kind === 'mac' ? (apple_silicon === 'yes') : false,
+          apple_silicon: device_kind === 'mac' ? (apple_silicon === 'yes' ? true : apple_silicon === 'no' ? false : null) : false,
           os_version: sTrim('os_version', 80),
           ram_gb: Number(fd.get('ram_gb')) || 0,
           primary_goal: sTrim('primary_goal', 200),
@@ -414,7 +415,7 @@
 
       function validate(answers) {
         if (!answers.device_kind) return 'Pick Mac or Windows.';
-        if (answers.device_kind === 'mac' && !form.querySelector('input[name="apple_silicon"]:checked')) return 'Tell us whether it is an M1/M2/M3/M4 Mac.';
+        if (answers.device_kind === 'mac' && !form.querySelector('input[name="apple_silicon"]:checked')) return 'Tell us whether your Mac has an Apple chip, or choose Not sure.';
         if (!answers.os_version) return 'Enter your operating system.';
         if (!(answers.ram_gb >= 2)) return 'Enter your memory in GB (8 if you are not sure).';
         if (!answers.primary_goal) return 'Tell us what you want to use it for.';
@@ -429,6 +430,19 @@
         var answers = collectAnswers();
         var err = validate(answers);
         if (err) { showError(err); return; }
+
+        // The current Worker treats false/null as Intel. Resolve uncertainty
+        // locally instead of saving a guessed chip or recommending a package.
+        if (answers.device_kind === 'mac' && answers.apple_silicon === null) {
+          resultSlot.innerHTML = '<div class="result">' +
+            '<h2 id="chip-help-heading" tabindex="-1">Check your Mac chip before choosing a package</h2>' +
+            '<p>Open the Apple menu → About This Mac. If you see an Apple M-series chip, choose Yes above. If you see an Intel processor, choose No. Then select Get my recommendation again.</p>' +
+            '<p>If you still cannot tell, email Pete the model and chip or processor name you can find. Do not include your serial number or passwords. Your answers are still in the form; we have not submitted this check.</p>' +
+            '<div class="actions"><a class="btn btn-warm" href="mailto:pdbjork@gmail.com?subject=Help%20identifying%20my%20Mac%20chip">Ask Pete for help identifying my Mac</a></div></div>';
+          document.getElementById('chip-help-heading').focus();
+          resultSlot.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          return;
+        }
 
         submitBtn.disabled = true;
         submitBtn.textContent = 'Checking…';
